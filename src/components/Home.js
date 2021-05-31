@@ -1,17 +1,32 @@
+import { Container, Grid } from '@material-ui/core';
 import React from 'react';
+import Carrousel from './Carrousel';
+import NavBar from './NavBar';
+import ProductList from './ProductList';
+
 
 const Home = () => {
-    return ( 
+
+    
+
+    return (   
         <div>
-            <h1>Tienda on-line</h1>
+            <NavBar/>
+            <Container maxWidth="lg" >
+                <Grid container direction="column">
+                    <Grid item>
+                        <h2>Carrusel:</h2>
+                    </Grid>
+                    <Grid item>
+                        <Carrousel />    
+                    </Grid>
+                </Grid>
 
-            <div>
-                <h2>Carrusel:</h2>
-            </div>
-
-            <div>
-                <h2>Lista de productos:</h2>
-            </div>
+                <Grid container direction="column">
+                    <h2>Lista de productos:</h2>
+                    <ProductList />
+                </Grid>
+            </Container>
         </div>
     );
 }
