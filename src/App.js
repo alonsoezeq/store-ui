@@ -3,18 +3,20 @@ import './App.css';
 import Home from './components/Home';
 import ProductDescription from './components/ProductDescription';
 import 'fontsource-roboto';
+import NavBar from './components/NavBar';
 
-function App() {
+const App = () => {
   return (
     <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/description/:id">
-            <ProductDescription />
-          </Route>
-        </Switch>
+      <NavBar />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/products/:id">
+          <ProductDescription />
+        </Route>
+      </Switch>
     </Router>  
   );
 }

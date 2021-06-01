@@ -1,7 +1,6 @@
 import {Button, Container} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
 
 const URL = 'http://localhost:3000/api/v1/products/'
@@ -33,7 +32,6 @@ const ProductDescription = () => {
 
     return ( 
         <div>
-          <NavBar />
           <Container maxWidth="sm">
             <h1>Descripcion del producto</h1>
             { product !== undefined?

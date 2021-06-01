@@ -53,7 +53,7 @@ const ProductList = () => {
 
     const handleClick = (id) => {
       console.log(id);
-      history.push("/description/" + id);
+      history.push("/products/" + id);
     }
 
     useEffect(getProducts, []);
