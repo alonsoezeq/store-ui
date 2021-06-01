@@ -4,20 +4,29 @@ import Home from './components/Home';
 import ProductDescription from './components/ProductDescription';
 import 'fontsource-roboto';
 import NavBar from './components/NavBar';
+import { Box, Container } from '@material-ui/core';
+import Users from './components/Users';
 
 const App = () => {
   return (
     <Router>
       <NavBar />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/products/:id">
-          <ProductDescription />
-        </Route>
-      </Switch>
-    </Router>  
+      <Container fixed maxWidth="lg" >
+        <Box my={3} display="flex" justifyContent="center" alignItems="center">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/products/:id">
+              <ProductDescription />
+            </Route>
+            <Route path="/users">
+              <Users />
+            </Route>
+          </Switch>
+        </Box>
+      </Container>
+    </Router>
   );
 }
 

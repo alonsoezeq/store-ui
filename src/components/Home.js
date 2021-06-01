@@ -37,25 +37,24 @@ const Home = () => {
   }
 
   return (   
-    <div>
+    <>
       <Snackbar open={!!error} autoHideDuration={6000}>
         <Alert severity="error" onClose={handleSnackbarClose}>{error?.toString()}</Alert>
       </Snackbar>
-      <Container fixed maxWidth="lg" >
-        <Grid container direction="column">
-          <Grid item>
-            <Box display="flex" justifyContent="center" alignItems="center" xs={12} m={2}> 
-              <AppCarousel products={products} />
-            </Box>
+      { loading ? (
+        <CircularProgress />
+        ) : (<>
+          <Grid container spacing={3} justify="center">
+            <Grid item>
+                <AppCarousel products={products} />
+            </Grid>
+            <Grid item>
+              <ProductGrid products={products} />
+            </Grid>
           </Grid>
-          <Grid item>
-            <Box display="flex" justifyContent="center" alignItems="center" xs={12} m={3}>
-            { loading ? <CircularProgress /> : <ProductGrid products={products} /> }
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
+        </>)
+      }
+    </>
   );
 
 }

@@ -15,6 +15,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useHistory } from 'react-router';
+import { People } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   list: {
@@ -54,13 +55,17 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
       onKeyDown={toggleDrawer}
     >
       <List>
-        <ListItem button onClick={() => clickHandler("")}>
+        <ListItem button onClick={() => clickHandler('')}>
             <ListItemIcon><HomeIcon/></ListItemIcon>
             <ListItemText primary="Inicio" />
         </ListItem>      
         <ListItem button>
             <ListItemIcon><AccountCircleIcon/></ListItemIcon>
             <ListItemText primary="Mi perfil" />
+        </ListItem>
+        <ListItem button onClick={() => clickHandler('users')}>
+            <ListItemIcon><People/></ListItemIcon>
+            <ListItemText primary="Usuarios" />
         </ListItem>
         <ListItem button>
             <ListItemIcon><StoreIcon/></ListItemIcon>
