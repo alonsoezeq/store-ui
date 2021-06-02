@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Container, Grid, Snackbar } from '@material-ui/core';
+import { CircularProgress, Grid, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { React, useEffect, useState } from 'react';
 import AppCarousel from './AppCarousel';
@@ -44,11 +44,11 @@ const Home = () => {
       { loading ? (
         <CircularProgress />
         ) : (<>
-          <Grid container spacing={3} justify="center">
-            <Grid item>
+          <Grid container spacing={2} justify="center">
+            <Grid item xs={3}>
                 <AppCarousel products={products} />
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <ProductGrid products={products} />
             </Grid>
           </Grid>

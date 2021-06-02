@@ -1,10 +1,17 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Card, CardMedia } from '@material-ui/core';
+import { Card, CardMedia, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  carousel: {
+    width: 400,
+    height: 400
+  },
+});
 
 const CarouselItem = ({picture}) => {
   return (
-    <Card xs={12}>
+    <Card>
       <CardMedia component='img' image={picture} />
     </Card>
   );
@@ -12,9 +19,11 @@ const CarouselItem = ({picture}) => {
 
 const ProductCarousel = ({product}) =>
 {
+  const classes = useStyles();
+
   return (
-    <Carousel>
-      { product.pictures.map(p => <CarouselItem key={p.id} picture={p.picture} />) }
+    <Carousel className={classes.carousel}>
+      { product?.pictures.map(p => <CarouselItem key={p.id} picture={p.picture} />) }
     </Carousel>
   )
 }

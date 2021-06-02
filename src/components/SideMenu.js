@@ -42,7 +42,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
   };
 
   const clickHandler = (page) => {
-    history.push("/" + page);
+    history.push(page);
   }
 
   const list = (anchor) => (
@@ -55,7 +55,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
       onKeyDown={toggleDrawer}
     >
       <List>
-        <ListItem button onClick={() => clickHandler('')}>
+        <ListItem button onClick={() => clickHandler('/')}>
             <ListItemIcon><HomeIcon/></ListItemIcon>
             <ListItemText primary="Inicio" />
         </ListItem>      
@@ -63,7 +63,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
             <ListItemIcon><AccountCircleIcon/></ListItemIcon>
             <ListItemText primary="Mi perfil" />
         </ListItem>
-        <ListItem button onClick={() => clickHandler('users')}>
+        <ListItem button onClick={() => clickHandler('/users')}>
             <ListItemIcon><People/></ListItemIcon>
             <ListItemText primary="Usuarios" />
         </ListItem>
@@ -78,7 +78,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
       </List>
       <Divider />
       <List>
-      <ListItem button>
+      <ListItem button onClick={() => clickHandler('/products/new')}>
             <ListItemIcon><AddBoxIcon/></ListItemIcon>
             <ListItemText primary="Agregar producto" />
         </ListItem>

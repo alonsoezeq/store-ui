@@ -6,6 +6,7 @@ import 'fontsource-roboto';
 import NavBar from './components/NavBar';
 import { Box, Container } from '@material-ui/core';
 import Users from './components/Users';
+import NewProduct from './components/NewProduct';
 
 const App = () => {
   return (
@@ -16,6 +17,9 @@ const App = () => {
           <Switch>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route path="/products/new">
+              <NewProduct />
             </Route>
             <Route path="/products/:id">
               <ProductDescription />
