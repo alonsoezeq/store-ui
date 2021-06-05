@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Box, Container } from '@material-ui/core';
 import './App.css';
-import Home from './components/Home';
-import ProductDescription from './components/ProductDescription';
+import Home from './pages/Home';
+import ProductDescription from './pages/ProductDescription';
+import Error404 from './pages/Error404';
+import Users from './pages/Users';
 import 'fontsource-roboto';
 import NavBar from './components/NavBar';
-import { Box, Container } from '@material-ui/core';
-import Users from './components/Users';
-import NewProduct from './components/NewProduct';
+import NewProduct from './pages/NewProduct';
 
 const App = () => {
   return (
@@ -15,9 +16,6 @@ const App = () => {
       <Container fixed maxWidth="lg" >
         <Box my={3} display="flex" justifyContent="center" alignItems="center">
           <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
             <Route path="/products/new">
               <NewProduct />
             </Route>
@@ -26,6 +24,12 @@ const App = () => {
             </Route>
             <Route path="/users">
               <Users />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="*">
+              <Error404 />
             </Route>
           </Switch>
         </Box>

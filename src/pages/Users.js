@@ -1,7 +1,7 @@
 import { CircularProgress, Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { useEffect, useState } from "react";
-import UserList from "./UserList";
+import UserList from "../components/UserList";
 
 const Users = () => {
   const [state, setState] = useState({

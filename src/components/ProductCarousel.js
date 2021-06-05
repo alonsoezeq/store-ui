@@ -1,28 +1,28 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Card, CardMedia, makeStyles } from '@material-ui/core';
+import { CardMedia, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  carousel: {
+  picture: {
     width: 400,
     height: 400
-  },
+  }
 });
 
 const CarouselItem = ({picture}) => {
+  const classes = useStyles();
+
   return (
-    <Card>
-      <CardMedia component='img' image={picture} />
-    </Card>
+    <div>
+      <CardMedia component='img' image={picture} className={classes.picture} />
+    </div>
   );
 }
 
 const ProductCarousel = ({product}) =>
 {
-  const classes = useStyles();
-
   return (
-    <Carousel className={classes.carousel}>
+    <Carousel>
       { product?.pictures.map(p => <CarouselItem key={p.id} picture={p.picture} />) }
     </Carousel>
   )
