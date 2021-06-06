@@ -3,6 +3,7 @@ import Alert from '@material-ui/lab/Alert';
 import { React, useEffect, useState } from 'react';
 import AppCarousel from '../components/AppCarousel';
 import ProductGrid from '../components/ProductGrid';
+import config from '../config/config';
 
 const Home = () => {
 
@@ -15,7 +16,7 @@ const Home = () => {
   const {loading, products, error} = state;
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/v1/products')
+    fetch(config.baseApi + '/products')
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
         loading: false,

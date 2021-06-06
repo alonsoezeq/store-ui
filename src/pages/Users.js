@@ -2,6 +2,7 @@ import { CircularProgress, Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { useEffect, useState } from "react";
 import UserList from "../components/UserList";
+import config from '../config/config';
 
 const Users = () => {
   const [state, setState] = useState({
@@ -13,7 +14,7 @@ const Users = () => {
   const {loading, users, error} = state;
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/v1/users')
+    fetch(config.baseApi + '/api/v1/users')
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
         loading: false,

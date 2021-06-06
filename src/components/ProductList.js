@@ -5,8 +5,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { useHistory } from 'react-router';
-
-const URL = 'http://localhost:3000/api/v1/products';
+import config from '../config/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +34,7 @@ const ProductList = () => {
 
     const getProducts = () => {
 
-        fetch(URL)
+        fetch(config.baseApi + '/products')
         .then((res) => {
           return res.ok ? res.json() : Promise.reject(res);
         })

@@ -1,12 +1,11 @@
-import { Box, Button, CircularProgress, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Paper, Snackbar, Typography } from '@material-ui/core';
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import ProductCarousel from '../../components/ProductCarousel';
 import Alert from '@material-ui/lab/Alert';
 import useStyles from './styles';
-
-const URL = 'http://localhost:3000/api/v1'
+import config from '../../config/config';
 
 const ProductDescription = () => {
   const { id } = useParams();
@@ -21,7 +20,7 @@ const ProductDescription = () => {
   const {loading, product, error} = state;
 
   useEffect(() => {
-    fetch(URL + '/products/' + id)
+    fetch(config.baseApi + '/products/' + id)
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
       loading: false,
