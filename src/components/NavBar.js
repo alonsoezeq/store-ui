@@ -38,7 +38,7 @@ const NavBar = () => {
                         <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Tienda on-line</Link>
                     </Typography>
                     <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="carrito">
-                        <ShoppingCartIcon />
+                      <Link to="/cart" style={{ color: 'inherit', textDecoration: 'none' }}><ShoppingCartIcon /></Link>
                     </IconButton>
                     <Button color="inherit">Iniciar sesión</Button>
                 </Toolbar>
