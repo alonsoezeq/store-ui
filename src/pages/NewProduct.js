@@ -59,7 +59,6 @@ const NewProduct = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(product);
 
     setState({
       loading: true,
@@ -87,7 +86,7 @@ const NewProduct = () => {
           loading: false,
           status: 'error',
           message: 'Error creando el producto'
-        })
+        });
       }
 
     })
@@ -96,7 +95,7 @@ const NewProduct = () => {
         loading: false,
         status: 'error',
         message: err.toString()
-      })
+      });
     })
   }
 
@@ -175,7 +174,7 @@ const NewProduct = () => {
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" disabled={loading}>
+            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
               Cargar producto
             </Button>
           </FormControl>

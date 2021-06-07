@@ -5,10 +5,10 @@ import ProductCarousel from "./ProductCarousel";
 import { addToCart } from "../utils/CartUtils";
 
 const ProductCard = ({product}) => {
-  let history = useHistory();
+  const history = useHistory();
   const {id, title, description, price} = product;
 
-  let openDetail = (id) => history.push("/products/" + id);
+  const openDetail = (id) => history.push("/products/" + id);
 
   return ( 
     <Card>  
