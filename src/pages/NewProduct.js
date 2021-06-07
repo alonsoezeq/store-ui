@@ -1,4 +1,4 @@
-import { Button, FormControl, FormHelperText, Grid, Input, InputLabel, MenuItem, Select, TextField } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextField } from "@material-ui/core"
 import useStyles from "./ProductDescription/styles";
 
 const NewProduct = () => {

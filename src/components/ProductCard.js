@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography } from "@material-ui/core"
+import { Card, CardActionArea, CardActions, CardContent, IconButton, Typography } from "@material-ui/core"
 import { ShoppingCart } from "@material-ui/icons"
 import { useHistory } from "react-router";
 import ProductCarousel from "./ProductCarousel";

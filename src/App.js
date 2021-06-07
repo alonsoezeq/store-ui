@@ -8,6 +8,7 @@ import Users from './pages/Users';
 import 'fontsource-roboto';
 import NavBar from './components/NavBar';
 import NewProduct from './pages/NewProduct';
+import Cart from './pages/Cart';
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
             </Route>
             <Route path="/products/:id">
               <ProductDescription />
+            </Route>
+            <Route path="/cart">
+              <Cart />
             </Route>
             <Route path="/users">
               <Users />
