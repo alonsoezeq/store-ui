@@ -2,6 +2,7 @@ import { Card, CardActionArea, CardActions, CardContent, IconButton, Typography 
 import { ShoppingCart } from "@material-ui/icons"
 import { useHistory } from "react-router";
 import ProductCarousel from "./ProductCarousel";
+import { addToCart } from "../utils/CartUtils";
 
 const ProductCard = ({product}) => {
   let history = useHistory();
@@ -23,7 +24,7 @@ const ProductCard = ({product}) => {
         </CardContent>
       </CardActionArea>
       <CardActions style={{display: 'flex', justifyContent: 'space-between'}}>
-        <IconButton aria-label="add to cart">
+        <IconButton aria-label="add to cart" onClick={() => addToCart(product)}>
           <ShoppingCart />
         </IconButton>
         <Typography style={{paddingRight: '1rem', fontWeight: 'bold'}} variant="h5" color="textSecondary" component="h2" align="right">
@@ -33,5 +34,5 @@ const ProductCard = ({product}) => {
     </Card>
   );
 }
- 
+
 export default ProductCard;

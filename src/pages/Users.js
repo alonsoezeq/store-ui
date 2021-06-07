@@ -14,7 +14,7 @@ const Users = () => {
   const {loading, users, error} = state;
 
   useEffect(() => {
-    fetch(config.baseApi + '/api/v1/users')
+    fetch(config.baseApi + '/users')
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
         loading: false,

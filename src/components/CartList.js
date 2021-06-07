@@ -7,55 +7,61 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
+import { Box, Button, TableFooter, Typography } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
 const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-  });
+  table: {
+    minWidth: 650,
+  },
+});
 
-const CartList = ({cartList, setCartList, setTotal}) => {
-    const classes = useStyles();
+const CartList = ({cartList, setCartList}) => {
+  const classes = useStyles();
 
-    const deleteProduct = (id) => {
-        let newList = cartList.filter(item => item.id !== id);
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        let newCart = cart.filter(item => item.id !== id);
-        let total = 0;
+  let total = 0;
+  cartList.filter(item => total += item.price * item.amount);
 
-        localStorage.setItem("cart", JSON.stringify(newCart));
-        newList.map(item => total += (item.price * item.amount));
+  const deleteProduct = (id) => {
+    let cart = cartList.filter(item => item.id !== id);
+    localStorage.setItem("cart", cart);
+    setCartList(cart);
+  }
 
-        setTotal(total);
-
-        setCartList(newList);
-    }
-
-    return ( 
-        <TableContainer component={Paper}>
-            <Table className={classes.table} size="small" aria-label="a dense table">
-                <TableHead>
-                <TableRow>
-                    <TableCell>Producto</TableCell>
-                    <TableCell align="right">Cantidad</TableCell>
-                    <TableCell align="right">Precio unitario</TableCell>
-                    <TableCell align="right"></TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                {cartList?.map((product) => (
-                    <TableRow key={product.id}>
-                        <TableCell component="th" scope="row">{product.title}</TableCell>
-                        <TableCell align="right">{product.amount}</TableCell>
-                        <TableCell align="right">{product.price}</TableCell>
-                        <TableCell align="right"><Button onClick={() => deleteProduct(product.id)}>X</Button></TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-     );
+  return ( 
+    <TableContainer component={Paper}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+        <TableRow>
+          <TableCell>Producto</TableCell>
+          <TableCell align="right">Cantidad</TableCell>
+          <TableCell align="right">Precio unitario</TableCell>
+          <TableCell align="right"></TableCell>
+        </TableRow>
+        </TableHead>
+        <TableBody>
+        {cartList?.map((product) => (
+          <TableRow key={product.id}>
+            <TableCell component="th" scope="row">{product.title}</TableCell>
+            <TableCell align="right">{product.amount}</TableCell>
+            <TableCell align="right">{product.price}</TableCell>
+            <TableCell align="right"><Button onClick={() => deleteProduct(product.id)}><Delete /></Button></TableCell>
+          </TableRow>
+        ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell align="right" colSpan={3}>
+              <Typography>
+                <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
+                {total}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
+   );
 }
  
 
