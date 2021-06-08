@@ -13,9 +13,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import StoreIcon from '@material-ui/icons/Store';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { useHistory } from 'react-router';
-import { People } from '@material-ui/icons';
+import { ChevronLeft, People } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   list: {
@@ -32,13 +31,12 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
   const classes = useStyles();
   let history = useHistory();
 
-  const toggleDrawer = (event) => {
+  const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    console.log("evento")
-    setDrawer(false); 
+    setDrawer(open); 
   };
 
   const clickHandler = (page) => {
@@ -51,9 +49,13 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer}
-      onKeyDown={toggleDrawer}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
+      <IconButton>
+        <ChevronLeft />
+      </IconButton>
+      <Divider />
       <List>
         <ListItem button onClick={() => clickHandler('/')}>
           <ListItemIcon><HomeIcon/></ListItemIcon>
@@ -92,10 +94,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
 
   return (
     <div>
-      <Drawer anchor='left' open={drawerToggle} onClose={console.log("close")}>
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="carrito" onClick={() => setDrawer(!drawerToggle)}>
-          <CancelIcon edge="end" />
-        </IconButton>
+      <Drawer anchor='left' open={drawerToggle} onClose={toggleDrawer(false)}>
         { list('left') }
       </Drawer>
     </div>
