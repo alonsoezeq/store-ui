@@ -12,6 +12,7 @@ import Cart from './pages/Cart';
 import Register from './pages/Register';
 import NewStore from './pages/NewStore';
 import Stores from './pages/Stores';
+import Login from './pages/Login';
 
 const routes = [
   { path: '/products/new', component: NewProduct },
@@ -20,6 +21,7 @@ const routes = [
   { path: '/stores', component: Stores },
   { path: '/cart', component: Cart },
   { path: '/users', component: Users },
+  { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/', component: Home },
   { path: '*', component: Error404 }

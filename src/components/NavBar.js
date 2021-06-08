@@ -44,7 +44,9 @@ const NavBar = () => {
           <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="carrito">
             <Link to="/cart" className={classes.link}><ShoppingCartIcon /></Link>
           </IconButton>
-          <Button color="inherit">Iniciar sesión</Button>
+          <Button color="inherit">
+            <Link to="/login" className={classes.link}>Iniciar sesión</Link>
+          </Button>
           <Button color="inherit">
             <Link to="/register" className={classes.link}>Registrarme</Link>
           </Button>
