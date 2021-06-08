@@ -34,8 +34,8 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
 
   const toggleDrawer = (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-      }
+      return;
+    }
 
     console.log("evento")
     setDrawer(false); 
@@ -56,31 +56,35 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
     >
       <List>
         <ListItem button onClick={() => clickHandler('/')}>
-            <ListItemIcon><HomeIcon/></ListItemIcon>
-            <ListItemText primary="Inicio" />
+          <ListItemIcon><HomeIcon/></ListItemIcon>
+          <ListItemText primary="Inicio" />
         </ListItem>      
         <ListItem button>
-            <ListItemIcon><AccountCircleIcon/></ListItemIcon>
-            <ListItemText primary="Mi perfil" />
+          <ListItemIcon><AccountCircleIcon/></ListItemIcon>
+          <ListItemText primary="Mi perfil" />
         </ListItem>
         <ListItem button onClick={() => clickHandler('/users')}>
-            <ListItemIcon><People/></ListItemIcon>
-            <ListItemText primary="Usuarios" />
+          <ListItemIcon><People/></ListItemIcon>
+          <ListItemText primary="Usuarios" />
+        </ListItem>
+        <ListItem button onClick={() => clickHandler('/stores')}>
+          <ListItemIcon><StoreIcon/></ListItemIcon>
+          <ListItemText primary="Tiendas" />
         </ListItem>
         <ListItem button>
-            <ListItemIcon><StoreIcon/></ListItemIcon>
-            <ListItemText primary="Tiendas" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon><CardGiftcardIcon/></ListItemIcon>
-            <ListItemText primary="Mis compras" />
+          <ListItemIcon><CardGiftcardIcon/></ListItemIcon>
+          <ListItemText primary="Mis compras" />
         </ListItem>
       </List>
       <Divider />
       <List>
-      <ListItem button onClick={() => clickHandler('/products/new')}>
-            <ListItemIcon><AddBoxIcon/></ListItemIcon>
-            <ListItemText primary="Agregar producto" />
+        <ListItem button onClick={() => clickHandler('/products/new')}>
+          <ListItemIcon><AddBoxIcon/></ListItemIcon>
+          <ListItemText primary="Agregar producto" />
+        </ListItem>
+        <ListItem button onClick={() => clickHandler('/stores/new')}>
+          <ListItemIcon><AddBoxIcon/></ListItemIcon>
+          <ListItemText primary="Agregar tienda" />
         </ListItem>
       </List>
     </div>
@@ -88,12 +92,12 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
 
   return (
     <div>
-        <Drawer anchor='left' open={drawerToggle} onClose={console.log("close")}>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="carrito" onClick={() => setDrawer(!drawerToggle)}>
-                        <CancelIcon edge="end" />
-            </IconButton>
-            {list('left')}
-        </Drawer>
+      <Drawer anchor='left' open={drawerToggle} onClose={console.log("close")}>
+        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="carrito" onClick={() => setDrawer(!drawerToggle)}>
+          <CancelIcon edge="end" />
+        </IconButton>
+        { list('left') }
+      </Drawer>
     </div>
   );
 }

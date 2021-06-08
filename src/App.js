@@ -10,10 +10,14 @@ import NavBar from './components/NavBar';
 import NewProduct from './pages/NewProduct';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
+import NewStore from './pages/NewStore';
+import Stores from './pages/Stores';
 
 const routes = [
   { path: '/products/new', component: NewProduct },
   { path: '/products/:id', component: ProductDescription },
+  { path: '/stores/new', component: NewStore },
+  { path: '/stores', component: Stores },
   { path: '/cart', component: Cart },
   { path: '/users', component: Users },
   { path: '/register', component: Register },

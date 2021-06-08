@@ -1,8 +1,7 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import { useState } from "react";
 import config from "../config/config";
-import Alert from "@material-ui/lab/Alert";
-import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,44 +9,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Register = () => {
+const NewStore = () => {
   const classes = useStyles();
-  const history = useHistory();
-
+  
   const initialState = {
     loading: false,
     status: null,
     message: ''
   };
-
-  const initialUser = {
-    username: '',
-    fullname: '',
-    email: '',
-    password: ''
+  
+  const initialStore = {
+    name: '',
+    address: '',
+    pictures: []
   };
-
+  
   const [state, setState] = useState(initialState);
-  const [user, setUser] = useState(initialUser);
+  const [store, setStore] = useState(initialStore);
   const {loading, status, message} = state;
-  const {username, fullname, email, password} = user;
-
-  const handleChange = (event) => {
-    setUser({...user, [event.target.name]: event.target.value});
-  }
+  const {name, address} = store;
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     setState({
       loading: true,
       status: null,
       message: ''
     })
 
-    fetch(config.baseApi + '/users', {
+    fetch(config.baseApi + '/stores', {
       method: 'POST',
-      body: JSON.stringify(user),
+      body: JSON.stringify(store),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -57,10 +50,9 @@ const Register = () => {
         setState({
           loading: false,
           status: 'success',
-          message: 'Usuario registrado correctamente'
+          message: 'Tienda registrada correctamente'
         });
-        setUser(initialUser);
-        history.push('/');
+        setStore(initialStore);
       } else {
         setState({
           loading: false,
@@ -78,8 +70,35 @@ const Register = () => {
     })
   }
 
+  const handleChange = (event) => {
+    setStore({...store, [event.target.name]: event.target.value});
+  }
+
+  const handleFileChange = (event) => {
+    let files = [];
+    if (event.target.files.length === 0) {
+      setStore({...store, [event.target.name]: files});
+    }
+
+    Array.from(event.target.files).forEach(file => {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        files = [...files, {"picture": reader.result}];
+        setStore({...store, [event.target.name]: files});
+      }
+      reader.onerror = (error) => {
+        setState({...state, status: 'error', message: error});
+      }
+    });
+  }
+
   const handleSnackbarClose = () => {
-    setState(initialState);
+    setState({
+      loading: false,
+      status: null,
+      message: ''
+    });
   }
 
   return (
@@ -87,32 +106,26 @@ const Register = () => {
       <Grid container direction="column">
         <Grid item>
           <FormControl required className={classes.root}>
-            <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
-            <Input id="username" name="username" type="text" value={username} onChange={handleChange} />
+            <InputLabel htmlFor="name">Nombre</InputLabel>
+            <Input id="name" name="name" type="text" value={name} onChange={handleChange} />
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl required className={classes.root}>
-            <InputLabel htmlFor="fullname">Nombre completo</InputLabel>
-            <Input id="fullname" name="fullname" type="text" value={fullname} onChange={handleChange} />
+            <InputLabel htmlFor="address">Dirección</InputLabel>
+            <Input id="address" name="address" type="text" value={address} onChange={handleChange} />
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl required className={classes.root}>
-            <InputLabel htmlFor="email">E-Mail</InputLabel>
-            <Input id="email" name="email" type="email" value={email} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="password">Contraseña</InputLabel>
-            <Input id="password" name="password" type="password" value={password} onChange={handleChange} />
+            <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
+            <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
             <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
-              Registrarme
+              Crear tienda
             </Button>
           </FormControl>
         </Grid>
@@ -127,4 +140,4 @@ const Register = () => {
   );
 }
 
-export default Register;
+export default NewStore;

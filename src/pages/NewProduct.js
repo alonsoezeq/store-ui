@@ -1,8 +1,14 @@
-import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Select, Snackbar, TextField } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Select, Snackbar, TextField } from "@material-ui/core"
 import { useState } from "react";
-import useStyles from "./ProductDescription/styles";
 import config from "../config/config";
 import Alert from "@material-ui/lab/Alert";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3, 2)
+  }
+}));
 
 const NewProduct = () => {
   const classes = useStyles();
@@ -52,7 +58,7 @@ const NewProduct = () => {
         setProduct({...product, [event.target.name]: files});
       }
       reader.onerror = (error) => {
-        console.log("Error loading file: ", error);
+        setState({...state, status: 'error', message: error});
       }
     });
   }
