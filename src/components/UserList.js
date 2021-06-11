@@ -22,16 +22,24 @@ const UserList = ({users}) => {
         <TableHead>
           <TableRow>
             <TableCell>Username</TableCell>
-            <TableCell align="right">E-Mail</TableCell>
-            <TableCell align="right">Role</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>E-Mail</TableCell>
+            <TableCell>Role</TableCell>
+            <TableCell>Registered</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Disabled</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {users?.map((u) => (
             <TableRow key={u.id}>
-              <TableCell component="th" scope="row">{u.username}</TableCell>
-              <TableCell align="right">{u.email}</TableCell>
-              <TableCell align="right">{u.role}</TableCell>
+              <TableCell>{u.username}</TableCell>
+              <TableCell>{u.fullname}</TableCell>
+              <TableCell>{u.email}</TableCell>
+              <TableCell>{u.role}</TableCell>
+              <TableCell>{u.registration}</TableCell>
+              <TableCell>{u.active ? 'Enabled' : 'Disabled'}</TableCell>
+              <TableCell>{u.disabled}</TableCell>
             </TableRow>
           ))}
         </TableBody>
