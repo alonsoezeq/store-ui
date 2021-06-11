@@ -8,13 +8,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
-import HomeIcon from '@material-ui/icons/Home';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import StoreIcon from '@material-ui/icons/Store';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
-import { useHistory } from 'react-router';
-import { ChevronLeft, People } from '@material-ui/icons';
+import { AddBox, ChevronLeft, Home, LocalAtm, LocalMall, People, Store } from '@material-ui/icons';
+import { isAdmin, isAuthenticated, isBuyer, isSeller } from '../helpers/AuthUtils';
+import { Link } from 'react-router-dom';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles({
   list: {
@@ -29,7 +26,20 @@ const useStyles = makeStyles({
 
 const SideMenu = ({drawerToggle, setDrawer}) => {
   const classes = useStyles();
-  let history = useHistory();
+
+  const firstGroup = [
+    { text: "Inicio", icon: <Home />, path: '/' },
+    { text: "Mi perfil", icon: <AccountCircle />, path: '/profile', condition: isAuthenticated() },
+    { text: "Usuarios", icon: <People />, path: '/users', condition: isAdmin() },
+    { text: "Tiendas", icon: <Store />, path: '/stores' },
+    { text: "Mis compras", icon: <LocalMall />, path: '/buys', condition: isBuyer() },
+    { text: "Ventas", icon: <LocalAtm />, path: '/sells', condition: (isSeller() || isAdmin()) }
+  ];
+
+  const secondGroup = [
+    { text: "Agregar producto", icon: <AddBox />, path: '/products/new', condition: (isSeller() || isAdmin()) },
+    { text: "Agregar tienda", icon: <AddBox />, path: '/stores/new', condition: isAdmin() },
+  ];
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -38,10 +48,6 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
 
     setDrawer(open); 
   };
-
-  const clickHandler = (page) => {
-    history.push(page);
-  }
 
   const list = (anchor) => (
     <div
@@ -57,37 +63,27 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
       </IconButton>
       <Divider />
       <List>
-        <ListItem button onClick={() => clickHandler('/')}>
-          <ListItemIcon><HomeIcon/></ListItemIcon>
-          <ListItemText primary="Inicio" />
-        </ListItem>      
-        <ListItem button>
-          <ListItemIcon><AccountCircleIcon/></ListItemIcon>
-          <ListItemText primary="Mi perfil" />
-        </ListItem>
-        <ListItem button onClick={() => clickHandler('/users')}>
-          <ListItemIcon><People/></ListItemIcon>
-          <ListItemText primary="Usuarios" />
-        </ListItem>
-        <ListItem button onClick={() => clickHandler('/stores')}>
-          <ListItemIcon><StoreIcon/></ListItemIcon>
-          <ListItemText primary="Tiendas" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon><CardGiftcardIcon/></ListItemIcon>
-          <ListItemText primary="Mis compras" />
-        </ListItem>
+        {
+          firstGroup.map(({text, icon, path, condition}) => (
+            (condition === undefined || condition === true) &&
+            <ListItem button key={path} component={Link} to={path}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))
+        }    
       </List>
       <Divider />
       <List>
-        <ListItem button onClick={() => clickHandler('/products/new')}>
-          <ListItemIcon><AddBoxIcon/></ListItemIcon>
-          <ListItemText primary="Agregar producto" />
-        </ListItem>
-        <ListItem button onClick={() => clickHandler('/stores/new')}>
-          <ListItemIcon><AddBoxIcon/></ListItemIcon>
-          <ListItemText primary="Agregar tienda" />
-        </ListItem>
+        {
+          secondGroup.map(({text, icon, path, condition}) => (
+            (condition === undefined || condition === true) &&
+            <ListItem button key={path} component={Link} to={path}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))
+        }
       </List>
     </div>
   );

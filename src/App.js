@@ -13,16 +13,17 @@ import Register from './pages/Register';
 import NewStore from './pages/NewStore';
 import Stores from './pages/Stores';
 import Login from './pages/Login';
+import { isAdmin, isAuthenticated, isBuyer, isSeller } from './helpers/AuthUtils';
 
 const routes = [
-  { path: '/products/new', component: NewProduct },
+  { path: '/products/new', component: NewProduct, condition: (isSeller() || isAdmin())},
   { path: '/products/:id', component: ProductDescription },
-  { path: '/stores/new', component: NewStore },
+  { path: '/stores/new', component: NewStore, condition: (isSeller() || isAdmin())},
   { path: '/stores', component: Stores },
-  { path: '/cart', component: Cart },
-  { path: '/users', component: Users },
-  { path: '/login', component: Login },
-  { path: '/register', component: Register },
+  { path: '/cart', component: Cart, condition: isBuyer() },
+  { path: '/users', component: Users, condition: isAdmin() },
+  { path: '/login', component: Login, condition: !isAuthenticated() },
+  { path: '/register', component: Register, condition: !isAuthenticated() },
   { path: '/', component: Home },
   { path: '*', component: Error404 }
 ];
@@ -30,12 +31,13 @@ const routes = [
 const App = () => {
   return (
     <Router>
-      <NavBar />
+      <NavBar/>
       <Container fixed maxWidth="lg" >
         <Box my={3} display="flex" justifyContent="center" alignItems="center">
           <Switch>
             {
-              routes.map(({path, component}) => 
+              routes.map(({path, component, condition}) => 
+                (condition === undefined || condition === true) &&
                 <Route key={path} exact path={path} component={component} />
               )
             }

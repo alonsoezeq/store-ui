@@ -45,7 +45,7 @@ const Register = () => {
       message: ''
     })
 
-    fetch(config.baseApi + '/users', {
+    fetch(`${config.baseApi}/users`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: {

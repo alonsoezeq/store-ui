@@ -1,9 +1,7 @@
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import CartList from '../components/CartList';
-
-
-const URL = 'http://localhost:3000/api/v1'
+import config from "../config/config";
 
 const Cart = () => {
     const [cartList, setCartList] = useState([]);
@@ -16,7 +14,7 @@ const Cart = () => {
         if(cart){
             //Busco los productos
             Promise.all(cart.map(cartProduct => {
-                return fetch(URL + '/products/' + cartProduct.id)
+                return fetch(config.baseApi + '/products/' + cartProduct.id)
                 .then(res => res.ok ? res.json() : Promise.reject(res))
                 .then(item => {
                     item.amount = cartProduct.amount

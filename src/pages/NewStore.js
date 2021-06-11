@@ -2,6 +2,7 @@ import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } fr
 import Alert from "@material-ui/lab/Alert";
 import { useState } from "react";
 import config from "../config/config";
+import { authHeader } from "../helpers/AuthUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,11 +39,12 @@ const NewStore = () => {
       message: ''
     })
 
-    fetch(config.baseApi + '/stores', {
+    fetch(`${config.baseApi}/stores`, {
       method: 'POST',
       body: JSON.stringify(store),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...authHeader()
       }
     })
     .then(res => {

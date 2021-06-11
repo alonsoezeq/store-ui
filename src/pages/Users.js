@@ -3,6 +3,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useEffect, useState } from "react";
 import UserList from "../components/UserList";
 import config from '../config/config';
+import { authHeader } from "../helpers/AuthUtils";
 
 const Users = () => {
   const [state, setState] = useState({
@@ -14,7 +15,11 @@ const Users = () => {
   const {loading, users, error} = state;
 
   useEffect(() => {
-    fetch(config.baseApi + '/users')
+    fetch(`${config.baseApi}/users`, {
+      headers: {
+        ...authHeader()
+      }
+    })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
         loading: false,

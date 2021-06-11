@@ -24,7 +24,7 @@ const CartList = ({cartList, setCartList}) => {
 
   const deleteProduct = (id) => {
     let cart = cartList.filter(item => item.id !== id);
-    localStorage.setItem("cart", cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
     setCartList(cart);
   }
 

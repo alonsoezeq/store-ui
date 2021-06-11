@@ -1,4 +1,5 @@
 import { GridList, GridListTile, GridListTileBar, makeStyles } from "@material-ui/core";
+import StoreCarousel from "./StoreCarousel";
 
 const useStyles = makeStyles((theme) => ({
   tile: {
@@ -14,7 +15,7 @@ const StoreGrid = ({stores}) => {
       {
         stores.map((store) => (
           <GridListTile key={store.id}>
-            <img src={store.pictures[0].picture} alt={store.name} />
+            <StoreCarousel store={store} />
             <GridListTileBar title={store.name} subtitle={store.address} />
           </GridListTile>
         ))

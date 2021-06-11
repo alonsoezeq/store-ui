@@ -5,10 +5,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SideMenu from './SideMenu';
 import { Link } from 'react-router-dom';
+import { isAuthenticated, isBuyer, logout } from '../helpers/AuthUtils';
+import { Menu, ShoppingCart } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,20 +36,35 @@ const NavBar = () => {
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menú" onClick={() => setDrawer(!drawerToggle)}>
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>Tienda on-line</Link>
           </Typography>
-          <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="carrito">
-            <Link to="/cart" className={classes.link}><ShoppingCartIcon /></Link>
-          </IconButton>
-          <Button color="inherit">
-            <Link to="/login" className={classes.link}>Iniciar sesión</Link>
-          </Button>
-          <Button color="inherit">
-            <Link to="/register" className={classes.link}>Registrarme</Link>
-          </Button>
+          {
+            isBuyer() &&
+            <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="carrito">
+              <Link to="/cart" className={classes.link}><ShoppingCart /></Link>
+            </IconButton>
+          }
+          {
+            !isAuthenticated() &&
+            <Button color="inherit">
+              <Link to="/login" className={classes.link}>Iniciar sesión</Link>
+            </Button>
+          }
+          {
+            !isAuthenticated() &&
+            <Button color="inherit">
+              <Link to="/register" className={classes.link}>Registrarme</Link>
+            </Button>
+          }
+          {
+            isAuthenticated() &&
+            <Button color="inherit" onClick={() => logout()}>
+              Cerrar sesión
+            </Button>
+          }
         </Toolbar>
       </AppBar>
       <SideMenu drawerToggle={drawerToggle} setDrawer={setDrawer}/>

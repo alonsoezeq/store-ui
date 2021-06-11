@@ -9,23 +9,19 @@ const useStyles = makeStyles({
   }
 });
 
-const CarouselItem = ({picture}) => {
+const ProductCarousel = ({product}) =>
+{
   const classes = useStyles();
 
   return (
-    <div>
-      <CardMedia component='img' image={picture} className={classes.picture} />
-    </div>
-  );
-}
-
-const ProductCarousel = ({product}) =>
-{
-  return (
     <Carousel>
-      { product?.pictures.map(p => <CarouselItem key={p.id} picture={p.picture} />) }
+      { 
+        product?.pictures.map(p => (
+          <CardMedia key={p.id} component='img' image={p.picture} className={classes.picture} />
+        ))
+      }
     </Carousel>
-  )
+  );
 }
 
 export default ProductCarousel;

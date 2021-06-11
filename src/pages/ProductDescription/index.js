@@ -6,7 +6,8 @@ import ProductCarousel from '../../components/ProductCarousel';
 import Alert from '@material-ui/lab/Alert';
 import useStyles from './styles';
 import config from '../../config/config';
-import { addToCart } from '../../utils/CartUtils';
+import { addToCart } from '../../helpers/CartHelpers';
+import { isBuyer } from '../../helpers/AuthUtils';
 
 const ProductDescription = () => {
   const { id } = useParams();
@@ -90,22 +91,19 @@ const ProductDescription = () => {
                   </Paper>
                 </Grid>
               </Grid>
-              <Grid
-                item
-                container
-                direction="row"
-                justify="flex-end"
-                spacing={4}
-              >
-                <Grid item>
-                  <p>Cantidad: {product.quantity} / {product.quantity}</p>
+              {
+                isBuyer() &&
+                <Grid item container direction="row" justify="flex-end" spacing={4}>
+                  <Grid item>
+                    <p>Cantidad: {product.quantity} / {product.quantity}</p>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="primary" onClick={() => addToCart(product)}>
+                      Agregar al carrito
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Button variant="contained" color="primary" onClick={() => addToCart(product)}>
-                    Agregar al carrito
-                  </Button>
-                </Grid>
-              </Grid>
+              }
             </Grid>
           </Paper>
       )}

@@ -16,7 +16,7 @@ const Home = () => {
   const {loading, products, error} = state;
 
   useEffect(() => {
-    fetch(config.baseApi + '/products')
+    fetch(`${config.baseApi}/products`)
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
         loading: false,

@@ -2,7 +2,7 @@ import { Card, CardActionArea, CardActions, CardContent, IconButton, Typography 
 import { AddShoppingCart } from "@material-ui/icons"
 import { useHistory } from "react-router";
 import ProductCarousel from "./ProductCarousel";
-import { addToCart } from "../utils/CartUtils";
+import { addToCart } from "../helpers/CartHelpers";
 
 const ProductCard = ({product}) => {
   const history = useHistory();

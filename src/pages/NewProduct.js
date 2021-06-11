@@ -2,6 +2,7 @@ import { Button, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Sel
 import { useState } from "react";
 import config from "../config/config";
 import Alert from "@material-ui/lab/Alert";
+import { authHeader } from "../helpers/AuthUtils";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,11 +73,12 @@ const NewProduct = () => {
       message: ''
     })
 
-    fetch(config.baseApi + '/products', {
+    fetch(`${config.baseApi}/products`, {
       method: 'POST',
       body: JSON.stringify(product),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...authHeader()
       }
     })
     .then(res => {
