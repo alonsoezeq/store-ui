@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NewProduct = () => {
+const ProductAddForm = () => {
   const classes = useStyles();
   
   const [state, setState] = useState({
@@ -198,4 +198,4 @@ const NewProduct = () => {
   );
 }
 
-export default NewProduct;
+export default ProductAddForm;

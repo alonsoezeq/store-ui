@@ -43,7 +43,7 @@ const Cart = () => {
         } else {
             console.log("No hay productos en el carrito");
         }    
-    },[]);
+    }, [cartList, setCartList]);
 
     return ( 
         <>

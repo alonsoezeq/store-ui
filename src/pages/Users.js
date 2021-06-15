@@ -130,7 +130,7 @@ const Users = () => {
                     </Select>
                   </FormControl>
                 </TableCell>
-                <TableCell>{u.registration}</TableCell>
+                <TableCell>{new Date(u.registration).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Switch
                     checked={u.active}

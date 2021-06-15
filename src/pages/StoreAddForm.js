@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NewStore = () => {
+const StoreAddForm = () => {
   const classes = useStyles();
   
   const initialState = {
@@ -59,7 +59,7 @@ const NewStore = () => {
         setState({
           loading: false,
           status: 'error',
-          message: 'Error al registrar usuario'
+          message: 'Error al crear tienda'
         });
       }
     })
@@ -142,4 +142,4 @@ const NewStore = () => {
   );
 }
 
-export default NewStore;
+export default StoreAddForm;

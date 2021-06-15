@@ -16,7 +16,7 @@ const StoreCarousel = ({store}) =>
     <Carousel>
       { 
         store?.pictures.map(p => (
-          <img src={p.picture} alt={store.name} className={classes.picture} />
+          <img key={p.id} src={p.picture} alt={store.name} className={classes.picture} />
         ))
       }
     </Carousel>

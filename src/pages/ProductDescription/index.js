@@ -22,7 +22,7 @@ const ProductDescription = () => {
   const {loading, product, error} = state;
 
   useEffect(() => {
-    fetch(config.baseApi + '/products/' + id)
+    fetch(`${config.baseApi}/products/${id}`)
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data => setState({
       loading: false,
@@ -34,7 +34,7 @@ const ProductDescription = () => {
       product: null,
       error: err
     }))
-  }, []);
+  }, [id]);
 
   const handleSnackbarClose = () => {
     setState({
