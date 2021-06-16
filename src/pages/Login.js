@@ -1,5 +1,6 @@
 import { Button, FormControl, Grid, Input, InputLabel, makeStyles } from "@material-ui/core";
 import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [ identity, setIdentity ] = useState({ username: '', password: '' });
   const [ context, setContext ] = useContext(AppContext);
 
@@ -32,7 +34,7 @@ const Login = () => {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.json())
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       localStorage.setItem('token', data.token.toString());
       setContext({
@@ -41,7 +43,7 @@ const Login = () => {
         status: 'success',
         message: 'Successfuly authenticated'
       });
-      window.location.href = '/';
+      history.push('/');
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: err });

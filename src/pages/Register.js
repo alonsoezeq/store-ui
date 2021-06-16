@@ -1,8 +1,8 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } from "@material-ui/core"
-import { useState } from "react";
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles } from "@material-ui/core"
+import { useContext, useState } from "react";
 import config from "../config/config";
-import Alert from "@material-ui/lab/Alert";
-import { useHistory } from "react-router";
+import { AppContext } from "../AppContext";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,23 +13,14 @@ const useStyles = makeStyles((theme) => ({
 const Register = () => {
   const classes = useStyles();
   const history = useHistory();
-
-  const initialState = {
-    loading: false,
-    status: null,
-    message: ''
-  };
-
-  const initialUser = {
+  const [ context, setContext ] = useContext(AppContext);
+  const [user, setUser] = useState({
     username: '',
     fullname: '',
     email: '',
     password: ''
-  };
+  });
 
-  const [state, setState] = useState(initialState);
-  const [user, setUser] = useState(initialUser);
-  const {loading, status, message} = state;
   const {username, fullname, email, password} = user;
 
   const handleChange = (event) => {
@@ -39,11 +30,7 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setState({
-      loading: true,
-      status: null,
-      message: ''
-    })
+    setContext({ ...context, loading: true });
 
     fetch(`${config.baseApi}/users`, {
       method: 'POST',
@@ -52,34 +39,19 @@ const Register = () => {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => {
-      if (res.ok) {
-        setState({
-          loading: false,
-          status: 'success',
-          message: 'Usuario registrado correctamente'
-        });
-        setUser(initialUser);
-        history.push('/');
-      } else {
-        setState({
-          loading: false,
-          status: 'error',
-          message: 'Error al registrar usuario'
-        });
-      }
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+    .then(data => {
+      setContext({
+        ...context,
+        loading: false,
+        status: 'success',
+        message: 'User created'
+      });
+      history.push('/');
     })
     .catch(err => {
-      setState({
-        loading: false,
-        status: 'error',
-        message: err.toString()
-      });
-    })
-  }
-
-  const handleSnackbarClose = () => {
-    setState(initialState);
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   }
 
   return (
@@ -111,18 +83,12 @@ const Register = () => {
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
+            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
               Registrarme
             </Button>
           </FormControl>
         </Grid>
       </Grid>
-      {
-        status && 
-        <Snackbar open autoHideDuration={6000}>
-          <Alert severity={status} onClose={handleSnackbarClose}>{message}</Alert>
-        </Snackbar>
-      }
     </form>
   );
 }

@@ -1,6 +1,6 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import { useState } from "react";
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles } from "@material-ui/core";
+import { useContext, useState } from "react";
+import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
 
@@ -12,32 +12,22 @@ const useStyles = makeStyles((theme) => ({
 
 const StoreAddForm = () => {
   const classes = useStyles();
-  
-  const initialState = {
-    loading: false,
-    status: null,
-    message: ''
-  };
-  
+  const [ context, setContext ] = useContext(AppContext);
+
   const initialStore = {
     name: '',
     address: '',
     pictures: []
   };
-  
-  const [state, setState] = useState(initialState);
-  const [store, setStore] = useState(initialStore);
-  const {loading, status, message} = state;
-  const {name, address} = store;
+
+  const [ store, setStore ] = useState(initialStore);
+
+  const { name, address } = store;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    setState({
-      loading: true,
-      status: null,
-      message: ''
-    })
+    setContext({ ...context, loading: true });
 
     fetch(`${config.baseApi}/stores`, {
       method: 'POST',
@@ -47,59 +37,40 @@ const StoreAddForm = () => {
         ...authHeader()
       }
     })
-    .then(res => {
-      if (res.ok) {
-        setState({
-          loading: false,
-          status: 'success',
-          message: 'Tienda registrada correctamente'
-        });
-        setStore(initialStore);
-      } else {
-        setState({
-          loading: false,
-          status: 'error',
-          message: 'Error al crear tienda'
-        });
-      }
-    })
-    .catch(err => {
-      setState({
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+    .then(data => {
+      setContext({
+        ...context,
         loading: false,
-        status: 'error',
-        message: err.toString()
+        status: 'success',
+        message: 'Store successfuly registered'
       });
     })
+    .catch(err => {
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   }
 
   const handleChange = (event) => {
-    setStore({...store, [event.target.name]: event.target.value});
+    setStore({ ...store, [event.target.name]: event.target.value });
   }
 
   const handleFileChange = (event) => {
     let files = [];
     if (event.target.files.length === 0) {
-      setStore({...store, [event.target.name]: files});
+      setStore({ ...store, [event.target.name]: files });
     }
 
     Array.from(event.target.files).forEach(file => {
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        files = [...files, {"picture": reader.result}];
-        setStore({...store, [event.target.name]: files});
+        files = [ ...files, { "picture": reader.result } ];
+        setStore({ ...store, [event.target.name]: files });
       }
       reader.onerror = (error) => {
-        setState({...state, status: 'error', message: error});
+        setContext({ ...context, status: 'error', message: error });
       }
-    });
-  }
-
-  const handleSnackbarClose = () => {
-    setState({
-      loading: false,
-      status: null,
-      message: ''
     });
   }
 
@@ -126,18 +97,12 @@ const StoreAddForm = () => {
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
+            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
               Crear tienda
             </Button>
           </FormControl>
         </Grid>
       </Grid>
-      {
-        status && 
-        <Snackbar open autoHideDuration={6000}>
-          <Alert severity={status} onClose={handleSnackbarClose}>{message}</Alert>
-        </Snackbar>
-      }
     </form>
   );
 }

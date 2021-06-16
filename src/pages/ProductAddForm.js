@@ -1,8 +1,8 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Select, Snackbar, TextField } from "@material-ui/core"
-import { useState } from "react";
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
+import { useContext, useState } from "react";
 import config from "../config/config";
-import Alert from "@material-ui/lab/Alert";
 import { authHeader } from "../helpers/AuthUtils";
+import { AppContext } from "../AppContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -13,12 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductAddForm = () => {
   const classes = useStyles();
-  
-  const [state, setState] = useState({
-    loading: false,
-    status: null,
-    message: ''
-  });
+  const [ context, setContext ] = useContext(AppContext);
 
   const initialProduct = {
     title: '',
@@ -32,10 +27,9 @@ const ProductAddForm = () => {
     price: ''
   }
 
-  const [product, setProduct] = useState(initialProduct);
+  const [ product, setProduct ] = useState(initialProduct);
 
-  const {loading, status, message} = state;
-  const {title, article, size, color, category, description, quantity, price} = product;
+  const {title, article, size, color, category, description, quantity, price } = product;
 
   const handleChange = (event) => {
     setProduct({...product, [event.target.name]: event.target.value});
@@ -48,7 +42,7 @@ const ProductAddForm = () => {
   const handleFileChange = (event) => {
     let files = [];
     if (event.target.files.length === 0) {
-      setProduct({...product, [event.target.name]: files});
+      setProduct({ ...product, [event.target.name]: files });
     }
 
     Array.from(event.target.files).forEach(file => {
@@ -56,10 +50,10 @@ const ProductAddForm = () => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         files = [...files, {"picture": reader.result}];
-        setProduct({...product, [event.target.name]: files});
+        setProduct({ ...product, [event.target.name]: files });
       }
       reader.onerror = (error) => {
-        setState({...state, status: 'error', message: error});
+        setContext({ ...context, status: 'error', message: error });
       }
     });
   }
@@ -67,11 +61,7 @@ const ProductAddForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setState({
-      loading: true,
-      status: null,
-      message: ''
-    })
+    setContext({ ...context, loading: false });
 
     fetch(`${config.baseApi}/products`, {
       method: 'POST',
@@ -81,37 +71,18 @@ const ProductAddForm = () => {
         ...authHeader()
       }
     })
-    .then(res => {
-      if (res.ok) {
-        setState({
-          loading: false,
-          status: 'success',
-          message: 'Producto creado correctamente'
-        });
-        setProduct(initialProduct);
-      } else {
-        setState({
-          loading: false,
-          status: 'error',
-          message: 'Error creando el producto'
-        });
-      }
-
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+    .then(data => {
+      setContext({
+        ...context,
+        loading: false,
+        status: 'success',
+        message: 'Producto creado correctamente'
+      });
+      setProduct(initialProduct);
     })
     .catch(err => {
-      setState({
-        loading: false,
-        status: 'error',
-        message: err.toString()
-      });
-    })
-  }
-
-  const handleSnackbarClose = () => {
-    setState({
-      loading: false,
-      status: null,
-      message: ''
+      setContext({ ...context, loading: false, status: 'error', message: err });
     });
   }
 
@@ -182,18 +153,12 @@ const ProductAddForm = () => {
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
+            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
               Cargar producto
             </Button>
           </FormControl>
         </Grid>
       </Grid>
-      {
-        status && 
-        <Snackbar open autoHideDuration={6000}>
-          <Alert severity={status} onClose={handleSnackbarClose}>{message}</Alert>
-        </Snackbar>
-      }
     </form>
   );
 }
