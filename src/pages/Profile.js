@@ -1,72 +1,68 @@
-import { Box, CircularProgress, Paper, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
-import useStyles from "./ProductDescription/styles";
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    padding: theme.spacing(3, 2),
+  }
+}));
 
 const Profile = () => {
   const classes = useStyles();
-
-  const [state, setState] = useState({
-    loading: true,
-    user: null,
-    error: null
-  });
-
-  let { loading, user, error } = state;
+  const [ user, setUser ] = useState(null);
+  const [ context, setContext ] = useContext(AppContext);
 
   useEffect(() => {
+    setContext({...context, loading: true});
+    
     fetch(`${config.baseApi}/profile`, {
       headers: {
         ...authHeader()
       }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data => setState({
-        loading: false,
-        user: data,
-        error: null
-      }))
-    .catch(err => setState({
-        loading: false,
-        user: null,
-        error: err
-      }));
+    .then(data => {
+      setUser(data);
+      setContext({ ...context, loading: false });
+    })
+    .catch(err => {
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   }, []);
 
   return (
     <>
       {
-        loading && <CircularProgress />
-      }
-      {
-        !loading && !error &&
-        <Paper className={classes.product} elevation={3}>
-          <Typography>
+        !context.loading && user &&
+        <Paper className={classes.paper} elevation={3}>
+          <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Username:
             </Box>
             {user.username}
           </Typography>
-          <Typography>
+          <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Fullname:
             </Box>
             {user.fullname}
           </Typography>
-          <Typography>
+          <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               E-Mail:
             </Box>
             {user.email}
           </Typography>
-          <Typography>
+          <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Role:
             </Box>
             {user.role}
           </Typography>
-          <Typography>
+          <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Registration:
             </Box>

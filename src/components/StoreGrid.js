@@ -1,7 +1,8 @@
-import { IconButton, Link } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { GridList, GridListTile, GridListTileBar, makeStyles } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import { isAdmin, isSeller } from "../helpers/AuthUtils";
 import StoreCarousel from "./StoreCarousel";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,7 @@ const StoreGrid = ({stores}) => {
           <GridListTile key={store.id}>
             <StoreCarousel store={store} />
             <GridListTileBar title={store.name} subtitle={store.address} actionIcon={
+              (isAdmin() || isSeller()) &&
               <IconButton onClick={() => history.push(`/stores/${store.id}/edit`)}>
                 <Edit />
               </IconButton>

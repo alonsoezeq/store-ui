@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Box, Container } from '@material-ui/core';
+import { Box, CircularProgress, Container, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import './App.css';
 import Home from './pages/Home';
 import ProductDescription from './pages/ProductDescription';
@@ -17,6 +18,8 @@ import { isAdmin, isAuthenticated, isBuyer, isSeller } from './helpers/AuthUtils
 import StoreAddForm from './pages/StoreAddForm';
 import StoreEditForm from './pages/StoreEditForm';
 import Profile from './pages/Profile';
+import { AppContext } from './AppContext';
+import { useState } from 'react';
 
 const routes = [
   { path: '/products/add', component: ProductAddForm, condition: (isSeller() || isAdmin()) },
@@ -35,22 +38,48 @@ const routes = [
 ];
 
 const App = () => {
+  
+  const [context, setContext] = useState({
+    title: '',
+    loading: false,
+    status: null,
+    message: null
+  });
+
+  const { title, loading, status, message } = context;
+
+  const handleSnackbarClose = () => {
+    setContext({...context, status: null, message: null});
+  }
+
   return (
-    <Router>
-      <NavBar/>
-      <Container fixed maxWidth="lg" >
-        <Box my={3} display="flex" justifyContent="center" alignItems="center">
-          <Switch>
+    <AppContext.Provider value={[context, setContext]}>
+      <Router>
+        <NavBar title={title} />
+        <Container fixed maxWidth="lg" >
+          <Box my={3} display="flex" justifyContent="center" alignItems="center">
+            <Switch>
+              {
+                routes.map(({path, component, condition}) => 
+                  (condition === undefined || condition === true) &&
+                  <Route key={path} exact path={path} component={component} />
+                )
+              }
+            </Switch>
             {
-              routes.map(({path, component, condition}) => 
-                (condition === undefined || condition === true) &&
-                <Route key={path} exact path={path} component={component} />
-              )
+              loading &&
+              <CircularProgress />
             }
-          </Switch>
-        </Box>
-      </Container>
-    </Router>
+            {
+              status && 
+              <Snackbar open={status !== null} autoHideDuration={6000}>
+                <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
+              </Snackbar>
+            }
+          </Box>
+        </Container>
+      </Router>
+    </AppContext.Provider>
   );
 }
 

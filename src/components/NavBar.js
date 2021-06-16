@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,6 +9,7 @@ import SideMenu from './SideMenu';
 import { Link } from 'react-router-dom';
 import { isAuthenticated, isBuyer, logout } from '../helpers/AuthUtils';
 import { Menu, ShoppingCart } from '@material-ui/icons';
+import { AppContext } from '../AppContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const classes = useStyles();
+  const [context, setContext] = useContext(AppContext);
     
   const [drawerToggle, setDrawer] = useState(false);
 
@@ -40,6 +42,9 @@ const NavBar = () => {
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>Tienda on-line</Link>
+          </Typography>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/" className={classes.link}>{context.title}</Link>
           </Typography>
           {
             isBuyer() &&

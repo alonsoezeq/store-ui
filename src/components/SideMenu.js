@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -10,8 +10,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import { AddBox, ChevronLeft, Home, LocalAtm, LocalMall, People, Store } from '@material-ui/icons';
 import { isAdmin, isAuthenticated, isBuyer, isSeller } from '../helpers/AuthUtils';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { AppContext } from '../AppContext';
 
 const useStyles = makeStyles({
   list: {
@@ -26,6 +27,14 @@ const useStyles = makeStyles({
 
 const SideMenu = ({drawerToggle, setDrawer}) => {
   const classes = useStyles();
+  const history = useHistory();
+  const [context, setContext] = useContext(AppContext);
+
+  const navigateTo = (path, title) => {
+    let text = path !== '/' ? title : '';
+    setContext({...context, title: text});
+    history.push(path);
+  }
 
   const firstGroup = [
     { text: "Inicio", icon: <Home />, path: '/' },
@@ -66,7 +75,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
         {
           firstGroup.map(({text, icon, path, condition}) => (
             (condition === undefined || condition === true) &&
-            <ListItem button key={path} component={Link} to={path}>
+            <ListItem button key={path} onClick={() => navigateTo(path, text)}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -78,7 +87,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
         {
           secondGroup.map(({text, icon, path, condition}) => (
             (condition === undefined || condition === true) &&
-            <ListItem button key={path} component={Link} to={path}>
+            <ListItem button key={path} onClick={() => navigateTo(path, text)}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
