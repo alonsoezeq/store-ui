@@ -1,6 +1,6 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Snackbar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import { useState } from "react";
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles } from "@material-ui/core";
+import { useContext, useState } from "react";
+import { AppContext } from "../AppContext";
 import config from "../config/config";
 
 const useStyles = makeStyles((theme) => ({
@@ -11,25 +11,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
+  const [ identity, setIdentity ] = useState({ username: '', password: '' });
+  const [ context, setContext ] = useContext(AppContext);
 
-  const initialState = {
-    loading: false,
-    status: null,
-    message: ''
-  };
-
-  const [state, setState] = useState(initialState);
-  const {loading, status, message} = state;
-
-  const [identity, setIdentity] = useState({
-    username: '',
-    password: ''
-  });
-  const {username, password} = identity;
-
-  const handleSnackbarClose = () => {
-    setState(initialState);
-  }
+  const { username, password } = identity;
 
   const handleChange = (event) => {
     setIdentity({...identity, [event.target.name]: event.target.value});
@@ -37,6 +22,8 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    setContext({ ...context, loading: true });
 
     fetch(`${config.baseApi}/auth`, {
       method: 'POST',
@@ -48,22 +35,17 @@ const Login = () => {
     .then(res => res.json())
     .then(data => {
       localStorage.setItem('token', data.token.toString());
-      setState({
+      setContext({
+        ...context,
         loading: false,
         status: 'success',
-        message: 'Ingreso correcto'
+        message: 'Successfuly authenticated'
       });
       window.location.href = '/';
     })
     .catch(err => {
-      console.log("ERR");
-      console.log(err);
-      setState({
-        loading: false,
-        status: 'error',
-        message: err.toString()
-      });
-    })
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   }
 
   return (
@@ -83,18 +65,12 @@ const Login = () => {
         </Grid>
         <Grid item>
           <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={loading}>
+            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
               Iniciar sesión
             </Button>
           </FormControl>
         </Grid>
       </Grid>
-      {
-        status && 
-        <Snackbar open autoHideDuration={6000}>
-          <Alert severity={status} onClose={handleSnackbarClose}>{message}</Alert>
-        </Snackbar>
-      }
     </form>
   );
 }

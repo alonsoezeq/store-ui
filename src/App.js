@@ -72,7 +72,7 @@ const App = () => {
             }
             {
               status && 
-              <Snackbar open={status !== null} autoHideDuration={6000}>
+              <Snackbar open={!!status} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
               </Snackbar>
             }

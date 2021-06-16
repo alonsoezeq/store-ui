@@ -23,7 +23,7 @@ const Profile = () => {
         ...authHeader()
       }
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setUser(data);
       setContext({ ...context, loading: false });

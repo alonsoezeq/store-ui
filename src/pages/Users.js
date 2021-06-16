@@ -24,7 +24,7 @@ const Users = () => {
         ...authHeader()
       }
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setUsers(data);
       setContext({ ...context, loading: false });
@@ -45,13 +45,15 @@ const Users = () => {
       },
       body: JSON.stringify(delta)
     })
-    .then(res => {
-      if (res.ok) {
-        setUsers(users.map(user => user.id === id ? {...user, ...delta} : user));
-        setContext({ ...context, loading: false });
-      } else {
-        Promise.reject(res);
-      }
+    .then(res => res.ok ? res : Promise.reject(res.statusText))
+    .then(() => {
+      setUsers(users.map(user => user.id === id ? {...user, ...delta} : user));
+      setContext({
+        ...context,
+        loading: false,
+        status: 'success',
+        message: 'Saved'
+      })
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: err });

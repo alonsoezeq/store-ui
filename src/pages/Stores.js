@@ -12,7 +12,7 @@ const Stores = () => {
     setContext({ ...context, loading: true});
 
     fetch(`${config.baseApi}/stores`)
-    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setStores(data);
       setContext({ ...context, loading: false});

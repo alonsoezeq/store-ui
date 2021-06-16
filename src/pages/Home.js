@@ -1,59 +1,40 @@
-import { CircularProgress, Grid, Snackbar } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import { React, useEffect, useState } from 'react';
+import { Grid } from '@material-ui/core';
+import { React, useContext, useEffect, useState } from 'react';
+import { AppContext } from '../AppContext';
 import AppCarousel from '../components/AppCarousel';
 import ProductGrid from '../components/ProductGrid';
 import config from '../config/config';
 
 const Home = () => {
-
-  const [state, setState] = useState({
-    loading: true,
-    products: [],
-    error: null
-  });
-
-  const {loading, products, error} = state;
+  const [ products, setProducts ] = useState([]);
+  const [ context, setContext ] = useContext(AppContext);
 
   useEffect(() => {
-    fetch(`${config.baseApi}/products`)
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data => setState({
-        loading: false,
-        products: data,
-        error: null
-      }))
-    .catch(err => setState({
-        loading: false,
-        products: [],
-        error: err
-      }));
-  }, []);
+    setContext({ ...context, loading: true });
 
-  const handleSnackbarClose = () => {
-    setState({
-      ...state,
-      error: null
+    fetch(`${config.baseApi}/products`)
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+    .then(data => {
+      setProducts(data);
+      setContext({ ...context, loading: false });
+    })
+    .catch(err => {
+      setContext({ ...context, loading: false, status: 'error', message: err });
     });
-  }
+  }, []);
 
   return (   
     <>
-      <Snackbar open={!!error} autoHideDuration={6000}>
-        <Alert severity="error" onClose={handleSnackbarClose}>{error?.toString()}</Alert>
-      </Snackbar>
-      { loading ? (
-        <CircularProgress />
-        ) : (<>
-          <Grid container spacing={2} justify="center">
-            <Grid item xs={12}>
-                <AppCarousel products={products} />
-            </Grid>
-            <Grid item xs={12}>
-              <ProductGrid products={products} />
-            </Grid>
+      {
+        !context.loading && products.length > 0 &&
+        <Grid container spacing={2} justify="center">
+          <Grid item xs={12}>
+              <AppCarousel products={products} />
           </Grid>
-        </>)
+          <Grid item xs={12}>
+            <ProductGrid products={products} />
+          </Grid>
+        </Grid>
       }
     </>
   );

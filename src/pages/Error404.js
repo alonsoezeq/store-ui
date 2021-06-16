@@ -1,6 +1,7 @@
+import { Typography } from "@material-ui/core";
 
 const Error404 = () => {
-  return <div><p>404 Not Found</p></div>;
+  return <Typography>404 Not Found</Typography>;
 }
 
 export default Error404;
