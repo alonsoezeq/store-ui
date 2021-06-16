@@ -1,7 +1,7 @@
 import { makeStyles, TableRow } from "@material-ui/core";
-import { CircularProgress, FormControl, MenuItem, Paper, Select, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import { useEffect, useState } from "react";
+import { FormControl, MenuItem, Paper, Select, Switch, Table, TableBody, TableCell, TableContainer, TableHead } from "@material-ui/core";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../AppContext";
 import config from '../config/config';
 import { authHeader } from "../helpers/AuthUtils";
 
@@ -11,43 +11,31 @@ const useStyles = makeStyles({
   }
 });
 
-
 const Users = () => {
   const classes = useStyles();
-
-  const [state, setState] = useState({
-    loading: true,
-    users: [],
-    error: null
-  });
-
-  const {loading, users, error} = state;
+  const [ context, setContext ] = useContext(AppContext);
+  const [ users, setUsers ] = useState([]);
 
   useEffect(() => {
+    setContext({ ...context, loading: true });
+
     fetch(`${config.baseApi}/users`, {
       headers: {
         ...authHeader()
       }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data => setState({
-        loading: false,
-        users: data,
-        error: null
-      }))
-    .catch(err => setState({
-        loading: false,
-        users: [],
-        error: err
-      }));
+    .then(data => {
+      setUsers(data);
+      setContext({ ...context, loading: false });
+    })
+    .catch(err => {
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   }, []);
 
   const updateUser = (id, delta) => {
-    setState({
-      loading: true,
-      users: state.users,
-      error: null
-    });
+    setContext({ ...context, loading: true });
 
     fetch(`${config.baseApi}/users/${id}`, {
       method: 'PATCH',
@@ -59,20 +47,15 @@ const Users = () => {
     })
     .then(res => {
       if (res.ok) {
-        setState({
-          loading: false,
-          users: state.users.map(user => user.id === id ? {...user, ...delta} : user),
-          error: null
-        });
+        setUsers(users.map(user => user.id === id ? {...user, ...delta} : user));
+        setContext({ ...context, loading: false });
       } else {
         Promise.reject(res);
       }
     })
-    .catch(err => setState({
-        loading: false,
-        users: state.users,
-        error: err
-      }));
+    .catch(err => {
+      setContext({ ...context, loading: false, status: 'error', message: err });
+    });
   };
 
   const handleRoleChange = (id) => (event) => {
@@ -85,65 +68,54 @@ const Users = () => {
     updateUser(id, {[event.target.name]: event.target.checked});
   };
 
-  const handleSnackbarClose = () => {
-    setState({
-      ...state,
-      error: null
-    });
-  }
-
   return (   
     <>
-      <Snackbar open={!!error} autoHideDuration={6000}>
-        <Alert severity="error" onClose={handleSnackbarClose}>{error?.toString()}</Alert>
-      </Snackbar>
-      { loading && <CircularProgress /> } 
-      { !loading &&
+      { !context.loading &&
         <TableContainer component={Paper}>
-        <Table className={classes.table} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Username</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>E-Mail</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Registered</TableCell>
-              <TableCell>Active</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((u) => (
-              <TableRow key={u.id}>
-                <TableCell>{u.username}</TableCell>
-                <TableCell>{u.fullname}</TableCell>
-                <TableCell>{u.email}</TableCell>
-                <TableCell>
-                  <FormControl>
-                    <Select
-                      name="role"
-                      value={u.role}
-                      onChange={handleRoleChange(u.id)}
-                    >
-                      <MenuItem value="admin">Admin</MenuItem>
-                      <MenuItem value="buyer">Buyer</MenuItem>
-                      <MenuItem value="seller">Seller</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell>{new Date(u.registration).toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <Switch
-                    checked={u.active}
-                    onChange={handleStatusChange(u.id)}
-                    name="active"
-                    color="primary"
-                  />
-                </TableCell>
+          <Table className={classes.table} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Username</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>E-Mail</TableCell>
+                <TableCell>Role</TableCell>
+                <TableCell>Registered</TableCell>
+                <TableCell>Active</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {users.map((u) => (
+                <TableRow key={u.id}>
+                  <TableCell>{u.username}</TableCell>
+                  <TableCell>{u.fullname}</TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>
+                    <FormControl>
+                      <Select
+                        name="role"
+                        value={u.role}
+                        onChange={handleRoleChange(u.id)}
+                      >
+                        <MenuItem value="admin">Admin</MenuItem>
+                        <MenuItem value="buyer">Buyer</MenuItem>
+                        <MenuItem value="seller">Seller</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell>{new Date(u.registration).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <Switch
+                      checked={u.active}
+                      onChange={handleStatusChange(u.id)}
+                      name="active"
+                      color="primary"
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       }
     </>
   );
