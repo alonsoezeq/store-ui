@@ -14,12 +14,13 @@ import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Stores from './pages/Stores';
 import Login from './pages/Login';
-import { isAdmin, isAuthenticated, isBuyer, isSeller } from './helpers/AuthUtils';
+import { authHeader, isAdmin, isAuthenticated, isBuyer, isSeller } from './helpers/AuthUtils';
 import StoreAddForm from './pages/StoreAddForm';
 import StoreEditForm from './pages/StoreEditForm';
 import Profile from './pages/Profile';
 import { AppContext } from './AppContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import config from './config/config';
 
 const routes = [
   { path: '/products/add', component: ProductAddForm, condition: (isSeller() || isAdmin()) },
@@ -41,12 +42,30 @@ const App = () => {
   
   const [context, setContext] = useState({
     title: '',
+    cartitems: [],
     loading: false,
     status: null,
     message: null
   });
 
   const { title, loading, status, message } = context;
+
+  useEffect(() => {
+    if (isBuyer) {
+      fetch(`${config.baseApi}/cart`, {
+        headers: {
+          ...authHeader()
+        }
+      })
+      .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+      .then(data => {
+        setContext({ ...context, cartitems: data });
+      })
+      .catch(err => {
+        setContext({ ...context, status: 'error', message: err });
+      });
+    }
+  }, []);
 
   const handleSnackbarClose = () => {
     setContext({...context, status: null, message: null});

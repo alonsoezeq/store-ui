@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Box, Button, TableFooter, Typography } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
+import { AppContext } from '../AppContext';
+import config from '../config/config';
+import { authHeader } from '../helpers/AuthUtils';
 
 const useStyles = makeStyles({
   table: {
@@ -16,16 +19,70 @@ const useStyles = makeStyles({
   },
 });
 
-const CartList = ({cartList, setCartList}) => {
+const CartList = () => {
   const classes = useStyles();
+  const [ context, setContext ] = useContext(AppContext);
+  const { cartitems, loading } = context;
 
   let total = 0;
-  cartList.filter(item => total += item.price * item.amount);
+  cartitems.forEach(({quantity, product}) => {
+    total += product?.price * quantity
+  });
+
+  const handleQuantityChange = (id) => (event) => {
+    const item = cartitems.find(({ productId }) => productId === id);
+    const newitem = {
+      ...item,
+      productId: id,
+      quantity: event.target.value
+    };
+
+    fetch(`${config.baseApi}/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader()
+      },
+      body: JSON.stringify(newitem)
+    })
+    .then((res) => res.ok ? res : Promise.reject(res.statusText))
+    .then((data) => {
+      const newcart = [
+        ...cartitems.filter((item) => item.productId !== id),
+        newitem
+      ];
+
+      setContext({
+        ...context,
+        cartitems: newcart,
+        status: 'success',
+        message: 'Successfully modified'
+      });      
+    })
+    .catch(err => {
+      setContext({ ...context, status: 'error', message: err });
+    });
+  }
 
   const deleteProduct = (id) => {
-    let cart = cartList.filter(item => item.id !== id);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    setCartList(cart);
+    fetch(`${config.baseApi}/cart/${id}`, {
+      method: 'DELETE',
+      headers: {
+        ...authHeader()
+      }
+    })
+    .then(res => res.ok ? res : Promise.reject(res.statusText))
+    .then(() => {
+      setContext({
+        ...context,
+        cartitems: cartitems.filter(({ productId }) => productId !== id),
+        status: 'success',
+        message: 'Successfuly removed from cart'
+      })
+    })
+    .catch(err => {
+      setContext({ ...context, status: 'error', message: err });
+    });
   }
 
   return ( 
@@ -40,19 +97,24 @@ const CartList = ({cartList, setCartList}) => {
         </TableRow>
         </TableHead>
         <TableBody>
-        {cartList?.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell component="th" scope="row">{product.title}</TableCell>
-            <TableCell align="right">{product.amount}</TableCell>
-            <TableCell align="right">{product.price}</TableCell>
-            <TableCell align="right"><Button onClick={() => deleteProduct(product.id)}><Delete /></Button></TableCell>
-          </TableRow>
-        ))}
+        {
+          !loading &&
+          cartitems.map(({quantity, product}) => (
+            <TableRow key={product.id}>
+              <TableCell component="th" scope="row">{product.title}</TableCell>
+              <TableCell align="right">
+                <input type="number" min="1" step="1" max={product.quantity} value={quantity} onChange={handleQuantityChange(product.id)} />
+              </TableCell>
+              <TableCell align="right">{product.price}</TableCell>
+              <TableCell align="right"><Button onClick={() => deleteProduct(product.id)}><Delete /></Button></TableCell>
+            </TableRow>
+          ))
+        }
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell align="right" colSpan={3}>
-              <Typography>
+              <Typography component={'div'}>
                 <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
                 {total}
               </Typography>

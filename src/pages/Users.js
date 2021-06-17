@@ -61,12 +61,10 @@ const Users = () => {
   };
 
   const handleRoleChange = (id) => (event) => {
-    console.log(event);
     updateUser(id, {[event.target.name]: event.target.value});
   };
   
   const handleStatusChange = (id) => (event) => {
-    console.log(event);
     updateUser(id, {[event.target.name]: event.target.checked});
   };
 

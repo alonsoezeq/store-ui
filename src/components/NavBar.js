@@ -1,10 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import { AppBar, Badge, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
 import SideMenu from './SideMenu';
 import { Link } from 'react-router-dom';
 import { isAuthenticated, isBuyer, logout } from '../helpers/AuthUtils';
@@ -49,7 +45,11 @@ const NavBar = () => {
           {
             isBuyer() &&
             <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="carrito">
-              <Link to="/cart" className={classes.link}><ShoppingCart /></Link>
+              <Link to="/cart" className={classes.link}>
+                <Badge badgeContent={context.cartitems.length} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </Link>
             </IconButton>
           }
           {

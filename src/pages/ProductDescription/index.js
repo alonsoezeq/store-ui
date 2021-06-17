@@ -5,8 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import ProductCarousel from '../../components/ProductCarousel';
 import useStyles from './styles';
 import config from '../../config/config';
-import { addToCart } from '../../helpers/CartHelpers';
-import { isBuyer } from '../../helpers/AuthUtils';
+import { authHeader, isBuyer } from '../../helpers/AuthUtils';
 import { AppContext } from '../../AppContext';
 
 const ProductDescription = () => {
@@ -14,11 +13,42 @@ const ProductDescription = () => {
   const classes = useStyles();
   const [ context, setContext ] = useContext(AppContext);
   const [ product, setProduct ] = useState(null);
+  const { cartitems } = context;
 
-  const addProductToCart = (product, quantity) => {
-    addToCart(product);
-    setContext({ ...context, status: 'success', message: 'Added to cart' });
-  };
+  const addProductToCart = (quantity) => {
+    const item = cartitems.find(({ productId }) => productId === id);
+    const newitem = {
+      ...item,
+      productId: product.id,
+      quantity: item ? item.quantity + quantity : quantity
+    };
+
+    fetch(`${config.baseApi}/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader()
+      },
+      body: JSON.stringify(newitem)
+    })
+    .then((res) => res.ok ? res : Promise.reject(res.statusText))
+    .then((data) => {
+      const newcart = [
+        ...cartitems.filter((item) => item.productId !== id),
+        newitem
+      ];
+
+      setContext({
+        ...context,
+        cartitems: newcart,
+        status: 'success',
+        message: 'Added to cart'
+      });      
+    })
+    .catch(err => {
+      setContext({ ...context, status: 'error', message: err });
+    });
+  }
 
   useEffect(() => {
     setContext({ ...context, loading: true });
@@ -90,7 +120,7 @@ const ProductDescription = () => {
                   <p>Cantidad: {product.quantity} / {product.quantity}</p>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" color="primary" onClick={() => addProductToCart(product)}>
+                  <Button variant="contained" color="primary" onClick={() => addProductToCart(1)}>
                     Agregar al carrito
                   </Button>
                 </Grid>
