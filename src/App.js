@@ -51,7 +51,7 @@ const App = () => {
   const { title, loading, status, message } = context;
 
   useEffect(() => {
-    if (isBuyer) {
+    if (isBuyer()) {
       fetch(`${config.baseApi}/cart`, {
         headers: {
           ...authHeader()
