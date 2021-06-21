@@ -107,7 +107,7 @@ const StepperContainer = () => {
         <div>
           {activeStep === steps.length ? (
             <div>
-              <Typography className={classes.instructions}>Su compra ha sido confirmada</Typography>
+              <Typography align="center" className={classes.instructions}>¡Su compra ha sido confirmada!</Typography>
               <Button onClick={handleReset}>Reset</Button>
             </div>
           ) : (

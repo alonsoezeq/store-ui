@@ -6,7 +6,6 @@ import { Container } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(2),
-      color: theme.palette.text.secondary,
       height: '18vh',
     },   
   }));  
@@ -15,22 +14,36 @@ const PaymentData = ({paymentInfo, cart}) => {
     const classes = useStyles();
 
     return ( 
-        <Paper className={classes.paper}>
-            <Container spacing={2} direction={'column'} >
-                <Grid item xs={6}>
-                    <Box fontWeight="fontWeightBold">Información de la tarjeta</Box>
-                    <Typography>Nombre: {paymentInfo.name}</Typography>
-                    <Typography>Número: {paymentInfo.number}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                    <Box fontWeight="fontWeightBold">Lugar de retiro</Box>
-                    <Typography>{
-                        paymentInfo.pickupPlace === 'store'? "Retira en el local" : "Retiro a domicilio"
-                    }
-                    </Typography>
-                </Grid>
-            </Container>
-        </Paper>
+        <>
+            <Paper className={classes.paper} elevation={3}>
+              <Typography component={'div'} align="center">
+                <Box fontWeight="fontWeightBold">Información de la tarjeta</Box>
+              </Typography>
+              <Typography component={'div'}>
+                <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                  Nombre:
+                </Box>
+                {paymentInfo.name}
+              </Typography>
+              <Typography component={'div'}>
+                <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                  N°:
+                </Box>
+                {paymentInfo.number}
+              </Typography>
+              <Typography component={'div'}  align="center">
+                <Box fontWeight="fontWeightBold">Información de Envío</Box>
+              </Typography>
+              <Typography component={'div'}>
+                <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                  Lugar de retiro:
+                </Box>
+                {
+                    paymentInfo.pickupPlace === 'store'? "Retira en el local" : "Retiro a domicilio"
+                }
+              </Typography>
+            </Paper>
+        </>
      );
 }
  

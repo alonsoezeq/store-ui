@@ -1,4 +1,4 @@
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
@@ -38,35 +38,32 @@ const PersonalData = () => {
       {
         !context.loading && user &&
         <Paper className={classes.paper} elevation={3}>
+          <Typography component={'div'} align="center">
+            <Box fontWeight="fontWeightBold">Información Personal</Box>
+          </Typography>
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Username:
+              Nombre de usuario:
             </Box>
             {user.username}
           </Typography>
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Fullname:
+              Nombre Completo:
             </Box>
             {user.fullname}
           </Typography>
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              E-Mail:
+              Correo electrónico:
             </Box>
             {user.email}
           </Typography>
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Role:
+              Scoring:
             </Box>
-            {user.role}
-          </Typography>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Registration:
-            </Box>
-            {new Date(user.registration).toLocaleDateString()}
+            {user.scoring}
           </Typography>
         </Paper>
       }

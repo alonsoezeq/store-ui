@@ -38,42 +38,47 @@ const useStyles = makeStyles((theme) => ({
 
 const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const classes = useStyles();
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(new Date());
     const [pickupPlace, setPickupPlace] = useState('store');
     const [cardNumberIsValid, setCardNumberIsValid] = useState(true);
     const [cardNameIsValid, setCardNameIsValid] = useState(true);
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        //Validations
+
+    const validateWhiteSpaces = () => {
         paymentInfo.name.trim() === '' ? setCardNumberIsValid(false) : setCardNumberIsValid(true) ;
         paymentInfo.number.trim() === '' ?  setCardNameIsValid(false) : setCardNameIsValid(true);
         paymentInfo.cvc.trim() === '' ? setCardCVCIsValid(false) : setCardCVCIsValid(true);
+    }
 
-        if(cardNumberIsValid, cardNameIsValid, cardCVCIsValid){
-            setAllowNext(true);
-        } else {
-            setAllowNext(false);
-        }
-        
-        console.log(paymentInfo);
+    const addSpace = (e) => {      
+        e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
     }
 
     const handleChange = (e) => {
         if(e.target.name === 'pickupPlace') {
             console.log(e.target.name)
             setPickupPlace(e.target.value);
-        }
-
-        
+        }    
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
-
     }
 
-    const addSpace = (e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        paymentInfo.expDate = value;
         
-        e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
+        //Validate form
+        if(paymentInfo.name.trim() === '' || paymentInfo.number.trim() === '' ||
+        paymentInfo.cvc.trim() === ''){
+            validateWhiteSpaces();
+            setAllowNext(false);
+            console.log(paymentInfo);   
+            return;
+        } else {
+            validateWhiteSpaces();
+            setAllowNext(true);
+        }
+
+        console.log(paymentInfo);     
     }
 
     return ( 
@@ -97,7 +102,6 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                                 format="MM/yy"
                                 onChange={(newValue) => {
                                     setValue(newValue);
-                                    paymentInfo.expDate = newValue;
                                 }}                                   
                                 inputVariant='outlined'
                                 />
