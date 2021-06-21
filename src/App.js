@@ -22,9 +22,6 @@ import { AppContext } from './AppContext';
 import { useEffect, useState } from 'react';
 import config from './config/config';
 import Checkout from './pages/Checkout';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import CartProvider from './context/CartContext';
 
 
 const routes = [
@@ -79,8 +76,6 @@ const App = () => {
 
   return (
     <AppContext.Provider value={[context, setContext]}>
-      <CartProvider>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Router>
             <NavBar title={title} />
             <Container fixed maxWidth="lg" >
@@ -106,8 +101,6 @@ const App = () => {
               </Box>
             </Container>
           </Router>
-        </MuiPickersUtilsProvider>
-      </CartProvider>
     </AppContext.Provider>
   );
 }

@@ -9,8 +9,7 @@ import OrderSummary from './OrderSummary';
 import PersonalData from './PersonalData';
 import Payment from './Payment';
 import OrderConfirmation from './OrderConfirmation';
-import { CartContext } from '../context/CartContext';
-import { SettingsPhoneSharp } from '@material-ui/icons';
+import { AppContext } from '../AppContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +47,7 @@ const StepperContainer = () => {
     const [paymentInfo, setPaymentInfo] = useState(initialInfo);
     const [allowNext, setAllowNext] = useState(false);
 
-    const {cart} = useContext(CartContext);
+    const [ context, setContext ] = useContext(AppContext);
     
 
 
@@ -72,7 +71,7 @@ const StepperContainer = () => {
     const confirmPurchase = () => {
       const purchase = {
         paymentInfo: paymentInfo,
-        cart: cart,
+        cart: context.cartitems,
       }
       
       console.log(purchase);

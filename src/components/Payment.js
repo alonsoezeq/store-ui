@@ -2,11 +2,12 @@ import { Button, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { DatePicker } from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import DateFnsUtils from '@date-io/date-fns';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +46,9 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
 
     const validateWhiteSpaces = () => {
-        paymentInfo.name.trim() === '' ? setCardNumberIsValid(false) : setCardNumberIsValid(true) ;
-        paymentInfo.number.trim() === '' ?  setCardNameIsValid(false) : setCardNameIsValid(true);
+        paymentInfo.number.trim() === '' ? setCardNumberIsValid(false) : setCardNumberIsValid(true) ;
         paymentInfo.cvc.trim() === '' ? setCardCVCIsValid(false) : setCardCVCIsValid(true);
+        paymentInfo.name.trim() === '' ?  setCardNameIsValid(false) : setCardNameIsValid(true);
     }
 
     const addSpace = (e) => {      
@@ -82,6 +83,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     return ( 
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container spacing={3} >
                 <Grid item xs={12} >
                     <Paper>
@@ -138,6 +140,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                      
                 </Grid>
             </Grid>
+        </MuiPickersUtilsProvider>
      );
 }
  

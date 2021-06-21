@@ -7,9 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Box, Button, TableFooter, Typography } from '@material-ui/core';
+import { Box, TableFooter, Typography } from '@material-ui/core';
 import { AppContext } from '../AppContext';
-import { CartContext } from '../context/CartContext';
 
 const useStyles = makeStyles({
     table: {
@@ -21,11 +20,11 @@ const useStyles = makeStyles({
 
 const OrderSummary = () => {
     const classes = useStyles();
+    const [ context, setContext ] = useContext(AppContext);
 
-    const { cart } = useContext(CartContext);
 
     let total = 0;
-    cart?.forEach(({product}) => {
+    context.cartitems?.forEach(({product}) => {
       total += product?.price * product.quantity;
     });
 
@@ -43,7 +42,7 @@ const OrderSummary = () => {
                 </TableHead>
                 <TableBody>
                 {
-                  cart?.map(({quantity, product}) => (
+                  context.cartitems?.map(({quantity, product}) => (
                     <TableRow key={product.id}>
                       <TableCell component="th" scope="row">{product.title}</TableCell>
                       <TableCell align="right">
