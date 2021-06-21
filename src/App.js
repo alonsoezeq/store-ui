@@ -21,6 +21,11 @@ import Profile from './pages/Profile';
 import { AppContext } from './AppContext';
 import { useEffect, useState } from 'react';
 import config from './config/config';
+import Checkout from './pages/Checkout';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import CartProvider from './context/CartContext';
+
 
 const routes = [
   { path: '/products/add', component: ProductAddForm, condition: (isSeller() || isAdmin()) },
@@ -34,6 +39,7 @@ const routes = [
   { path: '/profile', component: Profile, condition: isAuthenticated() },
   { path: '/login', component: Login, condition: !isAuthenticated() },
   { path: '/register', component: Register, condition: !isAuthenticated() },
+  { path: '/checkout', component: Checkout, condition: isBuyer() },
   { path: '/', component: Home },
   { path: '*', component: Error404 }
 ];
@@ -73,31 +79,35 @@ const App = () => {
 
   return (
     <AppContext.Provider value={[context, setContext]}>
-      <Router>
-        <NavBar title={title} />
-        <Container fixed maxWidth="lg" >
-          <Box my={3} display="flex" justifyContent="center" alignItems="center">
-            <Switch>
-              {
-                routes.map(({path, component, condition}) => 
-                  (condition === undefined || condition === true) &&
-                  <Route key={path} exact path={path} component={component} />
-                )
-              }
-            </Switch>
-            {
-              loading &&
-              <CircularProgress />
-            }
-            {
-              status && 
-              <Snackbar open={!!status} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
-              </Snackbar>
-            }
-          </Box>
-        </Container>
-      </Router>
+      <CartProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Router>
+            <NavBar title={title} />
+            <Container fixed maxWidth="lg" >
+              <Box my={3} display="flex" justifyContent="center" alignItems="center">
+                <Switch>
+                  {
+                    routes.map(({path, component, condition}) => 
+                      (condition === undefined || condition === true) &&
+                      <Route key={path} exact path={path} component={component} />
+                    )
+                  }
+                </Switch>
+                {
+                  loading &&
+                  <CircularProgress />
+                }
+                {
+                  status && 
+                  <Snackbar open={!!status} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                    <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
+                  </Snackbar>
+                }
+              </Box>
+            </Container>
+          </Router>
+        </MuiPickersUtilsProvider>
+      </CartProvider>
     </AppContext.Provider>
   );
 }
