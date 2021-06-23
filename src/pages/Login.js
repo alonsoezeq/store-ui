@@ -43,7 +43,7 @@ const Login = () => {
         status: 'success',
         message: 'Successfuly authenticated'
       });
-      history.push('/');
+      window.location.href = '/';
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: err });
