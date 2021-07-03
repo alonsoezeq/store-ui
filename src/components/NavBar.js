@@ -94,7 +94,7 @@ const NavBar = () => {
             onClose={handleMenuClose}
           >
             <MenuItem onClick={handleMenuClose}>
-              <Link to="/profile" className={classes.link}>Mi perfil</Link>
+              <Link to="/profile" className={classes.link} onClick={() => setContext({ ...context, title: 'Mi perfil'})}>Mi perfil</Link>
             </MenuItem>
             <MenuItem onClick={handleCloseSession}>Cerrar sesión</MenuItem>
           </Menu>
