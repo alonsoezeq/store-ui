@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Chip, Paper, Typography } from '@material-ui/core';
 import { React, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Grid from '@material-ui/core/Grid';
@@ -88,19 +88,25 @@ const ProductDescription = () => {
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
                       Talle:
                     </Box>
-                    {product.size.toUpperCase()}
+                    <Chip label={product.size.toUpperCase()} />
                   </Typography>
                   <Typography>
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
                       Color:
                     </Box>
-                    {product.color.toUpperCase()}
+                    <Chip label={product.color.toUpperCase()} />
                   </Typography>
                   <Typography>
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
                       Categoría:
                     </Box>
-                    {product.category.toUpperCase()}
+                    <Chip label={product.category.toUpperCase()} />
+                  </Typography>
+                  <Typography>
+                    <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                      Género:
+                    </Box>
+                    <Chip label={product.gender.toUpperCase()} />
                   </Typography>
                 </Paper>
               </Grid>

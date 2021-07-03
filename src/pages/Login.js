@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
-  const history = useHistory();
   const [ identity, setIdentity ] = useState({ username: '', password: '' });
   const [ context, setContext ] = useContext(AppContext);
 
@@ -51,29 +50,34 @@ const Login = () => {
   }
 
   return (
-    <form  autoComplete="off" onSubmit={handleSubmit}>
-      <Grid container direction="column">
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="username">Usuario</InputLabel>
-            <Input id="username" name="username" type="text" value={username} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="password">Contraseña</InputLabel>
-            <Input id="password" name="password" type="password" value={password} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
-              Iniciar sesión
-            </Button>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </form>
+    <>
+      {
+        !context.loading &&
+        <form  autoComplete="off" onSubmit={handleSubmit}>
+          <Grid container direction="column">
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="username">Usuario</InputLabel>
+                <Input id="username" name="username" type="text" value={username} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="password">Contraseña</InputLabel>
+                <Input id="password" name="password" type="password" value={password} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl className={classes.root}>
+                <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
+                  Iniciar sesión
+                </Button>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </form>
+      }
+    </>
   );
 }
 

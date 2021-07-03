@@ -4,7 +4,9 @@ import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
 import { useHistory, useParams } from "react-router-dom";
 import { AppContext } from "../AppContext";
-
+import categories from "../config/categories.json"
+import genders from "../config/genders.json"
+import sizes from "../config/sizes.json"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,13 +119,9 @@ const ProductAddForm = () => {
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="size">Talle</InputLabel>
                 <Select id="size" name="size" value={product.size} onChange={handleChange}>
-                  <MenuItem value="XXS">XXS</MenuItem>
-                  <MenuItem value="XS">XS</MenuItem>
-                  <MenuItem value="S">S</MenuItem>
-                  <MenuItem value="M">M</MenuItem>
-                  <MenuItem value="L">L</MenuItem>
-                  <MenuItem value="XL">XL</MenuItem>
-                  <MenuItem value="XXL">XXL</MenuItem>
+                  {
+                    sizes.map(size => <MenuItem key={size} value={size}>{size}</MenuItem>)
+                  }
                 </Select>
               </FormControl>
             </Grid>
@@ -136,7 +134,21 @@ const ProductAddForm = () => {
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="category">Categoría</InputLabel>
-                <Input id="category" name="category" type="text" value={product.category} onChange={handleChange} />
+                <Select id="category" name="category" value={product.category} onChange={handleChange}>
+                  {
+                    categories.map(category => <MenuItem key={category} value={category}>{category}</MenuItem>)
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="gender">Género</InputLabel>
+                <Select id="gender" name="gender" value={product.gender} onChange={handleChange}>
+                  {
+                    genders.map(gender => <MenuItem key={gender} value={gender}>{gender}</MenuItem>)
+                  }
+                </Select>
               </FormControl>
             </Grid>
             <Grid item>
