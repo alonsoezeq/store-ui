@@ -1,11 +1,13 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Select, TextField, Typography } from "@material-ui/core"
 import { useContext, useState } from "react";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
 import { AppContext } from "../AppContext";
 import categories from "../config/categories.json"
+import colors from "../config/colors.json"
 import genders from "../config/genders.json"
 import sizes from "../config/sizes.json"
+import { FiberManualRecord } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +24,7 @@ const ProductAddForm = () => {
     article: '',
     pictures: [],
     size: '',
-    color: '#000000',
+    color: '',
     category: '',
     gender: '',
     description: '',
@@ -123,7 +125,18 @@ const ProductAddForm = () => {
         <Grid item>
           <FormControl required className={classes.root}>
             <InputLabel htmlFor="color">Color</InputLabel>
-            <Input id="color" name="color" type="color" value={color} onChange={handleChange} />
+            <Select id="color" name="color" value={color} onChange={handleChange}>
+              {
+                Object.keys(colors).map((rgb) => 
+                  <MenuItem key={rgb} value={rgb}>
+                    <ListItemIcon style={{color: rgb}}>
+                      <FiberManualRecord fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{colors[rgb]}</Typography>
+                  </MenuItem>
+                )
+              }
+            </Select>
           </FormControl>
         </Grid>
         <Grid item>

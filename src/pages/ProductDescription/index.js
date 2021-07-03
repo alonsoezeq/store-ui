@@ -7,6 +7,8 @@ import useStyles from './styles';
 import config from '../../config/config';
 import { authHeader, isBuyer } from '../../helpers/AuthUtils';
 import { AppContext } from '../../AppContext';
+import { FiberManualRecord } from '@material-ui/icons';
+import colors from "../../config/colors.json";
 
 const ProductDescription = () => {
   const { id } = useParams();
@@ -68,7 +70,7 @@ const ProductDescription = () => {
     <>
       {
         !context.loading && product && 
-        <Paper className={classes.root} elevation={3}>
+        <Paper className={classes.root} elevation={1}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <ProductCarousel product={product} />
@@ -82,7 +84,7 @@ const ProductDescription = () => {
               spacing={3}
             >
               <Grid item>
-                <Paper component={'div'} className={classes.product} elevation={3}>
+                <Paper component={'div'} className={classes.product} elevation={1}>
                   <Typography className={classes.productTitle} variant="h4">{product.title}</Typography>
                   <Typography>
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
@@ -94,7 +96,10 @@ const ProductDescription = () => {
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
                       Color:
                     </Box>
-                    <Chip label={product.color.toUpperCase()} />
+                    <Chip
+                      icon={<FiberManualRecord style={{color: product.color}} fontSize="small" />}
+                      label={colors[product.color]}
+                    />
                   </Typography>
                   <Typography>
                     <Box display="inline" fontWeight="fontWeightBold" m={1}>
@@ -113,7 +118,7 @@ const ProductDescription = () => {
               <Grid item>
                 <Paper className={classes.root} elevation={1}>
                   <Typography>
-                    <Box fontWeight="fontWeightBold">Descripción</Box>
+                    <Box className={classes.descriptionTitle} fontWeight="fontWeightBold">Descripción</Box>
                     <Box>{product.description}</Box>
                   </Typography>
                 </Paper>
@@ -121,7 +126,7 @@ const ProductDescription = () => {
             </Grid>
             {
               isBuyer() &&
-              <Grid item container direction="row" justify="flex-end" spacing={4}>
+              <Grid item container className={classes.addToCart} direction="row" justify="flex-end" spacing={4}>
                 <Grid item>
                   <p>Cantidad: {product.quantity} / {product.quantity}</p>
                 </Grid>
