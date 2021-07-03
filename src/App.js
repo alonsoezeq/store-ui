@@ -22,6 +22,7 @@ import { AppContext } from './AppContext';
 import { useEffect, useState } from 'react';
 import config from './config/config';
 import Checkout from './pages/Checkout';
+import OrdersHistory from './pages/OrdersHistory';
 
 
 const routes = [
@@ -37,6 +38,8 @@ const routes = [
   { path: '/login', component: Login, condition: !isAuthenticated() },
   { path: '/register', component: Register, condition: !isAuthenticated() },
   { path: '/checkout', component: Checkout, condition: isBuyer() },
+  { path: '/buys', component: OrdersHistory, condition: (isBuyer()) },
+  { path: '/sells', component: OrdersHistory, condition: (isSeller() || isAdmin()) },
   { path: '/', component: Home },
   { path: '*', component: Error404 }
 ];

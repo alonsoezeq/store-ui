@@ -10,6 +10,9 @@ import PersonalData from './PersonalData';
 import Payment from './Payment';
 import OrderConfirmation from './OrderConfirmation';
 import { AppContext } from '../AppContext';
+import { authHeader } from '../helpers/AuthUtils';
+import { Link } from 'react-router-dom';
+import config from '../config/config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  link: {
+    color: 'inherit',
+    textDecoration: 'none' 
+  }
 }));
 
 function getSteps() {
@@ -46,7 +53,6 @@ const StepperContainer = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [paymentInfo, setPaymentInfo] = useState(initialInfo);
     const [allowNext, setAllowNext] = useState(false);
-
     const [ context, setContext ] = useContext(AppContext);
     
 
@@ -75,6 +81,25 @@ const StepperContainer = () => {
       }
       
       console.log(purchase);
+
+      fetch(`${config.baseApi}/cart/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader()
+        },
+      })
+      .then((res) => res.ok ? res : Promise.reject(res.statusText))
+      .then((data) => {
+        setContext({
+          ...context,
+          status: 'success',
+          message: 'Compra confirmada'
+        });      
+      })
+      .catch(err => {
+        setContext({ ...context, status: 'error', message: err });
+      });
     }
 
     const handleNext = () => {
@@ -107,7 +132,9 @@ const StepperContainer = () => {
           {activeStep === steps.length ? (
             <div>
               <Typography align="center" className={classes.instructions}>¡Su compra ha sido confirmada!</Typography>
-              <Button onClick={handleReset}>Reset</Button>
+              <Button variant="contained" color="primary" onClick={handleReset}>
+                <Link to="/" className={classes.link}>Volver</Link>
+              </Button>
             </div>
           ) : (
             <div>

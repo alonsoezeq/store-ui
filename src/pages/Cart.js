@@ -21,7 +21,7 @@ const Cart = () => {
   const { loading } = context;
 
   useEffect(() => {
-    setContext({ ...context, caritems: [],loading: true });
+    setContext({ ...context, cartitems: [],loading: true });
 
     fetch(`${config.baseApi}/cart`, {
       headers: {
