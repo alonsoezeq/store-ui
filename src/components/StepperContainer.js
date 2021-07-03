@@ -93,6 +93,7 @@ const StepperContainer = () => {
       .then((data) => {
         setContext({
           ...context,
+          cartitems: [],
           status: 'success',
           message: 'Compra confirmada'
         });      

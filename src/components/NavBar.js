@@ -51,7 +51,7 @@ const NavBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/" className={classes.link}>Tienda on-line</Link>
+            <Link to="/" className={classes.link} onClick={() => setContext({ ...context, title: ''})}>Tienda on-line</Link>
           </Typography>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>{context.title}</Link>
