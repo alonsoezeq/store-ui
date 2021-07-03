@@ -144,7 +144,6 @@ const ProductAddForm = () => {
                 genders.map(gender => <MenuItem key={gender} value={gender}>{gender}</MenuItem>)
               }
             </Select>
-
           </FormControl>
         </Grid>
         <Grid item>

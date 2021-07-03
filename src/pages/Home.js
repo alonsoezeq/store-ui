@@ -11,8 +11,8 @@ const Home = () => {
 
   useEffect(() => {
     setContext({ ...context, loading: true });
-
-    fetch(`${config.baseApi}/products`)
+    
+    fetch(`${config.baseApi}/products${window.location.search}`)
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setProducts(data);
@@ -21,7 +21,7 @@ const Home = () => {
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: err });
     });
-  }, []);
+  }, [window.location.search]);
 
   return (   
     <>

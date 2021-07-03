@@ -8,20 +8,28 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
-import { AddBox, ChevronLeft, Home, LocalAtm, LocalMall, People, Store } from '@material-ui/icons';
+import Typography from '@material-ui/core/IconButton';
+import { AddBox, ChevronLeft, ExpandMore, Home, LocalAtm, LocalMall, People, Store } from '@material-ui/icons';
 import { isAdmin, isAuthenticated, isBuyer, isSeller } from '../helpers/AuthUtils';
 import { useHistory } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { AppContext } from '../AppContext';
+import { Accordion, AccordionDetails, AccordionSummary, Chip } from '@material-ui/core';
+import categories from '../config/categories.json';
+import genders from '../config/genders.json';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
   },
   fullList: {
     width: 'auto',
   },
-});
+  chip: {
+    padding: theme.spacing(0.5),
+    margin: theme.spacing(0.5)
+  }
+}));
 
 
 
@@ -94,6 +102,28 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
           ))
         }
       </List>
+      <Divider />
+      {
+        genders.map(gender => (
+          <Chip
+            key={gender}
+            label={gender}
+            className={classes.chip}
+            onClick={() => navigateTo(`/?gender=${gender}`, gender)}
+          />
+        ))
+      }
+      <Divider />
+      {
+        categories.map(category => (
+          <Chip
+            key={category}
+            label={category}
+            className={classes.chip}
+            onClick={() => navigateTo(`/?category=${category}`, category)}
+          />
+        ))
+      }
     </div>
   );
 
