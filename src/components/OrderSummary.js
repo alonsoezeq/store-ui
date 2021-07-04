@@ -18,13 +18,18 @@ const useStyles = makeStyles({
   
 
 
-const OrderSummary = () => {
+const OrderSummary = ({paymentInfo}) => {
     const classes = useStyles();
     const [ context, setContext ] = useContext(AppContext);
     let total = 0;
+    let costoEnvio = 0;
 
     context.cartitems?.forEach(({product, quantity}) => {
       total += product?.price * quantity;
+      if(paymentInfo?.pickupPlace === 'home'){
+        costoEnvio = 200;
+      }
+      total += costoEnvio;
     });
 
     return ( 
@@ -36,7 +41,9 @@ const OrderSummary = () => {
                   <TableCell>Producto</TableCell>
                   <TableCell align="right">Cantidad</TableCell>
                   <TableCell align="right">Precio unitario</TableCell>
-                  
+                  {
+                    paymentInfo?.pickupPlace === 'home' && <TableCell align="right">Costo de envío</TableCell>
+                  }
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -48,13 +55,16 @@ const OrderSummary = () => {
                         <Typography>{quantity}</Typography>
                       </TableCell>
                       <TableCell align="right">$ {product.price}</TableCell>
+                      {
+                        paymentInfo?.pickupPlace === 'home' && <TableCell align="right">$ 200</TableCell>
+                      }
                     </TableRow>
                   ))
                 }
                 </TableBody>
                 <TableFooter>
                   <TableRow>
-                    <TableCell align="right" colSpan={3}>
+                    <TableCell align="right" colSpan={paymentInfo?.pickupPlace === 'home'? 4 : 3}>
                       <Typography component={'div'}>
                         <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
                         $ {total}

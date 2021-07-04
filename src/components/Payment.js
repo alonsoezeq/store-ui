@@ -1,6 +1,6 @@
 import { Button, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -36,14 +36,23 @@ const useStyles = makeStyles((theme) => ({
     }
   }));  
 
-
 const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const classes = useStyles();
     const [value, setValue] = useState(new Date());
-    const [pickupPlace, setPickupPlace] = useState('store');
     const [cardNumberIsValid, setCardNumberIsValid] = useState(true);
     const [cardNameIsValid, setCardNameIsValid] = useState(true);
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
+
+    useEffect(() => {
+        if(paymentInfo.pickupPlace === ''){
+            paymentInfo.pickupPlace = "store";
+        }
+        if(paymentInfo) {
+            paymentInfo.cvc = '';
+            setPaymentInfo({...paymentInfo});
+            setAllowNext(false);
+        }
+    }, []);
 
     const validateWhiteSpaces = () => {
         paymentInfo.number.trim() === '' ? setCardNumberIsValid(false) : setCardNumberIsValid(true) ;
@@ -56,10 +65,6 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     const handleChange = (e) => {
-        if(e.target.name === 'pickupPlace') {
-            console.log(e.target.name)
-            setPickupPlace(e.target.value);
-        }    
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
     }
 
@@ -72,7 +77,6 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
         paymentInfo.cvc.trim() === ''){
             validateWhiteSpaces();
             setAllowNext(false);
-            console.log(paymentInfo);   
             return;
         } else {
             validateWhiteSpaces();
@@ -90,8 +94,8 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <Typography>Información de la tarjeta</Typography>
                             {
-                                cardNumberIsValid? <TextField name="number" label="Número tarjeta" type="tel" inputProps={{maxLength: 19, inputMode: "numeric"}} variant="outlined" onChange={handleChange} onKeyDown={addSpace}/> :
-                                <TextField error name="number" label="Número tarjeta" type="text" inputProps={{maxLength: 19, inputMode:"numeric"}} variant="outlined" onChange={handleChange} onKeyPress={addSpace} helperText="Campo incompleto"/>
+                                cardNumberIsValid? <TextField  name="number" defaultValue={paymentInfo.number} label="Número tarjeta" type="tel" inputProps={{maxLength: 19, inputMode: "numeric"}} variant="outlined" onChange={handleChange} onKeyDown={addSpace}/> :
+                                <TextField error name="number" defaultValue={paymentInfo.number} label="Número tarjeta"  type="text" inputProps={{maxLength: 19, inputMode:"numeric"}} variant="outlined" onChange={handleChange} onKeyPress={addSpace} helperText="Campo incompleto"/>
                             }                
                             <Grid container spacing={2}>
                                 <Grid item xs={6} >
@@ -109,15 +113,15 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             </Grid>
                             <Grid item xs={6}>
                                 {
-                                    cardCVCIsValid ? <TextField className={classes.textField} name="cvc" label="CVC"  type="text" variant="outlined"  inputProps={{maxLength: 3, inputMode: "numeric"}} onChange={handleChange}/> :
+                                    cardCVCIsValid ? <TextField  className={classes.textField} name="cvc" label="CVC"  type="text" variant="outlined"  inputProps={{maxLength: 3, inputMode: "numeric"}} onChange={handleChange}/> :
                                     <TextField error className={classes.textField} name="cvc" label="CVC"  type="text" variant="outlined" inputProps={{maxLength: 3, inputMode:"numeric"}} onChange={handleChange} helperText="Campo incompleto"/>
                                 }
                                 
                             </Grid>
                         </Grid>
                         {
-                            cardNameIsValid ? <TextField name="name" label="Nombre tarjeta" variant="outlined" onChange={handleChange} /> : 
-                            <TextField error name="name" label="Nombre tarjeta" variant="outlined" onChange={handleChange} helperText="Campo incompleto"/>
+                            cardNameIsValid ? <TextField name="name" defaultValue={paymentInfo.name} label="Nombre tarjeta"  variant="outlined" onChange={handleChange} /> : 
+                            <TextField error name="name" defaultValue={paymentInfo.number} label="Nombre tarjeta" variant="outlined" onChange={handleChange} helperText="Campo incompleto"/>
                         }              
                         <Typography>Retiro del producto</Typography>
                         <FormControl className={classes.formControl}>
@@ -125,8 +129,8 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             <Select name='pickupPlace'
                             labelId="pickup-place"
                             id="pickup-select"
-                            value={pickupPlace}
                             onChange={handleChange}
+                            value={paymentInfo.pickupPlace}
                             >
                             <MenuItem value={"store"}>Local</MenuItem>
                             <MenuItem value={"home"}>Envío a Domicilio</MenuItem>

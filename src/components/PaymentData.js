@@ -1,13 +1,18 @@
-import { Box, Grid, makeStyles, Paper } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import { Box, makeStyles, Paper } from '@material-ui/core';
+import React from 'react';
 import { Typography } from '@material-ui/core';
-import { Container } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-      padding: theme.spacing(2),
-      height: '18vh',
-    },   
+      padding: theme.spacing(3, 2),
+    },
+    container: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-around",
+      height: "15vh"
+    }   
   }));  
 
 const PaymentData = ({paymentInfo, cart}) => {
@@ -16,6 +21,7 @@ const PaymentData = ({paymentInfo, cart}) => {
     return ( 
         <>
             <Paper className={classes.paper} elevation={3}>
+              <div className={classes.container}>            
               <Typography component={'div'} align="center">
                 <Box fontWeight="fontWeightBold">Información de la tarjeta</Box>
               </Typography>
@@ -42,6 +48,7 @@ const PaymentData = ({paymentInfo, cart}) => {
                     paymentInfo.pickupPlace === 'store'? "Retira en el local" : "Retiro a domicilio"
                 }
               </Typography>
+              </div>
             </Paper>
         </>
      );

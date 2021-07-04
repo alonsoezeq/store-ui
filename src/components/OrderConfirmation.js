@@ -8,7 +8,7 @@ const OrderConfirmation = ({paymentInfo, cart}) => {
     return ( 
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <OrderSummary />
+                <OrderSummary paymentInfo={paymentInfo} />
             </Grid>
             <Grid item xs={6}>
                 <PersonalData />
