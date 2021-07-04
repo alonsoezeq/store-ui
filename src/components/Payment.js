@@ -90,10 +90,9 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <Typography>Información de la tarjeta</Typography>
                             {
-                                cardNumberIsValid? <TextField name="number" label="Número tarjeta" type="text" inputProps={{maxLength: 19, inputMode: "numeric"}} variant="outlined" onChange={handleChange} onKeyDown={addSpace}/> :
+                                cardNumberIsValid? <TextField name="number" label="Número tarjeta" type="tel" inputProps={{maxLength: 19, inputMode: "numeric"}} variant="outlined" onChange={handleChange} onKeyDown={addSpace}/> :
                                 <TextField error name="number" label="Número tarjeta" type="text" inputProps={{maxLength: 19, inputMode:"numeric"}} variant="outlined" onChange={handleChange} onKeyPress={addSpace} helperText="Campo incompleto"/>
-                            }
-                            
+                            }                
                             <Grid container spacing={2}>
                                 <Grid item xs={6} >
                                 <DatePicker className={classes.textField}
@@ -119,8 +118,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                         {
                             cardNameIsValid ? <TextField name="name" label="Nombre tarjeta" variant="outlined" onChange={handleChange} /> : 
                             <TextField error name="name" label="Nombre tarjeta" variant="outlined" onChange={handleChange} helperText="Campo incompleto"/>
-                        }   
-                        
+                        }              
                         <Typography>Retiro del producto</Typography>
                         <FormControl className={classes.formControl}>
                             <InputLabel id="pickup-place">Retiro del producto</InputLabel>
@@ -136,8 +134,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                         </FormControl>
                         <Button className={classes.buttonInput} type="submit" variant="contained" color="primary">Confirmar</Button>   
                     </form> 
-                    </Paper>
-                     
+                    </Paper>                    
                 </Grid>
             </Grid>
         </MuiPickersUtilsProvider>

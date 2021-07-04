@@ -47,7 +47,7 @@ const OrdersHistory = () => {
         <>
         {
             !loading && orders.length > 0 &&
-            <OrdersList orders={orders}/>
+            <OrdersList orders={orders} setOrders={setOrders}/>
         }
         {
             !loading && orders.length === 0 &&

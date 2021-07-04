@@ -21,11 +21,10 @@ const useStyles = makeStyles({
 const OrderSummary = () => {
     const classes = useStyles();
     const [ context, setContext ] = useContext(AppContext);
-
-
     let total = 0;
-    context.cartitems?.forEach(({product}) => {
-      total += product?.price * product.quantity;
+
+    context.cartitems?.forEach(({product, quantity}) => {
+      total += product?.price * quantity;
     });
 
     return ( 
@@ -46,9 +45,9 @@ const OrderSummary = () => {
                     <TableRow key={product.id}>
                       <TableCell component="th" scope="row">{product.title}</TableCell>
                       <TableCell align="right">
-                        <Typography>{product.quantity}</Typography>
+                        <Typography>{quantity}</Typography>
                       </TableCell>
-                      <TableCell align="right">{product.price}</TableCell>
+                      <TableCell align="right">$ {product.price}</TableCell>
                     </TableRow>
                   ))
                 }
@@ -58,7 +57,7 @@ const OrderSummary = () => {
                     <TableCell align="right" colSpan={3}>
                       <Typography component={'div'}>
                         <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
-                        {total}
+                        $ {total}
                       </Typography>
                     </TableCell>
                   </TableRow>
