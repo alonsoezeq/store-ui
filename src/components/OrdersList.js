@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -6,11 +6,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Container, fade, FormControl, Grid, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
-import { isBuyer } from '../helpers/AuthUtils';
+import { Button, fade, FormControl, Grid, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { authHeader, isBuyer } from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-
+import config from '../config/config';
+import { AppContext } from '../AppContext';
+import orderState from "../config/orderState.json";
+import paymentState from '../config/paymentState.json';
 
 const useStyles = makeStyles((theme) => ({
     select: {
@@ -64,25 +67,50 @@ const useStyles = makeStyles((theme) => ({
 
 const OrdersList = ({orders, setOrders}) => {
     const classes = useStyles();
+    const [ context, setContext ] = useContext(AppContext);
     const [filter, setFilter] = useState('');
     const [filteredOrders, setFilteredOrders] = useState([...orders]);
-
-    const handleFilter = (e) => {
-      setFilter(e.target.value);
-    }
 
     useEffect(() => {
       let auxOrders
       if(filter === '') {
         auxOrders = orders;
+      } else if(isBuyer()) {
+        auxOrders = orders.filter( order => order.id.toString() === filter);
       } else {
         auxOrders = orders.filter( order => order.userId.toString() === filter);
       }
-      console.log(auxOrders);
+      //console.log(auxOrders);
       setFilteredOrders(auxOrders);
     }, [filter]);
 
-    const handleChange = (value, order) => {
+    const handleFilter = (e) => {
+      setFilter(e.target.value);
+    }
+
+    const resetFilter = () => {
+      setFilter('');
+    }
+
+    const changeState = (id, order) => {
+      fetch(`${config.baseApi}/sales/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader()
+        },
+        body: JSON.stringify(order)
+      })
+      .then((res) => res.ok ? res : Promise.reject(res.statusText))
+      .then((data) => {
+        setContext({ ...context, status: 'success', message: 'Se modificó el estado' });
+      })
+      .catch(err => {
+        setContext({ ...context, status: 'error', message: err });
+      });
+    }
+
+    const handleStateChange = (value, order) => {
       let index = orders.indexOf(order);
       let auxArray = orders.slice();
 
@@ -90,31 +118,38 @@ const OrdersList = ({orders, setOrders}) => {
           order.shippingStatus = value;
           auxArray[index] = order;
       }
-
+      changeState(order.id, order);
       setOrders(auxArray);      
     }
+
+    const parseOrderState = (shippingStatus) => {
+      return orderState[shippingStatus];
+    };
+
+    const parsePaymentState = (paymentStatus) => {
+      return paymentState[paymentStatus];
+    };
  
     return ( 
       <Grid container spacing={2}>
-        {
-          !(isBuyer()) && 
           <Grid item xs={12}>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
-              </div>
+              </div> 
               <InputBase
-                placeholder="Id cliente..."
+                placeholder={isBuyer() ? "Id transacción..." : "Id cliente..."}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
                 onChange={handleFilter}
+                value={filter}
               />
+              <Button size="small" style={{marginLeft:'0.5rem'}} variant="contained" color="primary" onClick={resetFilter}>Limpiar</Button>
             </div>
           </Grid>
-        }
         { filteredOrders.length > 0 &&     
         <Grid item xs={12}>
           <Paper component={'div'}>    
@@ -139,12 +174,10 @@ const OrdersList = ({orders, setOrders}) => {
                           {
                             !(isBuyer()) && <TableCell align="center">{order.userId}</TableCell>
                           }
-                          <TableCell align="center">
-                            <Typography>{order.paymentStatus}</Typography>
-                          </TableCell>
+                          <TableCell align="center">{parsePaymentState(order.paymentStatus)}</TableCell>
                           {
                             isBuyer() ?
-                            <TableCell align="center">{order.shippingStatus}</TableCell> :
+                            <TableCell align="center">{parseOrderState(order.shippingStatus)}</TableCell> :
                             
                             <TableCell size={"medium"} align="center">
                               <FormControl>
@@ -152,7 +185,7 @@ const OrdersList = ({orders, setOrders}) => {
                                   labelId="shipping-status"
                                   id="shipping-status"
                                   value={order.shippingStatus}
-                                  onChange={(e) => {handleChange(e.target.value, order)}}
+                                  onChange={(e) => {handleStateChange(e.target.value, order)}}
                                   className={classes.select}
                                 >
                                   <MenuItem value={"pending"}>Pago pendiente</MenuItem>

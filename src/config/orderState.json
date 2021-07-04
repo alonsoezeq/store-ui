@@ -1,0 +1,9 @@
+{
+    "pending": "Pago pendiente",
+    "paid": "Pagado",
+    "deliveryPending": "Entrega pendiente",
+    "pickupPending": "Retiro pendiente",
+    "delivered": "Entregado",
+    "pickedup": "Retirado",
+    "cancelled": "Cancelado"
+}
