@@ -128,13 +128,20 @@ const ProductDescription = () => {
               isBuyer() &&
               <Grid item container className={classes.addToCart} direction="row" justify="flex-end" spacing={4}>
                 <Grid item>
+                {product.quantity > 0 &&
                   <p>Cantidad: {product.quantity} / {product.quantity}</p>
+                }
+                {product.quantity <= 0 &&
+                  <p>No hay stock</p>
+                }
                 </Grid>
+                {product.quantity > 0 &&
                 <Grid item>
                   <Button variant="contained" color="primary" onClick={() => addProductToCart(1)}>
                     Agregar al carrito
                   </Button>
                 </Grid>
+                }
               </Grid>
             }
           </Grid>
