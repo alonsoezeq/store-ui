@@ -13,6 +13,7 @@ import { AppContext } from '../AppContext';
 import { authHeader } from '../helpers/AuthUtils';
 import { Link } from 'react-router-dom';
 import config from '../config/config';
+import { Container, Grid } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,22 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'inherit',
     textDecoration: 'none' 
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: "70vh",
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  message: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '40vh',
   }
 }));
 
@@ -128,18 +145,21 @@ const StepperContainer = () => {
             </Step>
           ))}
         </Stepper>
-        <div>
           {activeStep === steps.length ? (
-            <div>
-              <Typography align="center" className={classes.instructions}>¡Su compra ha sido confirmada!</Typography>
-              <Button variant="contained" color="primary" onClick={handleReset}>
-                <Link to="/" className={classes.link}>Volver</Link>
-              </Button>
-            </div>
+            <div className={classes.container}>    
+              <div className={classes.message}>
+                <Typography align="center" variant="h4" className={classes.instructions}>¡Su compra ha sido confirmada!</Typography>
+              </div>
+              <div className={classes.buttons}>
+                <Button variant="contained" color="primary" onClick={handleReset}>
+                  <Link to="/" className={classes.link}>Volver</Link>
+                </Button>
+              </div>
+            </div >
           ) : (
-            <div>
+            <div className={classes.container}>
               <Typography component={'div'} className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-              <div>
+              <div className={classes.buttons}>
                 <Button
                   disabled={activeStep === 0}
                   onClick={handleBack}
@@ -156,7 +176,7 @@ const StepperContainer = () => {
               </div>
             </div>
           )}
-        </div>
+
       </div>
      );
 }
