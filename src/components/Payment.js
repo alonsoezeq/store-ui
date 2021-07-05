@@ -91,7 +91,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             <Grid container spacing={3} >
                 <Grid item xs={12} >
                     <Paper>
-                    <form className={classes.form} onSubmit={handleSubmit}>
+                    <form className={classes.form} autoComplete="off" onSubmit={handleSubmit}>
                         <Typography>Información de la tarjeta</Typography>
                             {
                                 cardNumberIsValid? <TextField  name="number" defaultValue={paymentInfo.number} label="Número tarjeta" type="tel" inputProps={{maxLength: 19, inputMode: "numeric"}} variant="outlined" onChange={handleChange} onKeyDown={addSpace}/> :

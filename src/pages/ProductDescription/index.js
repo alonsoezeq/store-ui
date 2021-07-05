@@ -71,7 +71,8 @@ const ProductDescription = () => {
     <>
       {
         !context.loading && product && 
-        <Paper className={classes.root} elevation={1}>
+      <Grid container justify="center" alignItems="center" style={{"height": "85vh"}}>
+        <Paper className={classes.root} elevation={3}>
           <div className={classes.container}>
             <Grid container spacing={2} justify="space-between">
               <Grid item xs={6}>
@@ -80,68 +81,84 @@ const ProductDescription = () => {
                 </Grid>
               </Grid>
               <Grid item xs={6}>
-                <Grid container direction="column" spacing={2} justify="space-between">
-                <Grid item >
-                  <Paper component={'div'} className={classes.product} elevation={1}>
-                    <Grid container direction="column" justify="space-between" style={{"height":"22vh"}}>
-                      <Typography className={classes.productTitle} align="center" variant="h4" component="span">{product.title}</Typography>
+                <Grid container direction="column" spacing={3} justify="space-between">
+                  <Grid item xs={12}>
+                    <Paper component={'div'} className={classes.product} elevation={1}>
+                      <Grid container justify="center">
+                        <Typography className={classes.productTitle} align="center" variant="h4" component="span">{product.title}</Typography>
+                      </Grid>
+                      <Grid container direction="column" justify="space-between" style={{"height":"22vh"}}>
+                        <Grid>
+                          <Typography component="span">
+                            <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                              Talle:
+                            </Box>
+                            <Chip label={product.size.toUpperCase()} />
+                          </Typography>  
+                        </Grid>
+                        <Grid>
+                          <Typography component="span">
+                            <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                              Color:
+                            </Box>
+                            <Chip
+                              icon={<FiberManualRecord style={{color: product.color}} fontSize="small" />}
+                              label={colors[product.color]}
+                            />
+                          </Typography>  
+                        </Grid>
+                        <Grid>
+                          <Typography component="span">
+                            <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                              Categoría:
+                            </Box>
+                            <Chip label={product.category.toUpperCase()} />
+                          </Typography>
+                        </Grid>
+                        <Grid>
+                          <Typography component="span">
+                            <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                              Género:
+                            </Box>
+                            <Chip label={product.gender.toUpperCase()} />
+                          </Typography>    
+                        </Grid>
+                        
+                        
+                        
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Paper className={classes.root} elevation={1}>
                       <Typography component="span">
-                        <Box display="inline" fontWeight="fontWeightBold" m={1}>
-                          Talle:
-                        </Box>
-                        <Chip label={product.size.toUpperCase()} />
+                        <Box className={classes.descriptionTitle} align="center" fontWeight="fontWeightBold">Descripción</Box>
+                        <Box>{product.description}</Box>
                       </Typography>
-                      <Typography component="span">
-                        <Box display="inline" fontWeight="fontWeightBold" m={1}>
-                          Color:
-                        </Box>
-                        <Chip
-                          icon={<FiberManualRecord style={{color: product.color}} fontSize="small" />}
-                          label={colors[product.color]}
-                        />
-                      </Typography>
-                      <Typography component="span">
-                        <Box display="inline" fontWeight="fontWeightBold" m={1}>
-                          Categoría:
-                        </Box>
-                        <Chip label={product.category.toUpperCase()} />
-                      </Typography>
-                      <Typography component="span">
-                        <Box display="inline" fontWeight="fontWeightBold" m={1}>
-                          Género:
-                        </Box>
-                        <Chip label={product.gender.toUpperCase()} />
-                      </Typography>
+                    </Paper>
+                  </Grid>
+                  {
+                  isBuyer() &&
+                  <Grid item className={classes.addToCart}>
+                    <Grid container direction="row" justify="flex-end" spacing={4}>
+                      <Grid item>
+                        <p>Cantidad: {product.quantity} / {product.quantity}</p>
+                      </Grid>
+                      <Grid item>
+                        <Button variant="contained" color="primary" onClick={() => addProductToCart(1)}>
+                          Agregar al carrito
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item >
-                  <Paper className={classes.root} elevation={1}>
-                    <Typography component="span">
-                      <Box className={classes.descriptionTitle} align="center" fontWeight="fontWeightBold">Descripción</Box>
-                      <Box>{product.description}</Box>
-                    </Typography>
-                  </Paper>
-                </Grid>
-                </Grid>
+                  </Grid>
+                }
               </Grid>
-              {
-                isBuyer() &&
-                <Grid item container className={classes.addToCart} direction="row" justify="flex-end" spacing={4}>
-                  <Grid item>
-                    <p>Cantidad: {product.quantity} / {product.quantity}</p>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="contained" color="primary" onClick={() => addProductToCart(1)}>
-                      Agregar al carrito
-                    </Button>
-                  </Grid>
-                </Grid>
-              }
+
+              </Grid>
             </Grid>
           </div>
         </Paper>
-        
+      </Grid>
       }
     </>
   );

@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Input, InputLabel, makeStyles } from "@material-ui/core"
+import { Button, Container, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography } from "@material-ui/core"
 import { useContext, useState } from "react";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
@@ -7,6 +7,9 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3, 2)
+  },
+  inputText: {
+    width:'20vw'
   }
 }));
 
@@ -55,41 +58,48 @@ const Register = () => {
   }
 
   return (
-    <form  autoComplete="off" onSubmit={handleSubmit}>
-      <Grid container direction="column">
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
-            <Input id="username" name="username" type="text" value={username} onChange={handleChange} />
-          </FormControl>
+    <Grid container justify="center" alignItems="center" style={{"height": "85vh"}}>
+      <Paper elevation={3} style={{padding: "3rem"}}>
+        <Grid container justify="center" style={{marginBottom: "2rem"}}>
+          <Typography variant="h4"> Registro de usuario</Typography>
         </Grid>
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="fullname">Nombre completo</InputLabel>
-            <Input id="fullname" name="fullname" type="text" value={fullname} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="email">E-Mail</InputLabel>
-            <Input id="email" name="email" type="email" value={email} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl required className={classes.root}>
-            <InputLabel htmlFor="password">Contraseña</InputLabel>
-            <Input id="password" name="password" type="password" value={password} onChange={handleChange} />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl className={classes.root}>
-            <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
-              Registrarme
-            </Button>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </form>
+        <form  autoComplete="off" onSubmit={handleSubmit} style={{"width": "22vw"}}>
+          <Grid container direction="column">
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="username">Nombre de usuario</InputLabel>
+                <Input id="username" name="username" type="text" className={classes.inputText} value={username} onChange={handleChange}/>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="fullname">Nombre completo</InputLabel>
+                <Input id="fullname" name="fullname" type="text" className={classes.inputText} value={fullname} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="email">E-Mail</InputLabel>
+                <Input id="email" name="email" type="email" className={classes.inputText} value={email} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="password">Contraseña</InputLabel>
+                <Input id="password" name="password" type="password" className={classes.inputText} value={password} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid container justify="flex-end">
+              <FormControl className={classes.root}>
+                <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
+                  Registrarme
+                </Button>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+    </Grid>
   );
 }
 
