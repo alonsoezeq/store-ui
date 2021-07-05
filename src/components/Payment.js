@@ -61,10 +61,12 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     const addSpace = (e) => {      
-        e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
+        e.target.value = e.target.value.replace(/[^\d0-9]/g, '').replace(/(.{4})/g, '$1 ').trim();
     }
 
     const handleChange = (e) => {
+        
+        if(e.target.name !== 'name') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
     }
 
@@ -114,7 +116,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             <Grid item xs={6}>
                                 {
                                     cardCVCIsValid ? <TextField  className={classes.textField} name="cvc" label="CVC"  type="text" variant="outlined"  inputProps={{maxLength: 3, inputMode: "numeric"}} onChange={handleChange}/> :
-                                    <TextField error className={classes.textField} name="cvc" label="CVC"  type="text" variant="outlined" inputProps={{maxLength: 3, inputMode:"numeric"}} onChange={handleChange} helperText="Campo incompleto"/>
+                                    <TextField error className={classes.textField} name="cvc" label="CVC"  type="text"  variant="outlined" inputProps={{maxLength: 3, inputMode:"numeric"}} onChange={handleChange} helperText="Campo incompleto"/>
                                 }
                                 
                             </Grid>
