@@ -42,7 +42,7 @@ const ProductCard = ({product}) => {
         ...context,
         cartitems: newcart,
         status: 'success',
-        message: 'Added to cart'
+        message: 'Agregado al carrito correctamente!!'
       });      
     })
     .catch(err => {

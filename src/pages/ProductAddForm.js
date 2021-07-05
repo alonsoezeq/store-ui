@@ -87,7 +87,7 @@ const ProductAddForm = () => {
       setProduct(initialProduct);
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: "Ocurrió un error!!" });
     });
   }
 
@@ -162,19 +162,20 @@ const ProductAddForm = () => {
         <Grid item>
           <FormControl className={classes.root}>
             <InputLabel htmlFor="description">Descripción</InputLabel>
+            <br/>
             <TextField id="description" name="description" multiline rows={4} value={description} onChange={handleChange} />
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl required className={classes.root}>
             <InputLabel htmlFor="quantity">Cantidad</InputLabel>
-            <Input id="quantity" name="quantity" type="number" min="1" value={quantity} onChange={handleNumberChange} />
+            <Input id="quantity" name="quantity" type="number" inputProps={{min:"1"}}  value={quantity} onChange={handleNumberChange} />
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl required className={classes.root}>
             <InputLabel htmlFor="price">Precio</InputLabel>
-            <Input id="price" name="price" type="number" min="0" value={price} onChange={handleNumberChange} />
+            <Input id="price" name="price" type="number" inputProps min="0" value={price} onChange={handleNumberChange} />
           </FormControl>
         </Grid>
         <Grid item>
