@@ -56,12 +56,14 @@ const Profile = () => {
             </Box>
             {user.email}
           </Typography>
+          {user.role === 'admin' &&
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Role:
             </Box>
             {user.role}
           </Typography>
+          }
           <Typography component={'div'}>
             <Box display="inline" fontWeight="fontWeightBold" m={1}>
               Registration:
