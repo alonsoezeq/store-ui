@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Select, TextField, Typography } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Paper, Select, TextField, Typography } from "@material-ui/core"
 import { useContext, useEffect, useState } from "react";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -13,6 +13,28 @@ import { FiberManualRecord } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3, 2)
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    width: "90vw",
+    height: "75vh",
+  },
+  paper: {
+    padding: "2rem",
+  },
+  inputText: {
+    width: "25vw",
+  },
+  inputTextField: {
+    width: "35vw",
+  },
+  inputSelect: {
+    width: "10vw",
+  },
+  inputNumber: {
+    width: '8vw'
   }
 }));
 
@@ -97,30 +119,38 @@ const ProductAddForm = () => {
     <>
       {
         !context.loading && product &&
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <Grid container direction="column">
-            <Grid item>
-              <FormControl required className={classes.root}>
-                <InputLabel htmlFor="product">Producto</InputLabel>
-                <Input id="product" name="title" type="text" value={product.title} onChange={handleChange} />
-              </FormControl>
+        <Paper className={classes.paper} elevation={3}>
+        <Grid item xs={12}>
+          <Typography variant="h4" align="center">Editar producto</Typography>
+        </Grid>
+        <form autoComplete="off" className={classes.container} onSubmit={handleSubmit}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Grid item xs={3}>
+                <FormControl required className={classes.root}>
+                  <InputLabel htmlFor="product">Producto</InputLabel>
+                  <Input id="product" name="title" type="text" className={classes.inputText} value={product.title} onChange={handleChange} />
+                </FormControl>
+              </Grid>
+              <Grid item xs={3}>
+                <FormControl required className={classes.root}>
+                  <InputLabel htmlFor="article">Artículo</InputLabel>
+                  <Input id="article" name="article" type="text"className={classes.inputText}  value={product.article} onChange={handleChange} />
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item>
-              <FormControl required className={classes.root}>
-                <InputLabel htmlFor="article">Artículo</InputLabel>
-                <Input id="article" name="article" type="text" value={product.article} onChange={handleChange} />
-              </FormControl>
-            </Grid>
-            <Grid item>
+            <Grid item xs={6}>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
                 <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
               </FormControl>
             </Grid>
+          </Grid>
+          <Grid container justify="space-between">
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="size">Talle</InputLabel>
-                <Select id="size" name="size" value={product.size} onChange={handleChange}>
+                <Select id="size" name="size" className={classes.inputSelect} value={product.size} onChange={handleChange}>
                   {
                     sizes.map(size => <MenuItem key={size} value={size}>{size}</MenuItem>)
                   }
@@ -130,7 +160,7 @@ const ProductAddForm = () => {
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="color">Color</InputLabel>
-                <Select id="color" name="color" value={product.color} onChange={handleChange}>
+                <Select id="color" name="color" className={classes.inputSelect} value={product.color} onChange={handleChange}>
                   {
                     Object.keys(colors).map((rgb) => 
                       <MenuItem key={rgb} value={rgb}>
@@ -147,7 +177,7 @@ const ProductAddForm = () => {
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="category">Categoría</InputLabel>
-                <Select id="category" name="category" value={product.category} onChange={handleChange}>
+                <Select id="category" name="category" className={classes.inputSelect} value={product.category} onChange={handleChange}>
                   {
                     categories.map(category => <MenuItem key={category} value={category}>{category}</MenuItem>)
                   }
@@ -157,40 +187,57 @@ const ProductAddForm = () => {
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="gender">Género</InputLabel>
-                <Select id="gender" name="gender" value={product.gender} onChange={handleChange}>
+                <Select id="gender" name="gender" className={classes.inputSelect} value={product.gender} onChange={handleChange}>
                   {
                     genders.map(gender => <MenuItem key={gender} value={gender}>{gender}</MenuItem>)
                   }
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item>
+          </Grid>
+          <Grid container>
+            <Grid item xs={6}>
               <FormControl className={classes.root}>
-                <InputLabel htmlFor="description">Descripción</InputLabel>
-                <TextField id="description" name="description" multiline rows={4} value={product.description} onChange={handleChange} />
+              <TextField
+                id="description"
+                name="description"
+                label="Descripción"
+                placeholder="Escriba la descripción..."
+                multiline
+                variant="outlined"
+                className={classes.inputTextField}
+                value={product.description} 
+                onChange={handleChange} 
+                required
+              />
+                {/* <InputLabel htmlFor="description">Descripción</InputLabel>
+                <TextField id="description" name="description" multiline rows={4} value={product.description} onChange={handleChange} /> */}
               </FormControl>
             </Grid>
-            <Grid item>
-              <FormControl required className={classes.root}>
-                <InputLabel htmlFor="quantity">Cantidad</InputLabel>
-                <Input id="quantity" name="quantity" type="number" min="1" value={product.quantity} onChange={handleNumberChange} />
-              </FormControl>
+            <Grid item xs={6}>
+              <Grid item>
+                <FormControl required className={classes.root}>
+                  <InputLabel htmlFor="quantity">Cantidad</InputLabel>
+                  <Input id="quantity" name="quantity" className={classes.inputNumber} type="number" min="1" value={product.quantity} onChange={handleNumberChange} />
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <FormControl required className={classes.root}>
+                  <InputLabel htmlFor="price">Precio</InputLabel>
+                  <Input id="price" name="price" className={classes.inputNumber} type="number" min="0" value={product.price} onChange={handleNumberChange} />
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item>
-              <FormControl required className={classes.root}>
-                <InputLabel htmlFor="price">Precio</InputLabel>
-                <Input id="price" name="price" type="number" min="0" value={product.price} onChange={handleNumberChange} />
-              </FormControl>
-            </Grid>
-            <Grid item>
+          </Grid>
+            <Grid container justify="flex-end">
               <FormControl className={classes.root}>
                 <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
                   Modificar producto
                 </Button>
               </FormControl>
             </Grid>
-          </Grid>
         </form>
+        </Paper>
       }
     </>
   );

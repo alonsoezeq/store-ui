@@ -16,7 +16,13 @@ const useStyles = makeStyles(theme => ({
   addToCart: {
     margin: theme.spacing(0, 2, 0, 0),
     padding: '0 !important'
-  }
+  },
+  container: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "70vw",
+    height: "55vh",
+  },
 }));
 
 export default useStyles;

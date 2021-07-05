@@ -1,3 +1,4 @@
+import { Grid } from "@material-ui/core";
 import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
@@ -6,7 +7,7 @@ import { authHeader } from "../helpers/AuthUtils";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: theme.spacing(3, 2),
+    padding: "2.5rem",
   }
 }));
 
@@ -37,38 +38,42 @@ const Profile = () => {
     <>
       {
         !context.loading && user &&
+        <Grid container justify="center" alignContent="center" style={{"height": "80vh"}}>
         <Paper className={classes.paper} elevation={3}>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Username:
-            </Box>
-            {user.username}
-          </Typography>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Fullname:
-            </Box>
-            {user.fullname}
-          </Typography>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              E-Mail:
-            </Box>
-            {user.email}
-          </Typography>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Role:
-            </Box>
-            {user.role}
-          </Typography>
-          <Typography component={'div'}>
-            <Box display="inline" fontWeight="fontWeightBold" m={1}>
-              Registration:
-            </Box>
-            {new Date(user.registration).toLocaleDateString()}
-          </Typography>
+          <Grid container direction="column" justify="space-around" style={{height: "20vh", width: "25vw"} }>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Nombre de usuario:
+              </Box>
+              {user.username}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Nombre completo:
+              </Box>
+              {user.fullname}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Correo electrónico:
+              </Box>
+              {user.email}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Rol:
+              </Box>
+              {user.role}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Fecha de registro:
+              </Box>
+              {new Date(user.registration).toLocaleDateString()}
+            </Typography>
+          </Grid>
         </Paper>
+        </Grid>
       }
     </>
   );
