@@ -69,7 +69,13 @@ const Profile = () => {
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Dirección:
               </Box>
-              {user.adress }
+              {user.adress}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Provincia:
+              </Box>
+              {user.province}
             </Typography>
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
