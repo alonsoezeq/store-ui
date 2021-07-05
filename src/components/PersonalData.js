@@ -1,4 +1,4 @@
-import { Box, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
 import config from "../config/config";

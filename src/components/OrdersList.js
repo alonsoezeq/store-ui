@@ -82,7 +82,7 @@ const OrdersList = ({orders, setOrders}) => {
       }
       //console.log(auxOrders);
       setFilteredOrders(auxOrders);
-    }, [filter]);
+    }, [filter, orders]);
 
     const handleFilter = (e) => {
       setFilter(e.target.value);
