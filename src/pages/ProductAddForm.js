@@ -220,7 +220,7 @@ const ProductAddForm = () => {
               <Grid item xs={6}>
                 <FormControl required className={classes.root}>
                   <InputLabel htmlFor="price">Precio</InputLabel>
-                  <Input id="price" name="price" type="number"  className={classes.inputNumber} min="0" value={price} onChange={handleNumberChange} />
+                  <Input id="price" name="price" type="number"  className={classes.inputNumber} inputProps={{ min:"0",inputMode:"numeric"}} min="0" value={price} onChange={handleNumberChange} />
                 </FormControl>
               </Grid>
             </Grid>
