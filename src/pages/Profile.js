@@ -40,7 +40,7 @@ const Profile = () => {
         !context.loading && user &&
         <Grid container justify="center" alignContent="center" style={{"height": "80vh"}}>
         <Paper className={classes.paper} elevation={3}>
-          <Grid container direction="column" justify="space-around" style={{height: "20vh", width: "25vw"} }>
+          <Grid container direction="column" justify="space-around">
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Nombre de usuario:
