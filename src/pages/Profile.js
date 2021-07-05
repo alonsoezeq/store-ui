@@ -63,7 +63,13 @@ const Profile = () => {
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Rol:
               </Box>
-              {user.role}
+              {user.role==='buyer'? 'Cliente' : user.role==='admin'? 'Administrador': 'Vendedor' }
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Dirección:
+              </Box>
+              {user.adress }
             </Typography>
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>

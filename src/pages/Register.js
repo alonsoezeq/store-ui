@@ -21,10 +21,11 @@ const Register = () => {
     username: '',
     fullname: '',
     email: '',
-    password: ''
+    password: '',
+    adress: ''
   });
 
-  const {username, fullname, email, password} = user;
+  const {username, fullname, email, password, adress} = user;
 
   const handleChange = (event) => {
     setUser({...user, [event.target.name]: event.target.value});
@@ -48,7 +49,7 @@ const Register = () => {
         ...context,
         loading: false,
         status: 'success',
-        message: 'User created'
+        message: 'Alta realizada exitosamente!'
       });
       history.push('/');
     })
@@ -87,6 +88,12 @@ const Register = () => {
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="password">Contraseña</InputLabel>
                 <Input id="password" name="password" type="password" className={classes.inputText} value={password} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="adress">Dirección</InputLabel>
+                <Input id="adress" name="adress" type="text" className={classes.inputText} value={adress} onChange={handleChange} />
               </FormControl>
             </Grid>
             <Grid container justify="flex-end">
