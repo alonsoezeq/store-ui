@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Paper, Select, TextField, Typography } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Paper, Select, TextField, Typography, Switch } from "@material-ui/core"
 import { useContext, useEffect, useState } from "react";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -126,6 +126,10 @@ const ProductAddForm = () => {
         <Grid item xs={12}>
           <Typography variant="h4" align="center">Editar producto</Typography>
         </Grid>
+        <br/>
+        <br/>
+        <br/>
+
         <form autoComplete="off" className={classes.container} onSubmit={handleSubmit}>
           <Grid container>
             <Grid item xs={6}>
@@ -142,12 +146,19 @@ const ProductAddForm = () => {
                 </FormControl>
               </Grid>
             </Grid>
+            
+
             <Grid item xs={6}>
-              <FormControl required className={classes.root}>
+                    {/* <InputLabel htmlFor="pictures">Editar fotos del producto</InputLabel>
+                    <Switch checked={editPicture.checkedA} onChange={handleChangeEditPicture} name="checkedA" inputProps={{ 'aria-label': 'secondary checkbox' }}/>
+                  { editPicture && */}
+              <FormControl className={classes.root}>
                 <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
                 <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
               </FormControl>
+              {/* } */}
             </Grid>
+            
           </Grid>
           <Grid container justify="space-between">
             <Grid item>
@@ -217,20 +228,20 @@ const ProductAddForm = () => {
                 <TextField id="description" name="description" multiline rows={4} value={product.description} onChange={handleChange} /> */}
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
-              <Grid item>
+
+              <Grid item xs={3} >
                 <FormControl required className={classes.root}>
                   <InputLabel htmlFor="quantity">Cantidad</InputLabel>
-                  <Input id="quantity" name="quantity" className={classes.inputNumber} type="number" min="1" value={product.quantity} onChange={handleNumberChange} />
+                  <Input id="quantity" name="quantity" className={classes.inputNumber} type="number" inputProps={{ min:"0",inputMode:"numeric"}} value={product.quantity} onChange={handleNumberChange} />
                 </FormControl>
               </Grid>
-              <Grid item>
+              <Grid item xs={3}>
                 <FormControl required className={classes.root}>
                   <InputLabel htmlFor="price">Precio</InputLabel>
                   <Input id="price" name="price" className={classes.inputNumber} type="number" min="0" value={product.price} onChange={handleNumberChange} />
                 </FormControl>
               </Grid>
-            </Grid>
+
           </Grid>
             <Grid container justify="flex-end">
               <FormControl className={classes.root}>

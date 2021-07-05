@@ -45,11 +45,11 @@ const ProductDescription = () => {
         ...context,
         cartitems: newcart,
         status: 'success',
-        message: 'Added to cart'
+        message: 'Agregado al carrito exitosamente!!'
       });      
     })
     .catch(err => {
-      setContext({ ...context, status: 'error', message: err });
+      setContext({ ...context, status: 'error', message: "No hay stock del producto seleccionado." });
     });
   }
 
@@ -63,7 +63,7 @@ const ProductDescription = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: "No hay stock del producto seleccionado." });
     });
   }, [id]);
 
@@ -142,13 +142,16 @@ const ProductDescription = () => {
                   <Grid item className={classes.addToCart}>
                     <Grid container direction="row" justify="flex-end" spacing={4}>
                       <Grid item>
-                        <p>Cantidad: {product.quantity} / {product.quantity}</p>
+                       { product.quantity <=0? <p>No hay stock.</p> :  <p>Stock disponible: {product.quantity} </p>} 
                       </Grid>
+                      {
+                      product.quantity >0 &&
                       <Grid item>
                         <Button variant="contained" color="primary" onClick={() => addProductToCart(1)}>
                           Agregar al carrito
                         </Button>
                       </Grid>
+                                        }
                     </Grid>
                   </Grid>
                 }

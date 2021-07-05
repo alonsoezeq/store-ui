@@ -46,7 +46,7 @@ const ProductCard = ({product}) => {
       });      
     })
     .catch(err => {
-      setContext({ ...context, status: 'error', message: err });
+      setContext({ ...context, status: 'error', message: "Hubo un problema al agregar el producto al carrito." });
     });
   }
 
@@ -65,11 +65,16 @@ const ProductCard = ({product}) => {
       </CardActionArea>
       <CardActions style={{display: 'flex', justifyContent: 'space-between'}}>
         {
-          isBuyer() &&
+          isBuyer() && product.quantity >0 &&
           <IconButton aria-label="add to cart" onClick={() => addProductToCart(1)}>
             <AddShoppingCart />
           </IconButton>
         }
+        {
+          isBuyer() && product.quantity <=0 &&
+          <p>No hay stock.</p>
+        }
+        
         {
           (isAdmin() || isSeller()) &&
           <IconButton aria-label="edit" onClick={() => history.push(`/products/${product.id}/edit`)}>
