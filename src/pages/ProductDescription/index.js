@@ -129,7 +129,7 @@ const ProductDescription = () => {
               <Grid item container className={classes.addToCart} direction="row" justify="flex-end" spacing={4}>
                 <Grid item>
                 {product.quantity > 0 &&
-                  <p>Cantidad: {product.quantity} / {product.quantity}</p>
+                  <p>Stock disponible: {product.quantity}</p>
                 }
                 {product.quantity <= 0 &&
                   <p>No hay stock</p>

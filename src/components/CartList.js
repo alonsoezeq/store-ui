@@ -55,12 +55,12 @@ const CartList = () => {
       setContext({
         ...context,
         cartitems: newcart,
-        status: 'success',
-        message: 'Successfully modified'
+        //status: 'success',
+        //message: 'Successfully modified'
       });      
     })
     .catch(err => {
-      setContext({ ...context, status: 'error', message: err });
+      setContext({ ...context, status: 'error', message: "La cantidad solicitada supera el stock del producto seleccionado." });
     });
   }
 
@@ -76,8 +76,8 @@ const CartList = () => {
       setContext({
         ...context,
         cartitems: cartitems.filter(({ productId }) => productId !== id),
-        status: 'success',
-        message: 'Successfuly removed from cart'
+        //status: 'success',
+        //message: 'Successfuly removed from cart'
       })
     })
     .catch(err => {
@@ -105,7 +105,7 @@ const CartList = () => {
               <TableCell align="right">
                 <input type="number" min="1" step="1" max={product.quantity} value={quantity} onChange={handleQuantityChange(product.id)} />
               </TableCell>
-              <TableCell align="right">{product.price}</TableCell>
+              <TableCell align="right">${product.price}</TableCell>
               <TableCell align="right"><Button onClick={() => deleteProduct(product.id)}><Delete /></Button></TableCell>
             </TableRow>
           ))
@@ -116,7 +116,7 @@ const CartList = () => {
             <TableCell align="right" colSpan={3}>
               <Typography component={'div'}>
                 <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
-                {total}
+                ${total}
               </Typography>
             </TableCell>
           </TableRow>
