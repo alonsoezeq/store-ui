@@ -1,6 +1,6 @@
 import { Button, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -8,6 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DateFnsUtils from '@date-io/date-fns';
+import { authHeader } from "../helpers/AuthUtils";
+import config from "../config/config";
+import { AppContext } from "../AppContext";
+import userEvent from '@testing-library/user-event';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +46,8 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const [cardNumberIsValid, setCardNumberIsValid] = useState(true);
     const [cardNameIsValid, setCardNameIsValid] = useState(true);
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
+    const [ user, setUser ] = useState(null);
+    const [ context, setContext ] = useContext(AppContext);
 
     useEffect(() => {
         if(paymentInfo.pickupPlace === ''){
@@ -52,6 +58,20 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             setPaymentInfo({...paymentInfo});
             setAllowNext(false);
         }
+
+        fetch(`${config.baseApi}/profile`, {
+            headers: {
+              ...authHeader()
+            }
+          })
+          .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+          .then(data => {
+            setUser(data);
+            setContext({ ...context, loading: false });
+          })
+          .catch(err => {
+            setContext({ ...context, loading: false, status: 'error', message: err });
+          });
     }, []);
 
     const validateWhiteSpaces = () => {
@@ -65,8 +85,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     const handleChange = (e) => {
-        
-        if(e.target.name !== 'name') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
+        if(e.target.name !== 'name' && e.target.name !== 'pickupPlace') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
     }
 
@@ -138,6 +157,9 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             <MenuItem value={"home"}>Envío a Domicilio</MenuItem>
                             </Select>
                         </FormControl>
+                        {
+                            paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {user && user.adress} , con un costo fijo de $350 </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
+                        }
                         <Button className={classes.buttonInput} type="submit" variant="contained" color="primary">Confirmar</Button>   
                     </form> 
                     </Paper>                    

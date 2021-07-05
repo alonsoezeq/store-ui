@@ -214,7 +214,7 @@ const ProductAddForm = () => {
               <Grid item xs={6}>
                 <FormControl required className={classes.root}>
                   <InputLabel htmlFor="quantity">Cantidad</InputLabel>
-                  <Input id="quantity" name="quantity" type="number"  className={classes.inputNumber} min="1" value={quantity} onChange={handleNumberChange} />
+                  <Input id="quantity" name="quantity" type="number"  className={classes.inputNumber}  inputProps={{ min:"0",inputMode:"numeric"}} value={quantity} onChange={handleNumberChange} />
                 </FormControl>
               </Grid>
               <Grid item xs={6}>

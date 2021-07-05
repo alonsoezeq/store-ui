@@ -27,7 +27,7 @@ const OrderSummary = ({paymentInfo}) => {
     context.cartitems?.forEach(({product, quantity}) => {
       total += product?.price * quantity;
       if(paymentInfo?.pickupPlace === 'home'){
-        costoEnvio = 200;
+        costoEnvio = 350;
       }
       total += costoEnvio;
     });
@@ -56,7 +56,7 @@ const OrderSummary = ({paymentInfo}) => {
                       </TableCell>
                       <TableCell align="right">$ {product.price}</TableCell>
                       {
-                        paymentInfo?.pickupPlace === 'home' && <TableCell align="right">$ 200</TableCell>
+                        paymentInfo?.pickupPlace === 'home' ? <TableCell align="right">$ 350</TableCell> : <TableCell align="right">$ 0</TableCell>
                       }
                     </TableRow>
                   ))
@@ -66,8 +66,8 @@ const OrderSummary = ({paymentInfo}) => {
                   <TableRow>
                     <TableCell align="right" colSpan={paymentInfo?.pickupPlace === 'home'? 4 : 3}>
                       <Typography component={'div'}>
-                        <Box display="inline" fontWeight="fontWeightBold" m={1}>Total:</Box>
-                        $ {total}
+                        <Box display="inline" fontWeight="fontWeightBold" m={1}>Total: $</Box>
+                        { total }
                       </Typography>
                     </TableCell>
                   </TableRow>
