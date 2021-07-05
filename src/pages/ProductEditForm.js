@@ -97,8 +97,8 @@ const ProductAddForm = () => {
     <>
       {
         !context.loading && product &&
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <Grid container direction="column">
+        <form autoComplete="off" id="form1" onSubmit={handleSubmit}>
+          <Grid container  direction="column">
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="product">Producto</InputLabel>
@@ -111,12 +111,19 @@ const ProductAddForm = () => {
                 <Input id="article" name="article" type="text" value={product.article} onChange={handleChange} />
               </FormControl>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
-                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+                <Input id="pictures" name="pictures" type="file" 
+                  inputProps={
+                    {
+                      multiple: true, 
+                      accept: "image/png, image/jpeg"
+                    }
+                  } 
+                    onChange={handleFileChange} />
               </FormControl>
-            </Grid>
+            </Grid> */}
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="size">Talle</InputLabel>
