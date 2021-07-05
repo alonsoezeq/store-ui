@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Select, TextField, Typography } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, ListItemIcon, makeStyles, MenuItem, Select, TextField, Typography, Switch } from "@material-ui/core"
 import { useContext, useEffect, useState } from "react";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -23,6 +23,7 @@ const ProductAddForm = () => {
   const [ context, setContext ] = useContext(AppContext);
 
   const [product, setProduct] = useState(null);
+  const [editPicture, setState] = useState({checkedA: false});
 
   useEffect(() => {
     setContext({ ...context, loading: true });
@@ -92,7 +93,9 @@ const ProductAddForm = () => {
       setContext({ ...context, loading: false, status: 'error', message: err });
     });
   }
-
+  const handleChangeEditPicture = (event) => {
+    setState({ ...editPicture, [event.target.name]: event.target.checked });
+  };
   return (
     <>
       {
@@ -111,19 +114,19 @@ const ProductAddForm = () => {
                 <Input id="article" name="article" type="text" value={product.article} onChange={handleChange} />
               </FormControl>
             </Grid>
-            {/* <Grid item>
-              <FormControl required className={classes.root}>
+            <Grid item>
+              <InputLabel htmlFor="pictures">Editar fotos del producto</InputLabel>
+              <Switch checked={editPicture.checkedA} onChange={handleChangeEditPicture} name="checkedA" inputProps={{ 'aria-label': 'secondary checkbox' }}/>
+            </Grid>
+            {
+              editPicture.checkedA &&
+            <Grid item>
+              <FormControl className={classes.root}>
                 <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
-                <Input id="pictures" name="pictures" type="file" 
-                  inputProps={
-                    {
-                      multiple: true, 
-                      accept: "image/png, image/jpeg"
-                    }
-                  } 
-                    onChange={handleFileChange} />
+                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
               </FormControl>
-            </Grid> */}
+            </Grid>
+            }
             <Grid item>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="size">Talle</InputLabel>
