@@ -56,7 +56,7 @@ const OrderSummary = ({paymentInfo}) => {
                       </TableCell>
                       <TableCell align="right">$ {product.price}</TableCell>
                       {
-                        paymentInfo?.pickupPlace === 'home' && <TableCell align="right">{"$"}</TableCell>
+                        paymentInfo?.pickupPlace === 'home' && <TableCell align="right">${costoEnvio}</TableCell>
                       }
                     </TableRow>
                   ))
