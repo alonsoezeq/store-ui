@@ -55,6 +55,7 @@ const SideMenu = ({drawerToggle, setDrawer}) => {
   const secondGroup = [
     { text: "Agregar producto", icon: <AddBox />, path: '/products/add', condition: (isSeller() || isAdmin()) },
     { text: "Agregar tienda", icon: <AddBox />, path: '/stores/add', condition: isAdmin() },
+    { text: "Lista de productos", icon: <AddBox />, path: '/products/search', condition: (isSeller() || isAdmin()) },
   ];
 
   const toggleDrawer = (open) => (event) => {
