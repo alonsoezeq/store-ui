@@ -11,14 +11,14 @@ const Home = () => {
   const [ context, setContext ] = useContext(AppContext);
 
   useEffect(() => {
-    let params;
+    let params = '';
     setContext({ ...context, loading: true });
 
     if(window.location.search.length > 0){
-      params = window.location.search.slice(1);
+      params = '&' + window.location.search.slice(1);
     }
     
-    fetch(`${config.baseApi}/products/?active=1&${params}`)
+    fetch(`${config.baseApi}/products/?active=1${params}`)
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setProducts(data);
