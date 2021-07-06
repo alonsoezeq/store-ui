@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, makeStyles, Paper, Typography, Button, FormControl } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -84,6 +85,14 @@ const Profile = () => {
               {new Date(user.registration).toLocaleDateString()}
             </Typography>
           </Grid>
+          <Grid container justify="flex-end">
+              <FormControl className={classes.root}>
+                <Button color="primary">
+                  <Link to="/profileEdit" className={classes.link}>Editar Perfil</Link>
+               </Button>
+              </FormControl>
+            </Grid>
+
         </Paper>
         </Grid>
       }

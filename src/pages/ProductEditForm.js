@@ -92,7 +92,7 @@ const ProductAddForm = () => {
     event.preventDefault();
 
     setContext({ ...context, loading: true });
-
+    console.log(product)
     fetch(`${config.baseApi}/products/${product.id}`, {
       method: 'PUT',
       body: JSON.stringify(product),

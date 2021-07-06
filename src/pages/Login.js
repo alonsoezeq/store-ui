@@ -27,7 +27,6 @@ const Login = () => {
     event.preventDefault();
     
     setContext({ ...context, loading: true });
-
     fetch(`${config.baseApi}/auth`, {
       method: 'POST',
       body: JSON.stringify(identity),
