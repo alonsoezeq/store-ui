@@ -22,7 +22,7 @@ const Banner = () =>
   }, []);
 
   return (
-    <Carousel autoPlay={false}>
+    <Carousel>
         { 
         imagen?.map(p => (
           <Card xs={12}>
