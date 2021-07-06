@@ -46,7 +46,7 @@ const StoreAddForm = () => {
         ...context,
         loading: false,
         status: 'success',
-        message: 'Store successfuly registered'
+        message: 'TIenda correctamente agregada.'
       });
     })
     .catch(err => {

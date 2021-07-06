@@ -41,7 +41,7 @@ const Login = () => {
         ...context,
         loading: false,
         status: 'success',
-        message: 'Successfuly authenticated'
+        message: 'Ingreso correcto!'
       });
       window.location.href = '/';
     })

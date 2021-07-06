@@ -103,6 +103,12 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             validateWhiteSpaces();
             setAllowNext(true);
         }
+        if(paymentInfo.pickupPlace === 'home'){
+            paymentInfo.address = user.adress;
+            paymentInfo.shippingPrice = 350;
+        }else{
+            paymentInfo.shippingPrice = 0;
+        }
 
         console.log(paymentInfo);     
     }

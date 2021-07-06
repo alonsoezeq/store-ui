@@ -60,6 +60,8 @@ const initialInfo =  {
   expDate:'',
   cvc:'',
   pickupPlace: '',
+  address: '',
+  shippingPrice: 0
 };
 
 
@@ -94,6 +96,8 @@ const StepperContainer = () => {
 
       let payment = {
         pickupPlace: paymentInfo.pickupPlace,
+        address: paymentInfo.address,
+        shippingPrice: paymentInfo.shippingPrice
       }
 
       fetch(`${config.baseApi}/cart/checkout`, {

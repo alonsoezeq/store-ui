@@ -80,6 +80,7 @@ const OrdersList = ({orders, setOrders}) => {
       } else {
         auxOrders = orders.filter( order => order.userId.toString() === filter);
       }
+      console.log(orders);
       //console.log(auxOrders);
       setFilteredOrders(auxOrders);
     }, [filter, orders]);
@@ -164,6 +165,7 @@ const OrdersList = ({orders, setOrders}) => {
                       <TableCell align="center">Estado de pago</TableCell>
                       <TableCell align="center">Estado de entrega</TableCell>
                       <TableCell align="center">Precio total</TableCell>
+                      <TableCell align="center">Costos de envio</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -200,6 +202,7 @@ const OrdersList = ({orders, setOrders}) => {
                             </TableCell>
                           }
                           <TableCell align="right">$ {order.totalPrice}</TableCell>
+                          <TableCell align="right">$ {order.shippingPrice}</TableCell>
                         </TableRow>
                       ))
                     }

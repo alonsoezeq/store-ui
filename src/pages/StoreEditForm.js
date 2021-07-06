@@ -55,7 +55,7 @@ const StoreEditForm = () => {
         ...context,
         loading: false,
         status: 'success',
-        message: 'Store successfuly edited'
+        message: 'Tienda correctamente editada'
       });
       history.push('/stores');
     })

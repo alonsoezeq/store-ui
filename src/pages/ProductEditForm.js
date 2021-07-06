@@ -100,7 +100,7 @@ const ProductAddForm = () => {
         ...context,
         loading: false,
         status: 'success',
-        message: 'Product successfuly edited'
+        message: 'Producto correctamente editado!'
       });
       history.push('/');
     })
