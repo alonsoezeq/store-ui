@@ -1,6 +1,6 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, CardMedia,Card } from '@material-ui/core';
 import { images } from "../helpers/BannerData";
 
 
@@ -15,12 +15,19 @@ const useStyles = makeStyles({
 const Banner = () =>
 {
   const classes = useStyles();
-  const [imagen, setImagen] = useState([...images]);
+  const [imagen, setImagen] = useState();
+
+  useEffect(() => {
+    setImagen([...images]);
+  }, []);
+
   return (
     <Carousel>
         { 
         imagen?.map(p => (
-          <img key={p.id} src={p.img} alt={p.title} className={classes.picture} />
+          <Card xs={12}>
+              <CardMedia component='img' image={p.img} title={p.title} className={classes.picture} />
+          </Card>
         ))
       }
     </Carousel>
