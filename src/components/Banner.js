@@ -7,7 +7,7 @@ import { images } from "../helpers/BannerData";
 const useStyles = makeStyles({
   picture: {
     width: '100%',
-    height: '7%'
+    height: 250
   }
 });
 
@@ -22,7 +22,7 @@ const Banner = () =>
   }, []);
 
   return (
-    <Carousel>
+    <Carousel autoPlay={false}>
         { 
         imagen?.map(p => (
           <Card xs={12}>
