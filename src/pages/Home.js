@@ -3,6 +3,7 @@ import { React, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../AppContext';
 import AppCarousel from '../components/AppCarousel';
 import ProductGrid from '../components/ProductGrid';
+import Banner from '../components/Banner';
 import config from '../config/config';
 
 const Home = () => {
@@ -29,7 +30,8 @@ const Home = () => {
         !context.loading && products.length > 0 &&
         <Grid container spacing={2} justify="center">
           <Grid item xs={12}>
-              <AppCarousel products={products} />
+              {/* <AppCarousel products={products} /> */}
+              <Banner></Banner>
           </Grid>
           <Grid item xs={12}>
             <ProductGrid products={products} setProducts={setProducts}/>

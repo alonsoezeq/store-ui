@@ -18,10 +18,10 @@ const useStyles = makeStyles(theme => ({
     // padding: '0 !important'
   },
   container: {
-    display: "flex",
-    justifyContent: "space-between",
-    width: "80vw",
-    height: "65vh",
+    // display: "flex",
+    // justifyContent: "space-between",
+    // width: "80vw",
+    // height: "65vh",
   },
 }));
 

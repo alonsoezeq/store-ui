@@ -1,8 +1,9 @@
-import { Button, Container, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography } from "@material-ui/core"
+import { Button, Container, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography, Select, MenuItem } from "@material-ui/core"
 import { useContext, useState } from "react";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
 import { useHistory } from "react-router-dom";
+import provinces from "../config/province.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,10 +23,11 @@ const Register = () => {
     fullname: '',
     email: '',
     password: '',
-    adress: ''
+    adress: '',
+    province: ''
   });
 
-  const {username, fullname, email, password, adress} = user;
+  const {username, fullname, email, password, adress, province } = user;
 
   const handleChange = (event) => {
     setUser({...user, [event.target.name]: event.target.value});
@@ -94,6 +96,16 @@ const Register = () => {
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="adress">Dirección</InputLabel>
                 <Input id="adress" name="adress" type="text" className={classes.inputText} value={adress} onChange={handleChange} />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="province">Provincia</InputLabel>
+                <Select id="province" name="province" className={classes.inputText} value={province} onChange={handleChange}>
+                {
+                  provinces.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
+                }
+              </Select>
               </FormControl>
             </Grid>
             <Grid container justify="flex-end">

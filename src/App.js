@@ -18,6 +18,7 @@ import { authHeader, isAdmin, isAuthenticated, isBuyer, isSeller } from './helpe
 import StoreAddForm from './pages/StoreAddForm';
 import StoreEditForm from './pages/StoreEditForm';
 import Profile from './pages/Profile';
+import ProfileEditForm from './pages/ProfileEditForm';
 import { AppContext } from './AppContext';
 import { useEffect, useState } from 'react';
 import config from './config/config';
@@ -37,6 +38,7 @@ const routes = [
   { path: '/cart', component: Cart, condition: isBuyer() },
   { path: '/users', component: Users, condition: isAdmin() },
   { path: '/profile', component: Profile, condition: isAuthenticated() },
+  { path: '/profileEdit', component: ProfileEditForm, condition: isAuthenticated() },
   { path: '/login', component: Login, condition: !isAuthenticated() },
   { path: '/register', component: Register, condition: !isAuthenticated() },
   { path: '/checkout', component: Checkout, condition: isBuyer() },

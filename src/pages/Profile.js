@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, makeStyles, Paper, Typography, Button, FormControl } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -40,7 +41,7 @@ const Profile = () => {
         !context.loading && user &&
         <Grid container justify="center" alignContent="center" style={{"height": "80vh"}}>
         <Paper className={classes.paper} elevation={3}>
-          <Grid container direction="column" justify="space-around" style={{height: "20vh", width: "25vw"} }>
+          <Grid container direction="column" justify="space-around">
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Nombre de usuario:
@@ -69,7 +70,13 @@ const Profile = () => {
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Dirección:
               </Box>
-              {user.adress }
+              {user.adress}
+            </Typography>
+            <Typography component={'div'}>
+              <Box display="inline" fontWeight="fontWeightBold" m={1}>
+                Provincia:
+              </Box>
+              {user.province}
             </Typography>
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
@@ -78,6 +85,14 @@ const Profile = () => {
               {new Date(user.registration).toLocaleDateString()}
             </Typography>
           </Grid>
+          <Grid container justify="flex-end">
+              <FormControl className={classes.root}>
+                <Button color="primary">
+                  <Link to="/profileEdit" className={classes.link}>Editar Perfil</Link>
+               </Button>
+              </FormControl>
+            </Grid>
+
         </Paper>
         </Grid>
       }
