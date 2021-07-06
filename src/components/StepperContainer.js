@@ -91,19 +91,18 @@ const StepperContainer = () => {
     }
 
     const confirmPurchase = () => {
-      const purchase = {
-        paymentInfo: paymentInfo,
-        cart: context.cartitems,
+
+      let payment = {
+        pickupPlace: paymentInfo.pickupPlace,
       }
-      
-      console.log(purchase);
 
       fetch(`${config.baseApi}/cart/checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...authHeader()
+          ...authHeader(),
         },
+        body: JSON.stringify({payment}),
       })
       .then((res) => res.ok ? res : Promise.reject(res.statusText))
       .then((data) => {
