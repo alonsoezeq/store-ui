@@ -23,10 +23,12 @@ import { useEffect, useState } from 'react';
 import config from './config/config';
 import Checkout from './pages/Checkout';
 import OrdersHistory from './pages/OrdersHistory';
+import ProductSearch from './pages/ProductSearch';
 
 
 const routes = [
   { path: '/products/add', component: ProductAddForm, condition: (isSeller() || isAdmin()) },
+  { path: '/products/search', component: ProductSearch, condition: (isSeller() || isAdmin()) },
   { path: '/products/:id/edit', component: ProductEditForm, condition: (isSeller() || isAdmin()) },
   { path: '/products/:id', component: ProductDescription },
   { path: '/stores/add', component: StoreAddForm, condition: (isSeller() || isAdmin()) },

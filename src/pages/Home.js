@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     setContext({ ...context, loading: true });
     
-    fetch(`${config.baseApi}/products${window.location.search}`)
+    fetch(`${config.baseApi}/products/?active=1${window.location.search}`)
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setProducts(data);
@@ -32,7 +32,7 @@ const Home = () => {
               <AppCarousel products={products} />
           </Grid>
           <Grid item xs={12}>
-            <ProductGrid products={products} />
+            <ProductGrid products={products} setProducts={setProducts}/>
           </Grid>
         </Grid>
       }
