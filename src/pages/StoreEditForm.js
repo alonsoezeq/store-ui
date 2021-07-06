@@ -91,42 +91,44 @@ const StoreEditForm = () => {
     <>
       {
         !context.loading && store &&
-        <Paper style={{"padding": "2rem 5rem"}} elevation={3}>
-          <Grid container style={{"marginBottom":"2rem"}} justify="center">
-            <Typography variant="h4">Editar Tienda</Typography>
-          </Grid>
-          <form  autoComplete="off" onSubmit={handleSubmit}>
-            <Grid container spacing={2} style={{"width": "60vw", "height":"35vh"}}>
-            <Grid item xs={6}>
-              <Grid item xs={12}>
-                <FormControl required className={classes.root}>
-                  <InputLabel htmlFor="name">Nombre</InputLabel>
-                  <Input id="name" name="name" type="text" className={classes.inputText} value={store.name} onChange={handleChange} />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl required className={classes.root}>
-                  <InputLabel htmlFor="address">Dirección</InputLabel>
-                  <Input id="address" name="address" type="text" className={classes.inputText} value={store.address} onChange={handleChange} />
-                </FormControl>
-              </Grid>
+        <Grid container justify="center">
+          <Paper style={{"padding": "2rem 5rem"}} elevation={3}>
+            <Grid container style={{"marginBottom":"2rem"}} justify="center">
+              <Typography variant="h4">Editar Tienda</Typography>
             </Grid>
+            <form  autoComplete="off" onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
               <Grid item xs={6}>
-                <FormControl required className={classes.root}>
-                  <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
-                  <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
-                </FormControl>
+                <Grid item xs={12}>
+                  <FormControl required className={classes.root}>
+                    <InputLabel htmlFor="name">Nombre</InputLabel>
+                    <Input id="name" name="name" type="text" className={classes.inputText} value={store.name} onChange={handleChange} />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl required className={classes.root}>
+                    <InputLabel htmlFor="address">Dirección</InputLabel>
+                    <Input id="address" name="address" type="text" className={classes.inputText} value={store.address} onChange={handleChange} />
+                  </FormControl>
+                </Grid>
               </Grid>
-              <Grid container justify={"flex-end"}>
-                <FormControl className={classes.root}>
-                  <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
-                    Modificar tienda
-                  </Button>
-                </FormControl>
+                <Grid item xs={6}>
+                  <FormControl required className={classes.root}>
+                    <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
+                    <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+                  </FormControl>
+                </Grid>
+                <Grid container justify={"flex-end"}>
+                  <FormControl className={classes.root}>
+                    <Button id="submit" name="submit" type="submit" variant="contained" color="primary" disabled={context.loading}>
+                      Modificar tienda
+                    </Button>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </Paper>
+            </form>
+          </Paper>
+        </Grid>
       }
     </>
   );
