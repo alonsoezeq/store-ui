@@ -83,31 +83,28 @@ const App = () => {
 
   return (
     <AppContext.Provider value={[context, setContext]}>
-          <Router>
-            <NavBar title={title} />
-            <Container fixed maxWidth="lg" >
-              <Box my={3} display="flex" justifyContent="center" alignItems="center">
-                <Switch>
-                  {
-                    routes.map(({path, component, condition}) => 
-                      (condition === undefined || condition === true) &&
-                      <Route key={path} exact path={path} component={component} />
-                    )
-                  }
-                </Switch>
-                {
-                  loading &&
-                  <CircularProgress />
-                }
-                {
-                  status && 
-                  <Snackbar open={!!status} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                    <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
-                  </Snackbar>
-                }
-              </Box>
-            </Container>
-          </Router>
+      <Router>
+        <NavBar title={title} />
+        <Container fixed maxWidth="lg" >
+          <Box my={3} display="flex" justifyContent="center" alignItems="center">
+            <Switch>
+              {
+                routes.map(({path, component, condition}) => 
+                  (condition === undefined || condition === true) &&
+                  <Route key={path} exact path={path} component={component} />
+                )
+              }
+            </Switch>
+            { loading && <CircularProgress /> }
+            {
+              status && 
+              <Snackbar open={!!status} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert severity={status} onClose={handleSnackbarClose}>{message?.toString()}</Alert>
+              </Snackbar>
+            }
+          </Box>
+        </Container>
+      </Router>
     </AppContext.Provider>
   );
 }

@@ -12,8 +12,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import config from '../config/config';
 import { AppContext } from '../AppContext';
-import orderState from "../config/orderState.json";
-import paymentState from '../config/paymentState.json';
+import orderState from "../config/orderStates.json";
+import paymentState from '../config/paymentStates.json';
 
 const useStyles = makeStyles((theme) => ({
     select: {

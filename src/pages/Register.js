@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
 import { useHistory } from "react-router-dom";
-import provinces from "../config/province.json";
+import provinces from "../config/provinces.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
