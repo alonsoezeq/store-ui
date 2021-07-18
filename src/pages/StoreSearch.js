@@ -4,15 +4,16 @@ import config from '../config/config';
 import { authHeader } from '../helpers/AuthUtils';
 import { Typography } from '@material-ui/core';
 import ProductList from '../components/ProductList';
+import StoresList from '../components/StoresList';
 
-const ProductSearch = () => {
+const StoreSearch = () => {
     const [ context, setContext ] = useContext(AppContext);
-    const [ products, setProducts ] = useState([]);
+    const [ stores, setStores ] = useState([]);
     const { loading } = context;
 
-    const getProducts = () => {
+    const getStores = () => {
     
-        fetch(config.baseApi + '/products', {
+        fetch(config.baseApi + '/stores', {
             headers: {
               ...authHeader()
             }
@@ -20,7 +21,7 @@ const ProductSearch = () => {
           .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
           .then(data => {
             data.sort((a, b) => a.id - b.id);
-            setProducts(data);
+            setStores(data);
             setContext({ ...context, loading: false });
             
           })
@@ -32,21 +33,21 @@ const ProductSearch = () => {
     useEffect(() => {
         setContext({ ...context, loading: true });
           
-        getProducts();
+        getStores();
       }, []);
 
     return ( 
         <>
         {
-            !loading && products.length > 0 &&
-            <ProductList products={products} setProducts={setProducts} />
+            !loading && stores.length > 0 &&
+            <StoresList stores={stores} setStores={setStores} />
         }
         {
-            !loading && products.length === 0 &&
-            <Typography>Todavía no se agregaron productos</Typography>
+            !loading && stores.length === 0 &&
+            <Typography>Todavía no se agregaron tiendas</Typography>
         }        
         </>
      );
 }
  
-export default ProductSearch;
+export default StoreSearch;

@@ -11,7 +11,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { authHeader } from "../helpers/AuthUtils";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
-import userEvent from '@testing-library/user-event';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -104,13 +103,11 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             setAllowNext(true);
         }
         if(paymentInfo.pickupPlace === 'home'){
-            paymentInfo.address = user.adress;
+            paymentInfo.address = user.address;
             paymentInfo.shippingPrice = 350;
         }else{
             paymentInfo.shippingPrice = 0;
-        }
-
-        console.log(paymentInfo);     
+        }  
     }
 
     return ( 
@@ -164,7 +161,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             </Select>
                         </FormControl>
                         {
-                            paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {user && user.adress} , con un costo fijo de $350 </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
+                            paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {user && user.address} , con un costo fijo de $350 </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
                         }
                         <Button className={classes.buttonInput} type="submit" variant="contained" color="primary">Confirmar</Button>   
                     </form> 

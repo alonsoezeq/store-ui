@@ -26,6 +26,7 @@ const Users = () => {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
+      data.sort((a, b) => a.id - b.id);
       setUsers(data);
       setContext({ ...context, loading: false });
     })

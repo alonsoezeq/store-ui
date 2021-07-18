@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 
 const Banner = () =>
 {
+  let key = 0;
   const classes = useStyles();
   const [imagen, setImagen] = useState();
 
@@ -25,7 +26,7 @@ const Banner = () =>
     <Carousel>
         { 
         imagen?.map(p => (
-          <Card xs={12}>
+          <Card key={key += 1} xs={12}>
               <CardMedia component='img' image={p.img} title={p.title} className={classes.picture} />
           </Card>
         ))

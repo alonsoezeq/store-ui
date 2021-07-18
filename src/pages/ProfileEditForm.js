@@ -1,9 +1,9 @@
 import { Grid } from "@material-ui/core";
-import { Box, makeStyles, Paper, Typography, FormControl, Button, InputLabel, Select, MenuItem, Input } from "@material-ui/core";
+import { makeStyles, Paper, Typography, FormControl, Button, InputLabel, Select, MenuItem, Input } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
-import provinces from "../config/province.json";
+import provinces from "../config/provinces.json";
 import { authHeader } from "../helpers/AuthUtils";
 import { useHistory } from "react-router-dom";
 
@@ -100,8 +100,8 @@ const ProfileEditForm = () => {
             </Grid>
             <Grid item>
               <FormControl required className={classes.root}>
-                <InputLabel htmlFor="adress">Dirección</InputLabel>
-                <Input id="adress" name="adress" type="text" className={classes.inputText} value={user && user.adress} onChange={handleChange} />
+                <InputLabel htmlFor="address">Dirección</InputLabel>
+                <Input id="address" name="address" type="text" className={classes.inputText} value={user && user.address} onChange={handleChange} />
               </FormControl>
             </Grid>
             <Grid item>

@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button, fade, FormControl, Grid, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
-import { authHeader, isBuyer } from '../helpers/AuthUtils';
+import { authHeader, isAdmin, isBuyer, isSeller } from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import config from '../config/config';
@@ -80,8 +80,6 @@ const OrdersList = ({orders, setOrders}) => {
       } else {
         auxOrders = orders.filter( order => order.userId.toString() === filter);
       }
-      console.log(orders);
-      //console.log(auxOrders);
       setFilteredOrders(auxOrders);
     }, [filter, orders]);
 
@@ -178,29 +176,70 @@ const OrdersList = ({orders, setOrders}) => {
                           }
                           <TableCell align="center">{parsePaymentState(order.paymentStatus)}</TableCell>
                           {
-                            isBuyer() ?
-                            <TableCell align="center">{parseOrderState(order.shippingStatus)}</TableCell> :
-                            
-                            <TableCell size={"medium"} align="center">
-                              <FormControl>
-                                <Select
-                                  labelId="shipping-status"
-                                  id="shipping-status"
-                                  value={order.shippingStatus}
-                                  onChange={(e) => {handleStateChange(e.target.value, order)}}
-                                  className={classes.select}
-                                >
-                                  <MenuItem value={"pending"}>Pago pendiente</MenuItem>
-                                  <MenuItem value={"paid"}>Pagado</MenuItem>
-                                  <MenuItem value={"deliveryPending"}>Entrega pendiente</MenuItem>
-                                  <MenuItem value={"pickupPending"}>Retiro pendiente</MenuItem>
-                                  <MenuItem value={"delivered"}>Entregado</MenuItem>
-                                  <MenuItem value={"pickedup"}>Retirado</MenuItem>
-                                  <MenuItem value={"cancelled"}>Cancelado</MenuItem>
-                                </Select>
-                              </FormControl>
-                            </TableCell>
+                            isBuyer() &&
+                            <TableCell align="center">{parseOrderState(order.shippingStatus)}</TableCell>
+
                           }
+                          {
+                            (isSeller() || isAdmin()) && 
+                            <TableCell size={"medium"} align="center">           
+                                  {
+                                    order.shippingStatus === "deliveryPending" &&
+                                    <FormControl>
+                                      <Select
+                                        labelId="shipping-status"
+                                        id="shipping-status"
+                                        value={order.shippingStatus}
+                                        onChange={(e) => {handleStateChange(e.target.value, order)}}
+                                        className={classes.select}
+                                      >
+                                        <MenuItem value={"deliveryPending"}>Entrega pendiente</MenuItem>
+                                        <MenuItem value={"deliveryNotSuccessful"}>No se pudo entregar</MenuItem>
+                                        <MenuItem value={"delivered"}>Entregado</MenuItem> 
+                                        <MenuItem value={"cancelled"}>Cancelado</MenuItem> 
+                                      </Select>
+                                    </FormControl>
+                                  }
+                                  {
+                                    order.shippingStatus === "deliveryNotSuccessful" &&
+                                    <FormControl>
+                                      <Select
+                                        labelId="shipping-status"
+                                        id="shipping-status"
+                                        value={order.shippingStatus}
+                                        onChange={(e) => {handleStateChange(e.target.value, order)}}
+                                        className={classes.select}
+                                      >
+                                        <MenuItem value={"deliveryNotSuccessful"}>No se pudo entregar</MenuItem>
+                                        <MenuItem value={"delivered"}>Entregado</MenuItem> 
+                                        <MenuItem value={"cancelled"}>Cancelado</MenuItem> 
+                                      </Select>
+                                    </FormControl>
+                                  }
+                                  {
+                                    order.shippingStatus === "pickupPending" &&
+                                    <FormControl>
+                                      <Select
+                                        labelId="shipping-status"
+                                        id="shipping-status"
+                                        value={order.shippingStatus}
+                                        onChange={(e) => {handleStateChange(e.target.value, order)}}
+                                        className={classes.select}
+                                      >
+                                        <MenuItem value={"pickupPending"}>Retiro pendiente</MenuItem>
+                                        <MenuItem value={"pickedup"}>Retirado</MenuItem> 
+                                        <MenuItem value={"cancelled"}>Cancelado</MenuItem> 
+                                      </Select>
+                                    </FormControl>
+                                  }
+                                  {
+                                    (order.shippingStatus === "delivered" || 
+                                    order.shippingStatus === "pickedup" ||
+                                    order.shippingStatus === "cancelled") &&
+                                    parseOrderState(order.shippingStatus)
+                                  }
+                            </TableCell>
+                          }                          
                           <TableCell align="right">$ {order.totalPrice}</TableCell>
                           <TableCell align="right">$ {order.shippingPrice}</TableCell>
                         </TableRow>

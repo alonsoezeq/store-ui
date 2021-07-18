@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography, Select, MenuItem } from "@material-ui/core"
+import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography, Select, MenuItem } from "@material-ui/core"
 import { useContext, useState } from "react";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
@@ -23,11 +23,11 @@ const Register = () => {
     fullname: '',
     email: '',
     password: '',
-    adress: '',
+    address: '',
     province: ''
   });
 
-  const {username, fullname, email, password, adress, province } = user;
+  const {username, fullname, email, password, address, province } = user;
 
   const handleChange = (event) => {
     setUser({...user, [event.target.name]: event.target.value});
@@ -94,8 +94,8 @@ const Register = () => {
             </Grid>
             <Grid item>
               <FormControl required className={classes.root}>
-                <InputLabel htmlFor="adress">Dirección</InputLabel>
-                <Input id="adress" name="adress" type="text" className={classes.inputText} value={adress} onChange={handleChange} />
+                <InputLabel htmlFor="address">Dirección</InputLabel>
+                <Input id="address" name="address" type="text" className={classes.inputText} value={address} onChange={handleChange} />
               </FormControl>
             </Grid>
             <Grid item>

@@ -2,6 +2,7 @@
   "pending": "Pago pendiente",
   "paid": "Pagado",
   "deliveryPending": "Entrega pendiente",
+  "deliveryNotSuccessful": "No se pudo entregar",
   "pickupPending": "Retiro pendiente",
   "delivered": "Entregado",
   "pickedup": "Retirado",

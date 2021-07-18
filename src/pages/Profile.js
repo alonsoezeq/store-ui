@@ -70,7 +70,7 @@ const Profile = () => {
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Dirección:
               </Box>
-              {user.adress}
+              {user.address || ''}
             </Typography>
             <Typography component={'div'}>
               <Box display="inline" fontWeight="fontWeightBold" m={1}>

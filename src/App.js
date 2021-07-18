@@ -25,6 +25,8 @@ import config from './config/config';
 import Checkout from './pages/Checkout';
 import OrdersHistory from './pages/OrdersHistory';
 import ProductSearch from './pages/ProductSearch';
+import StockControl from './pages/StockControl';
+import StoreSearch from './pages/StoreSearch';
 
 
 const routes = [
@@ -32,8 +34,10 @@ const routes = [
   { path: '/products/search', component: ProductSearch, condition: (isSeller() || isAdmin()) },
   { path: '/products/:id/edit', component: ProductEditForm, condition: (isSeller() || isAdmin()) },
   { path: '/products/:id', component: ProductDescription },
+  { path: '/stock/:id', component: StockControl,condition: (isSeller() || isAdmin()) },
   { path: '/stores/add', component: StoreAddForm, condition: (isSeller() || isAdmin()) },
   { path: '/stores/:id/edit', component: StoreEditForm, condition: (isSeller() || isAdmin()) },
+  { path: '/stores/search', component: StoreSearch, condition: isAdmin() },
   { path: '/stores', component: Stores },
   { path: '/cart', component: Cart, condition: isBuyer() },
   { path: '/users', component: Users, condition: isAdmin() },

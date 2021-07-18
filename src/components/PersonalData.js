@@ -70,7 +70,7 @@ const PersonalData = () => {
               <Box display="inline" fontWeight="fontWeightBold" m={1}>
                 Domicilio:
               </Box>
-              {user.adress || ''}
+              {user.address || ''}
             </Typography>
           </div>
         </Paper>

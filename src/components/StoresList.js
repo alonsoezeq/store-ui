@@ -65,12 +65,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ProductList = ({products, setProducts}) => {
+const StoresList = ({stores, setStores}) => {
 
     const classes = useStyles();
     const [ context, setContext ] = useContext(AppContext);
     const [filter, setFilter] = useState('');
-    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredStores, setFilteredStores] = useState([]);
 
     const history = useHistory();
 
@@ -81,14 +81,14 @@ const ProductList = ({products, setProducts}) => {
     }
 
     useEffect(() => {
-      let auxProducts
+      let auxStores
       if(filter === '') {
-        auxProducts = products;
+        auxStores = stores;
       } else {
-        auxProducts = products.filter( product => product.id.toString() === filter);
+        auxStores = stores.filter( store => store.id.toString() === filter);
       }
-      setFilteredProducts(auxProducts);
-    }, [filter, products]);
+      setFilteredStores(auxStores);
+    }, [filter, stores]);
 
     const handleFilter = (e) => {
         setFilter(e.target.value);
@@ -98,21 +98,21 @@ const ProductList = ({products, setProducts}) => {
         setFilter('');
     }
 
-    const changeState = (id, product) => {
-        fetch(`${config.baseApi}/products/${id}`, {
+    const changeState = (id, store) => {
+        fetch(`${config.baseApi}/stores/${id}`, {
             method: 'PATCH',
             headers: {
             'Content-Type': 'application/json',
             ...authHeader()
             },
-            body: JSON.stringify(product)
+            body: JSON.stringify(store)
         })
         .then((res) => res.ok ? res : Promise.reject(res.statusText))
         .then((data) => {
-            if(product.active) {
-                setContext({ ...context, status: 'success', message: 'Se dio de alta el producto' });
+            if(store.active) {
+                setContext({ ...context, status: 'success', message: 'Se dio de alta la tienda' });
             } else {
-                setContext({ ...context, status: 'success', message: 'Se dio de baja el producto' });
+                setContext({ ...context, status: 'success', message: 'Se dio de baja la tienda' });
             }
             
         })
@@ -121,22 +121,22 @@ const ProductList = ({products, setProducts}) => {
         });
     }
 
-    const handleDelete = (id, product) => {
-        let index = products.indexOf(product);
-        let auxArray = products.slice();
+    const handleDelete = (id, store) => {
+        let index = stores.indexOf(store);
+        let auxArray = stores.slice();
 
         if (index !== -1) {
-            if(product.active) {
-                product.active = false;
+            if(store.active) {
+                store.active = false;
             } else {
-                product.active = true;
+                store.active = true;
             }
             
-            auxArray[index] = product;
+            auxArray[index] = store;
         }
         
-        changeState(id, product);
-        setProducts(products)
+        changeState(id, store);
+        setStores(stores)
     }
 
     return ( 
@@ -147,7 +147,7 @@ const ProductList = ({products, setProducts}) => {
                     <SearchIcon />
                 </div> 
                 <InputBase
-                    placeholder={"Id producto"}
+                    placeholder={"Id tienda"}
                     classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
@@ -159,38 +159,34 @@ const ProductList = ({products, setProducts}) => {
                 <Button size="small" style={{marginLeft:'0.5rem'}} variant="contained" color="primary" onClick={resetFilter}>Limpiar</Button>
                 </div>
             </Grid>
-            { filteredProducts.length > 0 &&     
+            { filteredStores.length > 0 &&     
             <Grid item xs={12}>
             <Paper component={'div'}>    
                 <TableContainer >
                     <Table className={classes.table} aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="center">Id Producto</TableCell>
+                                <TableCell align="center">Id Tienda</TableCell>
                                 <TableCell align="center">Nombre</TableCell>
-                                <TableCell align="center">Descripción</TableCell>
+                                <TableCell align="center">Dirección</TableCell>
                                 <TableCell align="center">Estado</TableCell>
-                                <TableCell align="center">Stock</TableCell>
-                                <TableCell align="center">Editar datos</TableCell>
-                                <TableCell align="center">Modificar stock</TableCell>
-                                <TableCell align="center">Dar de baja</TableCell>
+                                <TableCell align="center"></TableCell>
+                                <TableCell align="center"></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                         {
-                        filteredProducts?.map((product) => (
-                            <TableRow key={product.id}>
-                                <TableCell align="center">{product.id}</TableCell>
-                                <TableCell align="center">{product.title}</TableCell>
-                                <TableCell align="center" >{product.description}</TableCell>
-                                <TableCell align="center" >{product.active? "Activo" : "Dado de baja"}</TableCell>
-                                <TableCell align="center" >{product.quantity}</TableCell>
-                                <TableCell align="right"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/products/${product.id}/edit`, 'Editar producto')}>Editar datos</Button></TableCell>
-                                <TableCell align="right"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/stock/${product.id}`, 'Modificar stock')}>Modificar stock</Button></TableCell>
-                                <TableCell align="right">
-                                    { product.active?
-                                        <Button size="small" variant="contained" color="secondary" onClick={() => handleDelete(product.id, product)}>Dar de baja</Button>:
-                                        <Button size="small" variant="contained" color="primary" onClick={() => handleDelete(product.id, product)}>Dar de alta</Button>
+                        filteredStores?.map((store) => (
+                            <TableRow key={store.id}>
+                                <TableCell align="center">{store.id}</TableCell>
+                                <TableCell align="center">{store.name}</TableCell>
+                                <TableCell align="center" >{store.address}</TableCell>
+                                <TableCell align="center" >{store.active? "Activo" : "Dado de baja"}</TableCell>
+                                <TableCell align="center"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/stores/${store.id}/edit`, 'Editar tienda')}>Editar</Button></TableCell>
+                                <TableCell align="center">
+                                    { store.active?
+                                        <Button size="small" variant="contained" color="secondary" onClick={() => handleDelete(store.id, store)}>Dar de baja</Button>:
+                                        <Button size="small" variant="contained" color="primary" onClick={() => handleDelete(store.id, store)}>Dar de alta</Button>
                                     }
                                 </TableCell>
                             </TableRow>
@@ -203,7 +199,7 @@ const ProductList = ({products, setProducts}) => {
                 </Grid>
                 }
                 {
-                filteredProducts.length === 0 && 
+                filteredStores.length === 0 && 
                 <Grid item xs={12}> 
                     <Typography align="center">No se encontraron resultados</Typography>
                 </Grid>
@@ -212,4 +208,4 @@ const ProductList = ({products, setProducts}) => {
     );
 }
  
-export default ProductList;
+export default StoresList;

@@ -27,7 +27,7 @@ const OrdersHistory = () => {
           })
           .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
           .then(data => {
-            
+            data.sort((a, b) => a.id - b.id);
             setOrders(data);
             setContext({ ...context, loading: false });
             
