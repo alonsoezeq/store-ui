@@ -201,22 +201,6 @@ const OrdersList = ({orders, setOrders}) => {
                                     </FormControl>
                                   }
                                   {
-                                    order.shippingStatus === "deliveryNotSuccessful" &&
-                                    <FormControl>
-                                      <Select
-                                        labelId="shipping-status"
-                                        id="shipping-status"
-                                        value={order.shippingStatus}
-                                        onChange={(e) => {handleStateChange(e.target.value, order)}}
-                                        className={classes.select}
-                                      >
-                                        <MenuItem value={"deliveryNotSuccessful"}>No se pudo entregar</MenuItem>
-                                        <MenuItem value={"delivered"}>Entregado</MenuItem> 
-                                        <MenuItem value={"cancelled"}>Cancelado</MenuItem> 
-                                      </Select>
-                                    </FormControl>
-                                  }
-                                  {
                                     order.shippingStatus === "pickupPending" &&
                                     <FormControl>
                                       <Select
@@ -233,7 +217,8 @@ const OrdersList = ({orders, setOrders}) => {
                                     </FormControl>
                                   }
                                   {
-                                    (order.shippingStatus === "delivered" || 
+                                    (order.shippingStatus === "deliveryNotSuccessful" ||
+                                    order.shippingStatus === "delivered" || 
                                     order.shippingStatus === "pickedup" ||
                                     order.shippingStatus === "cancelled") &&
                                     parseOrderState(order.shippingStatus)
