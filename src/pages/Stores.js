@@ -12,7 +12,7 @@ const Stores = () => {
   useEffect(() => {
     setContext({ ...context, loading: true});
 
-    fetch(`${config.baseApi}/stores/active`)
+    fetch(`${config.baseApi}/stores?active=1`)
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setStores(data);
