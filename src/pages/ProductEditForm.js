@@ -7,6 +7,7 @@ import { AppContext } from "../AppContext";
 import categories from "../config/categories.json";
 import colors from "../config/colors.json";
 import genders from "../config/genders.json";
+import priorities from "../config/priorities.json";
 import sizes from "../config/sizes.json";
 import { FiberManualRecord } from "@material-ui/icons";
 
@@ -137,14 +138,18 @@ const ProductAddForm = () => {
                     </Grid>
                   </Grid>           
                   <Grid item xs={6}>
-                          {/* <InputLabel htmlFor="pictures">Editar fotos del producto</InputLabel>
-                          <Switch checked={editPicture.checkedA} onChange={handleChangeEditPicture} name="checkedA" inputProps={{ 'aria-label': 'secondary checkbox' }}/>
-                        { editPicture && */}
                     <FormControl className={classes.root}>
                       <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
                       <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
                     </FormControl>
-                    {/* } */}
+                    <FormControl required className={classes.root}>
+                      <InputLabel htmlFor="priority">Prioridad de venta</InputLabel>
+                      <Select id="priority" name="priority" className={classes.inputSelect} value={product.priority} onChange={handleChange}>
+                        {
+                          priorities.map((label, index) => <MenuItem key={index} value={index}>{label}</MenuItem>)
+                        }
+                      </Select>
+                    </FormControl>
                   </Grid>
                  </Grid>
                <Grid container >

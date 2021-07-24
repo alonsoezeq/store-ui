@@ -3,10 +3,11 @@ import { useContext, useState } from "react";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
 import { AppContext } from "../AppContext";
-import categories from "../config/categories.json"
-import colors from "../config/colors.json"
-import genders from "../config/genders.json"
-import sizes from "../config/sizes.json"
+import categories from "../config/categories.json";
+import colors from "../config/colors.json";
+import genders from "../config/genders.json";
+import priorities from "../config/priorities.json";
+import sizes from "../config/sizes.json";
 import { FiberManualRecord } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,12 +45,13 @@ const ProductAddForm = () => {
     gender: '',
     description: '',
     quantity: '',
-    price: ''
+    price: '',
+    priority: 0
   }
 
   const [ product, setProduct ] = useState(initialProduct);
 
-  const {title, article, size, color, category, gender, description, quantity, price } = product;
+  const {title, article, size, color, category, gender, description, quantity, price, priority } = product;
 
   const handleChange = (event) => {
     setProduct({...product, [event.target.name]: event.target.value});
@@ -132,6 +134,14 @@ const ProductAddForm = () => {
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
                 <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+              </FormControl>
+              <FormControl required className={classes.root}>
+                <InputLabel htmlFor="priority">Prioridad de venta</InputLabel>
+                <Select id="priority" name="priority" className={classes.inputSelect} value={priority} onChange={handleChange}>
+                  {
+                    priorities.map((label, index) => <MenuItem key={index} value={index}>{label}</MenuItem>)
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
