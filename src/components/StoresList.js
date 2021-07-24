@@ -181,7 +181,7 @@ const StoresList = ({stores, setStores}) => {
                                 <TableCell align="center">{store.id}</TableCell>
                                 <TableCell align="center">{store.name}</TableCell>
                                 <TableCell align="center" >{store.address}</TableCell>
-                                <TableCell align="center" >{store.active? "Activo" : "Dado de baja"}</TableCell>
+                                <TableCell align="center" >{store.active? "Activa" : "Dada de baja"}</TableCell>
                                 <TableCell align="center"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/stores/${store.id}/edit`, 'Editar tienda')}>Editar</Button></TableCell>
                                 <TableCell align="center">
                                     { store.active?

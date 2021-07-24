@@ -6,13 +6,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, fade, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Button, fade, Grid, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import { authHeader} from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import config from '../config/config';
 import { AppContext } from '../AppContext';
 import { useHistory } from 'react-router-dom';
+import priorities from '../config/priorities.json';
 
 const useStyles = makeStyles((theme) => ({
     select: {
@@ -88,7 +89,7 @@ const ProductList = ({products, setProducts}) => {
         auxProducts = products.filter( product => product.id.toString() === filter);
       }
       setFilteredProducts(auxProducts);
-    }, [filter, products]);
+    }, [filter, products, filteredProducts]);
 
     const handleFilter = (e) => {
         setFilter(e.target.value);
@@ -121,6 +122,24 @@ const ProductList = ({products, setProducts}) => {
         });
     }
 
+    const changeProduct = (id, product, message) => {
+        fetch(`${config.baseApi}/products/${id}`, {
+            method: 'PATCH',
+            headers: {
+            'Content-Type': 'application/json',
+            ...authHeader()
+            },
+            body: JSON.stringify(product)
+        })
+        .then((res) => res.ok ? res : Promise.reject(res.statusText))
+        .then((data) => {
+            setContext({ ...context, status: 'success', message: message });            
+        })
+        .catch(err => {
+            setContext({ ...context, status: 'error', message: err });
+        });
+    }
+
     const handleDelete = (id, product) => {
         let index = products.indexOf(product);
         let auxArray = products.slice();
@@ -136,8 +155,42 @@ const ProductList = ({products, setProducts}) => {
         }
         
         changeState(id, product);
-        setProducts(products)
+        setFilteredProducts(auxArray);
     }
+
+    
+  const handleQuantityChange = (product, value) => {
+    let index = products.indexOf(product);
+    let auxArray = products.slice();
+
+    if (index !== -1) {
+        if(value > 0) {
+            product.quantity = value;
+        } else {
+            product.quantity = 0;
+        }
+        
+        
+        auxArray[index] = product;
+    }
+
+    changeProduct(product.id, product, "Se modificó el stock");
+    setFilteredProducts(auxArray);
+  }
+
+  const handleChange = (product, value) => {
+    let index = products.indexOf(product);
+    let auxArray = products.slice();
+
+    if (index !== -1) {
+        product.priority = value;
+        auxArray[index] = product;
+    }
+
+    changeProduct(product.id, product, "Se modificó la prioridad");
+    setFilteredProducts(auxArray);
+  }
+
 
     return ( 
         <Grid container spacing={2}>
@@ -171,8 +224,9 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center">Descripción</TableCell>
                                 <TableCell align="center">Estado</TableCell>
                                 <TableCell align="center">Stock</TableCell>
-                                <TableCell align="center">Editar datos</TableCell>
                                 <TableCell align="center">Modificar stock</TableCell>
+                                <TableCell align="center">Prioridad</TableCell>
+                                <TableCell align="center">Editar datos</TableCell>
                                 <TableCell align="center">Dar de baja</TableCell>
                             </TableRow>
                         </TableHead>
@@ -185,8 +239,17 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center" >{product.description}</TableCell>
                                 <TableCell align="center" >{product.active? "Activo" : "Dado de baja"}</TableCell>
                                 <TableCell align="center" >{product.quantity}</TableCell>
+                                <TableCell align="right">
+                                    <input type="number" min="1" step="1" value={product.quantity} onChange={(e) => handleQuantityChange(product, e.target.value)} />  
+                                </TableCell>
+                                <TableCell align="right">
+                                <Select id="priority" name="priority" className={classes.inputSelect} value={product.priority} onChange={(e) => handleChange(product, e.target.value)}>
+                                    {
+                                        priorities.map((label, index) => <MenuItem key={index} value={index}>{label}</MenuItem>)
+                                    }
+                                </Select>  
+                                </TableCell>
                                 <TableCell align="right"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/products/${product.id}/edit`, 'Editar producto')}>Editar datos</Button></TableCell>
-                                <TableCell align="right"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/stock/${product.id}`, 'Modificar stock')}>Modificar stock</Button></TableCell>
                                 <TableCell align="right">
                                     { product.active?
                                         <Button size="small" variant="contained" color="secondary" onClick={() => handleDelete(product.id, product)}>Dar de baja</Button>:
