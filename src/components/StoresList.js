@@ -122,8 +122,8 @@ const StoresList = ({stores, setStores}) => {
     }
 
     const handleDelete = (id, store) => {
-        let index = stores.indexOf(store);
-        let auxArray = stores.slice();
+        let index = filteredStores.indexOf(store);
+        let auxArray = filteredStores.slice();
 
         if (index !== -1) {
             if(store.active) {
@@ -136,7 +136,7 @@ const StoresList = ({stores, setStores}) => {
         }
         
         changeState(id, store);
-        setStores(stores)
+        setFilteredStores(auxArray)
     }
 
     return ( 

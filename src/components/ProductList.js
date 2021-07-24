@@ -89,11 +89,11 @@ const ProductList = ({products, setProducts}) => {
         auxProducts = products.filter( product => product.id.toString() === filter);
       }
       setFilteredProducts(auxProducts);
-    }, [filter, products, filteredProducts]);
+    }, [filter, products]);
 
     const handleFilter = (e) => {
         setFilter(e.target.value);
-      }
+    }
   
     const resetFilter = () => {
         setFilter('');
@@ -141,8 +141,8 @@ const ProductList = ({products, setProducts}) => {
     }
 
     const handleDelete = (id, product) => {
-        let index = products.indexOf(product);
-        let auxArray = products.slice();
+        let index = filteredProducts.indexOf(product);
+        let auxArray = filteredProducts.slice();
 
         if (index !== -1) {
             if(product.active) {
@@ -160,8 +160,8 @@ const ProductList = ({products, setProducts}) => {
 
     
   const handleQuantityChange = (product, value) => {
-    let index = products.indexOf(product);
-    let auxArray = products.slice();
+    let index = filteredProducts.indexOf(product);
+    let auxArray = filteredProducts.slice();
 
     if (index !== -1) {
         if(value > 0) {
@@ -179,8 +179,8 @@ const ProductList = ({products, setProducts}) => {
   }
 
   const handleChange = (product, value) => {
-    let index = products.indexOf(product);
-    let auxArray = products.slice();
+    let index = filteredProducts.indexOf(product);
+    let auxArray = filteredProducts.slice();
 
     if (index !== -1) {
         product.priority = value;
