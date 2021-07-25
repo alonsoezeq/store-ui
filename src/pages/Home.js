@@ -8,6 +8,8 @@ import config from '../config/config';
 const Home = () => {
   const [ products, setProducts ] = useState([]);
   const [ context, setContext ] = useContext(AppContext);
+  const [ highPriority, setHighPriority] = useState([]);
+  const [ lowPriority, setLowPriority] = useState([]);
 
   const { loading } = context;
 
@@ -23,6 +25,8 @@ const Home = () => {
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setProducts(data);
+      setHighPriority(data.filter( product => product.priority === 3));
+      setLowPriority(data.filter( product => product.priority === 0));
       setContext({ ...context, loading: false });
     })
     .catch(err => {
@@ -37,9 +41,34 @@ const Home = () => {
           <Grid item xs={12}>
               <Banner></Banner>
           </Grid>
-          { !loading && products.length > 0 &&
-            <Grid item xs={12}>
-              <ProductGrid products={products} setProducts={setProducts}/>
+          { !loading && products.length > 0 && 
+            <Grid container spacing={6}>
+              { highPriority.length > 0 &&             
+                <> 
+                  <Grid item xs={12}>
+                    <Typography variant="h4">Productos destacados</Typography>
+                  </Grid>            
+                  <Grid item xs={12}>
+                    <ProductGrid products={highPriority} setProducts={setHighPriority}/>
+                  </Grid> 
+                </> 
+              }          
+              { lowPriority.length > 0 && 
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="h4">Productos recomendados</Typography>
+                  </Grid> 
+                  <Grid item xs={12}>
+                    <ProductGrid products={lowPriority} setProducts={setLowPriority}/>
+                  </Grid>
+                </>
+              }
+              <Grid item xs={12}>
+                <Typography variant="h4">Todos los productos</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <ProductGrid products={products} setProducts={setProducts}/>
+              </Grid>
             </Grid>
           }
           {
