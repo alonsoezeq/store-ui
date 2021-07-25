@@ -139,7 +139,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             validateWhiteSpaces();
             setAllowNext(true);
         }
-        if(paymentInfo.pickupStore === '' && paymentInfo.pickupPlace === 'store'){
+        if((paymentInfo.pickupStore === '' || paymentInfo.pickupStore === undefined) && paymentInfo.pickupPlace === 'store'){
             setContext({ ...context, 
                 status: 'error', 
                 message: "Debe seleccionar una tienda donde retirar." 
