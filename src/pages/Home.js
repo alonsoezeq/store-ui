@@ -8,8 +8,8 @@ import config from '../config/config';
 const Home = () => {
   const [ products, setProducts ] = useState([]);
   const [ context, setContext ] = useContext(AppContext);
-  const [ highPriority, setHighPriority] = useState([]);
-  const [ lowPriority, setLowPriority] = useState([]);
+  const [ bestProducts, setBestProducts] = useState([]);
+  const [ recommendedProducts, setRecommendedProducts] = useState([]);
 
   const { loading } = context;
 
@@ -25,8 +25,8 @@ const Home = () => {
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .then(data => {
       setProducts(data);
-      setHighPriority(data.filter( product => product.priority === 3));
-      setLowPriority(data.filter( product => product.priority === 0));
+      setBestProducts(data.filter( product => product.priority === 3));
+      setRecommendedProducts(data.filter( product => product.priority === 2));
       setContext({ ...context, loading: false });
     })
     .catch(err => {
@@ -43,23 +43,23 @@ const Home = () => {
           </Grid>
           { !loading && products.length > 0 && 
             <Grid container spacing={6}>
-              { highPriority.length > 0 &&             
+              { bestProducts.length > 0 &&             
                 <> 
                   <Grid item xs={12}>
                     <Typography variant="h4">Productos destacados</Typography>
                   </Grid>            
                   <Grid item xs={12}>
-                    <ProductGrid products={highPriority} setProducts={setHighPriority}/>
+                    <ProductGrid products={bestProducts} setProducts={setBestProducts}/>
                   </Grid> 
                 </> 
               }          
-              { lowPriority.length > 0 && 
+              { recommendedProducts.length > 0 && 
                 <>
                   <Grid item xs={12}>
                     <Typography variant="h4">Productos recomendados</Typography>
                   </Grid> 
                   <Grid item xs={12}>
-                    <ProductGrid products={lowPriority} setProducts={setLowPriority}/>
+                    <ProductGrid products={recommendedProducts} setProducts={setRecommendedProducts}/>
                   </Grid>
                 </>
               }
