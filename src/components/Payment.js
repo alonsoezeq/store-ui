@@ -146,6 +146,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             });
             validateWhiteSpaces();
             setAllowNext(false);
+            return;
         }
 
         if(paymentInfo.pickupPlace === 'home'){
