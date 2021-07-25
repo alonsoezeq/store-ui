@@ -33,7 +33,7 @@ const OrdersHistory = () => {
             
           })
           .catch(err => {
-            setContext({ ...context, loading: false, status: 'error', message: err });
+            setContext({ ...context, loading: false, status: 'error', message: 'Error al traer el historial de compra/venta.' });
           });
     }
    

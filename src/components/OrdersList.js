@@ -105,7 +105,7 @@ const OrdersList = ({orders, setOrders}) => {
         setContext({ ...context, status: 'success', message: 'Se modificó el estado' });
       })
       .catch(err => {
-        setContext({ ...context, status: 'error', message: err });
+        setContext({ ...context, status: 'error', message: "Ocurrio un problema al modificar el estado" });
       });
     }
 
@@ -162,6 +162,7 @@ const OrdersList = ({orders, setOrders}) => {
                       }
                       <TableCell align="center">Estado de pago</TableCell>
                       <TableCell align="center">Estado de entrega</TableCell>
+                      <TableCell align="center">Direccion de entrega</TableCell>
                       <TableCell align="center">Precio total</TableCell>
                       <TableCell align="center">Costos de envio</TableCell>
                     </TableRow>
@@ -224,8 +225,9 @@ const OrdersList = ({orders, setOrders}) => {
                                     parseOrderState(order.shippingStatus)
                                   }
                             </TableCell>
-                          }                          
-                          <TableCell align="right">$ {order.totalPrice}</TableCell>
+                          }       
+                          <TableCell align="center">{order.address}</TableCell>
+                          <TableCell align="right">$ {order.totalPrice}</TableCell>                   
                           <TableCell align="right">$ {order.shippingPrice}</TableCell>
                         </TableRow>
                       ))

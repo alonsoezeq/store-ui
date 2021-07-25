@@ -1,9 +1,8 @@
-import { Button, Grid, makeStyles, Paper } from '@material-ui/core';
+import { Button, Grid, makeStyles, Paper, Input, InputLabel } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -11,7 +10,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { authHeader } from "../helpers/AuthUtils";
 import config from "../config/config";
 import { AppContext } from "../AppContext";
-
+import provinces from "../config/provinces.json";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
     },
     buttonInput: {
         alignSelf: 'flex-end'
-    }
+    },
+    inputText: {
+        width: "25vw",
+      }
   }));  
+
 
 const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const classes = useStyles();
@@ -45,44 +48,60 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const [cardNumberIsValid, setCardNumberIsValid] = useState(true);
     const [cardNameIsValid, setCardNameIsValid] = useState(true);
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
-    const [ user, setUser ] = useState(null);
-    const [ stores, setStores ] = useState([]);
-    const [ context, setContext ] = useContext(AppContext);
+    const [user, setUser ] = useState(null);
+    const [stores, setStores ] = useState([]);
+    const [context, setContext ] = useContext(AppContext);
 
     useEffect(() => {
-        if(paymentInfo.pickupPlace === ''){
-            paymentInfo.pickupPlace = "store";
-        }
         if(paymentInfo) {
             paymentInfo.cvc = '';
             setPaymentInfo({...paymentInfo});
             setAllowNext(false);
         }
+        if(paymentInfo.pickupPlace === ''){
+            paymentInfo.pickupPlace = "store";
+        }
+        const traerPerfil = async () =>
+        {
 
-        fetch(`${config.baseApi}/profile`, {
+        await fetch(`${config.baseApi}/profile`, {
             headers: {
               ...authHeader()
             }
-          })
-          .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+          }).then(res => res.ok ? res.json() : Promise.reject(res.statusText))
           .then(data => {
             setUser(data);
             setContext({ ...context, loading: false });
+            setPaymentInfo({...paymentInfo, shippingProvince:data?.province });
+            setPaymentInfo({...paymentInfo, address:data?.address });
+            paymentInfo.shippingProvince = data?.province;
+            paymentInfo.address = data?.address;
           })
           .catch(err => {
-            setContext({ ...context, loading: false, status: 'error', message: err });
+            setContext({ ...context, loading: false, status: 'error', message: "Lo sentimos, hubo un problema!" });
           });
-
+        }
+        
+        const traerTiendas = async () => 
+        {
         fetch(`${config.baseApi}/stores?active=1`)
             .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
             .then(data => {
             setStores(data);
             setContext({ ...context, loading: false});
+            setPaymentInfo({...paymentInfo, pickupStore:data?.name });
+            console.log(data[0].name);
+            paymentInfo.pickupStore = data[0].name;
           })
             .catch(err => {
-            setContext({ ...context, loading: false, status: 'error', message: err });
+            setContext({ ...context, loading: false, status: 'error', message: "Lo sentimos, hubo un problema!" });
           });
-          console.log(stores);
+
+        }
+        traerTiendas();
+        traerPerfil();
+
+        console.log(paymentInfo);
     }, []);
 
     const validateWhiteSpaces = () => {
@@ -96,9 +115,14 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     const handleChange = (e) => {
-        if(e.target.name !== 'name' && e.target.name !== 'pickupPlace' && e.target.name !== 'pickupStore') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
+        if(e.target.name !== 'name' && e.target.name !== 'pickupPlace' && e.target.name !== 'pickupStore' && e.target.name !== 'shippingProvince' && e.target.name !== 'address') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
+        
     }
+
+    const parseProvince = (province) => {
+        return provinces[province];
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -125,15 +149,13 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
         }
 
         if(paymentInfo.pickupPlace === 'home'){
-            paymentInfo.address = user.address;
-            paymentInfo.shippingPrice = 350;
+            paymentInfo.shippingPrice = parseProvince(paymentInfo.shippingProvince);
         }else{
             paymentInfo.address = stores?.find(function (el){
                 return el.name === paymentInfo.pickupStore;
             }).address;
             paymentInfo.shippingPrice = 0;
         }  
-        console.log(paymentInfo);
     }
 
     return ( 
@@ -176,7 +198,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                         <Grid  container spacing={2}>  
                         <Grid item xs={6}>        
                         <Typography>Retiro del producto</Typography>
-                        <FormControl className={classes.formControl}>
+                        <FormControl required className={classes.formControl}>
                             <InputLabel id="pickup-place">Retiro del producto</InputLabel>
                             <Select name='pickupPlace'
                             labelId="pickup-place"
@@ -188,29 +210,49 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                             <MenuItem value={"home"}>Envío a Domicilio</MenuItem>
                             </Select>
                         </FormControl>
-                        {
-                            paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {user && user.address} , con un costo fijo de $350 </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
-                        }
                         </Grid>
+                        {paymentInfo.pickupPlace === "store" ?
                         <Grid item xs={6}>
-                        {paymentInfo.pickupPlace === "store" ?<Typography>Seleccionar Local de Retiro</Typography>:""}
+                        <Typography>Seleccionar Local de Retiro</Typography>
                         {
                             paymentInfo.pickupPlace === "store" ?
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="pickup-place-store"></InputLabel>
-                            <Select name='pickupStore'
-                            labelId="pickup-store"
-                            id="pickup-select-store"
-                            onChange={handleChange}
-                            value={stores[0]?.name}
-                            >
+                        <FormControl required className={classes.root}>
+                            <InputLabel htmlFor="pickupStore"></InputLabel>
+                            <Select name='pickupStore' id="pickupStore" className={classes.inputText} onChange={handleChange} value={paymentInfo.pickupStore}>
                             {stores.map(store => <MenuItem key={store.id} value={store.name}>{store.name}</MenuItem>)}  
                             </Select>
                         </FormControl>
                             : ""
                         }
                         </Grid>
+                        :''}
                         </Grid>
+                        {
+                            paymentInfo.pickupPlace === "home" ?
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                            <Grid item xs={12}>
+                            <InputLabel htmlFor="address">Dirección</InputLabel>
+                            <FormControl required className={classes.root}>
+                                <Input id="address" name="address" type="text" className={classes.inputText} value={paymentInfo.address} onChange={handleChange} />
+                            </FormControl>      
+                            </Grid>                      
+                            </Grid>
+                            <Grid item xs={6}>
+                            <InputLabel htmlFor="shippingProvince">Provincia</InputLabel>
+                            <FormControl required className={classes.root}>
+                            <Select id="shippingProvince" name="shippingProvince" className={classes.inputText} value={paymentInfo.shippingProvince} onChange={handleChange}>
+                            {
+                                Object.keys(provinces).map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
+                            }
+                            </Select>
+                            </FormControl>
+                            </Grid>
+                            {
+                                paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {paymentInfo.address} , con un costo de $ {parseProvince(paymentInfo.shippingProvince)} </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
+                            }
+                        </Grid>
+                        :''}
                         <Button className={classes.buttonInput} type="submit" variant="contained" color="primary">Confirmar</Button>   
                     </form> 
                     </Paper>                    

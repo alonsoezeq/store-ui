@@ -26,7 +26,7 @@ const Home = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Ocurrió un error al traer los productos.' });
     });
   }, [window.location.search]);
 

@@ -118,7 +118,7 @@ const StoresList = ({stores, setStores}) => {
             
         })
         .catch(err => {
-            setContext({ ...context, status: 'error', message: err });
+            setContext({ ...context, status: 'error', message: 'Error al modificar el estado de la tienda.' });
         });
     }
 

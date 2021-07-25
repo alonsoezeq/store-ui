@@ -50,7 +50,7 @@ const StoreAddForm = () => {
       });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al crear la tienda.' });
     });
   }
 

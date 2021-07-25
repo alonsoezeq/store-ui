@@ -81,7 +81,7 @@ const CartList = () => {
       })
     })
     .catch(err => {
-      setContext({ ...context, status: 'error', message: err });
+      setContext({ ...context, status: 'error', message: "Ocurrió un error al eliminar el producto del carrito." });
     });
   }
 

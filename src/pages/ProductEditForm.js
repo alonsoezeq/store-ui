@@ -51,7 +51,7 @@ const ProductAddForm = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al traer el producto seleccionado.' });
     });
   }, [id]);
 
@@ -106,7 +106,7 @@ const ProductAddForm = () => {
       history.push('/');
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al editar el producto.' });
     });
   }
   const handleChangeEditPicture = (event) => {

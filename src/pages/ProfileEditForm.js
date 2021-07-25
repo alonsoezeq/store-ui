@@ -41,7 +41,7 @@ const ProfileEditForm = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al traer los datos del usuario.' });
     });
   }, []);
 
@@ -68,7 +68,7 @@ const ProfileEditForm = () => {
       history.push('/profile');
     })
     .catch(err => {
-      setContext({ ...context, status: 'error', message: err });
+      setContext({ ...context, status: 'error', message: 'Error al modificar el perfil.' });
     });
   }
   return (
@@ -109,7 +109,7 @@ const ProfileEditForm = () => {
                 <InputLabel htmlFor="province">Provincia</InputLabel>
                 <Select id="province" name="province" className={classes.inputText} value={user && user.province} onChange={handleChange}>
                 {
-                  provinces.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
+                  Object.keys(provinces).map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
                 }
               </Select>
               </FormControl>

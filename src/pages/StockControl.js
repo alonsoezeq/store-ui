@@ -36,7 +36,7 @@ const StockControl = () => {
           setContext({ ...context, loading: false });
         })
         .catch(err => {
-          setContext({ ...context, loading: false, status: 'error', message: err });
+          setContext({ ...context, loading: false, status: 'error', message: 'Error al traer los productos.' });
         });
       }, []);
     
@@ -85,7 +85,7 @@ const StockControl = () => {
           history.push('/products/search');
         })
         .catch(err => {
-          setContext({ ...context, loading: false, status: 'error', message: err });
+          setContext({ ...context, loading: false, status: 'error', message: 'Error al modificar el stock.' });
         });
       }
     

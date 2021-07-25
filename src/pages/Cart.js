@@ -34,7 +34,7 @@ const Cart = () => {
       setContext({ ...context, cartitems: data, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al traer los productos del carrito.' });
     });
   }, []);
 

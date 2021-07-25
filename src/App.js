@@ -76,7 +76,7 @@ const App = () => {
         setContext({ ...context, cartitems: data });
       })
       .catch(err => {
-        setContext({ ...context, status: 'error', message: err });
+        setContext({ ...context, status: 'error', message: "Ocurrio un problema!" });
       });
     }
   }, []);

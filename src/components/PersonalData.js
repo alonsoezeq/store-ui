@@ -35,7 +35,7 @@ const PersonalData = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Ocurrió un error al obtener los datos del perfil.' });
     });
   }, []);
 

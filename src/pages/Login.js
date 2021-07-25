@@ -46,7 +46,7 @@ const Login = () => {
       window.location.href = '/';
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'La combinación usuario/contraseña es inválida.' });
     });
   }
   

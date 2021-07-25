@@ -32,7 +32,7 @@ const StoreEditForm = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al traer la tienda seleccionada.' });
     });
   }, [id]);
 
@@ -60,7 +60,7 @@ const StoreEditForm = () => {
       history.push('/stores');
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al editar la tienda.' });
     });
   }
 

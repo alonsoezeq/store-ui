@@ -31,7 +31,7 @@ const Profile = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al traer la información del usuario.' });
     });
   }, []);
 

@@ -119,7 +119,7 @@ const ProductList = ({products, setProducts}) => {
             
         })
         .catch(err => {
-            setContext({ ...context, status: 'error', message: err });
+            setContext({ ...context, status: 'error', message: 'Ocurrió un error al activar/desactivar el producto.' });
         });
     }
 
@@ -137,7 +137,7 @@ const ProductList = ({products, setProducts}) => {
             setContext({ ...context, status: 'success', message: message });            
         })
         .catch(err => {
-            setContext({ ...context, status: 'error', message: err });
+            setContext({ ...context, status: 'error', message: 'Ocurrió un error al modificar el producto.' });
         });
     }
 

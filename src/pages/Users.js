@@ -31,7 +31,7 @@ const Users = () => {
       setContext({ ...context, loading: false });
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Ocurrió un error al obtener los usuarios.' });
     });
   }, []);
 
@@ -57,7 +57,7 @@ const Users = () => {
       })
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Error al modificar el usuario.' });
     });
   };
 

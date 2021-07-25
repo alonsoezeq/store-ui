@@ -56,7 +56,7 @@ const Register = () => {
       history.push('/');
     })
     .catch(err => {
-      setContext({ ...context, loading: false, status: 'error', message: err });
+      setContext({ ...context, loading: false, status: 'error', message: 'Ocurrió un error al realizar la registración.' });
     });
   }
 
@@ -103,7 +103,7 @@ const Register = () => {
                 <InputLabel htmlFor="province">Provincia</InputLabel>
                 <Select id="province" name="province" className={classes.inputText} value={province} onChange={handleChange}>
                 {
-                  provinces.map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
+                  Object.keys(provinces).map(p => <MenuItem key={p} value={p}>{p}</MenuItem>)
                 }
               </Select>
               </FormControl>

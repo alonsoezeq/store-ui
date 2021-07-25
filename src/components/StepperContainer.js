@@ -62,7 +62,9 @@ const initialInfo =  {
   pickupPlace: '',
   pickupStore: '',
   address: '',
-  shippingPrice: 0
+  shippingPrice: 0,
+  shippingProvince: '',
+  shippingStore: '',
 };
 
 
@@ -120,7 +122,7 @@ const StepperContainer = () => {
         });      
       })
       .catch(err => {
-        setContext({ ...context, status: 'error', message: err });
+        setContext({ ...context, status: 'error', message: 'Error al finalizar la compra.' });
       });
     }
 
