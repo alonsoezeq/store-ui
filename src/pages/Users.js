@@ -76,12 +76,12 @@ const Users = () => {
           <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>E-Mail</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Registered</TableCell>
-                <TableCell>Active</TableCell>
+                <TableCell>Nombre de usuario</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Correo electrónico</TableCell>
+                <TableCell>Rol</TableCell>
+                <TableCell>Fecha de registro</TableCell>
+                <TableCell>Activo</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
