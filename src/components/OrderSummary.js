@@ -17,7 +17,6 @@ const useStyles = makeStyles({
   });
   
 
-
 const OrderSummary = ({paymentInfo}) => {
     const classes = useStyles();
     const [ context, setContext ] = useContext(AppContext);
@@ -27,7 +26,7 @@ const OrderSummary = ({paymentInfo}) => {
     context.cartitems?.forEach(({product, quantity}) => {
       total += product?.price * quantity;
       if(paymentInfo?.pickupPlace === 'home'){
-        costoEnvio = 350;
+        costoEnvio = paymentInfo?.shippingPrice;
       }
       total += costoEnvio;
     });
