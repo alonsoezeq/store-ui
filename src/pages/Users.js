@@ -81,7 +81,7 @@ const Users = () => {
                 <TableCell>Correo electrónico</TableCell>
                 <TableCell>Rol</TableCell>
                 <TableCell>Fecha de registro</TableCell>
-                <TableCell>Estado</TableCell>
+                <TableCell>Activo</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

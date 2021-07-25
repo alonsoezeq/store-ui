@@ -223,12 +223,10 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center">Id Producto</TableCell>
                                 <TableCell align="center">Nombre</TableCell>
                                 <TableCell align="center">Descripción</TableCell>
-                                <TableCell align="center">Estado</TableCell>
                                 <TableCell align="center">Stock</TableCell>
-                                <TableCell align="center">Modificar stock</TableCell>
                                 <TableCell align="center">Prioridad</TableCell>
-                                <TableCell align="center">Editar datos</TableCell>
-                                <TableCell align="center">Dar de baja</TableCell>
+                                <TableCell align="center">Editar</TableCell>
+                                <TableCell align="center">Activo</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -238,24 +236,22 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center">{product.id}</TableCell>
                                 <TableCell align="center">{product.title}</TableCell>
                                 <TableCell align="center" >{product.description}</TableCell>
-                                <TableCell align="center" >{product.active? "Activo" : "Dado de baja"}</TableCell>
-                                <TableCell align="center" >{product.quantity}</TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">
                                     <input type="number" min="1" step="1" value={product.quantity} onChange={(e) => handleQuantityChange(product, e.target.value)} />  
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">
                                 <Select id="priority" name="priority" className={classes.inputSelect} value={product.priority} onChange={(e) => handleChange(product, e.target.value)}>
                                     {
                                         priorities.map((label, index) => <MenuItem key={index} value={index}>{label}</MenuItem>)
                                     }
                                 </Select>  
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">
                                     <IconButton aria-label="edit" onClick={() => navigateTo(`/products/${product.id}/edit`, 'Editar producto')}>
                                         <Edit />
                                     </IconButton>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">
                                     <Switch
                                         checked={product.active}
                                         onChange={() => handleStateChange(product.id, product)}

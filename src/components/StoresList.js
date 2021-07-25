@@ -169,9 +169,8 @@ const StoresList = ({stores, setStores}) => {
                                 <TableCell align="center">Id Tienda</TableCell>
                                 <TableCell align="center">Nombre</TableCell>
                                 <TableCell align="center">Dirección</TableCell>
-                                <TableCell align="center">Estado</TableCell>
                                 <TableCell align="center">Editar</TableCell>
-                                <TableCell align="center">Dar de baja</TableCell>
+                                <TableCell align="center">Activo</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -180,8 +179,7 @@ const StoresList = ({stores, setStores}) => {
                             <TableRow key={store.id}>
                                 <TableCell align="center">{store.id}</TableCell>
                                 <TableCell align="center">{store.name}</TableCell>
-                                <TableCell align="center" >{store.address}</TableCell>
-                                <TableCell align="center" >{store.active? "Activa" : "Dada de baja"}</TableCell>
+                                <TableCell align="center">{store.address}</TableCell>
                                 <TableCell align="center">
                                     <IconButton aria-label="edit" onClick={() => navigateTo(`/stores/${store.id}/edit`, 'Editar tienda')}>
                                         <Edit />
