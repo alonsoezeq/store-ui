@@ -42,10 +42,10 @@ const PaymentData = ({paymentInfo, cart}) => {
               </Typography>
               <Typography component={'div'}>
                 <Box display="inline" fontWeight="fontWeightBold" m={1}>
-                  Lugar de retiro:
+                {paymentInfo.pickupPlace === 'store'? 'Lugar de retiro:': 'Datos de envio:' }
                 </Box>
                 {
-                    paymentInfo.pickupPlace === 'store'? "Retira en el local" : "Retiro a domicilio"
+                    paymentInfo.pickupPlace === 'store'? paymentInfo.pickupStore : "Envio a " + paymentInfo.address
                 }
               </Typography>
               </div>

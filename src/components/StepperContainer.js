@@ -60,6 +60,7 @@ const initialInfo =  {
   expDate:'',
   cvc:'',
   pickupPlace: '',
+  pickupStore: '',
   address: '',
   shippingPrice: 0
 };
@@ -96,6 +97,7 @@ const StepperContainer = () => {
 
       let payment = {
         pickupPlace: paymentInfo.pickupPlace,
+        pickupStore: paymentInfo.pickupStore,
         address: paymentInfo.address,
         shippingPrice: paymentInfo.shippingPrice
       }

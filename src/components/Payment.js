@@ -46,6 +46,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     const [cardNameIsValid, setCardNameIsValid] = useState(true);
     const [cardCVCIsValid, setCardCVCIsValid] = useState(true);
     const [ user, setUser ] = useState(null);
+    const [ stores, setStores ] = useState([]);
     const [ context, setContext ] = useContext(AppContext);
 
     useEffect(() => {
@@ -71,6 +72,17 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
           .catch(err => {
             setContext({ ...context, loading: false, status: 'error', message: err });
           });
+
+        fetch(`${config.baseApi}/stores?active=1`)
+            .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+            .then(data => {
+            setStores(data);
+            setContext({ ...context, loading: false});
+          })
+            .catch(err => {
+            setContext({ ...context, loading: false, status: 'error', message: err });
+          });
+          console.log(stores);
     }, []);
 
     const validateWhiteSpaces = () => {
@@ -84,7 +96,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
     }
 
     const handleChange = (e) => {
-        if(e.target.name !== 'name' && e.target.name !== 'pickupPlace') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
+        if(e.target.name !== 'name' && e.target.name !== 'pickupPlace' && e.target.name !== 'pickupStore') {e.target.value = e.target.value.replace(/[^\d0-9]/g, '')};
         setPaymentInfo({...paymentInfo, [e.target.name]:e.target.value});
     }
 
@@ -92,6 +104,7 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
         e.preventDefault();
         paymentInfo.expDate = value;
         
+        console.log(paymentInfo);
         //Validate form
         if(paymentInfo.name.trim() === '' || paymentInfo.number.trim() === '' ||
         paymentInfo.cvc.trim() === ''){
@@ -102,12 +115,25 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
             validateWhiteSpaces();
             setAllowNext(true);
         }
+        if(paymentInfo.pickupStore === '' && paymentInfo.pickupPlace === 'store'){
+            setContext({ ...context, 
+                status: 'error', 
+                message: "Debe seleccionar una tienda donde retirar." 
+            });
+            validateWhiteSpaces();
+            setAllowNext(false);
+        }
+
         if(paymentInfo.pickupPlace === 'home'){
             paymentInfo.address = user.address;
             paymentInfo.shippingPrice = 350;
         }else{
+            paymentInfo.address = stores?.find(function (el){
+                return el.name === paymentInfo.pickupStore;
+            }).address;
             paymentInfo.shippingPrice = 0;
         }  
+        console.log(paymentInfo);
     }
 
     return ( 
@@ -146,7 +172,9 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                         {
                             cardNameIsValid ? <TextField name="name" defaultValue={paymentInfo.name} label="Nombre tarjeta"  variant="outlined" onChange={handleChange} /> : 
                             <TextField error name="name" defaultValue={paymentInfo.number} label="Nombre tarjeta" variant="outlined" onChange={handleChange} helperText="Campo incompleto"/>
-                        }              
+                        }    
+                        <Grid  container spacing={2}>  
+                        <Grid item xs={6}>        
                         <Typography>Retiro del producto</Typography>
                         <FormControl className={classes.formControl}>
                             <InputLabel id="pickup-place">Retiro del producto</InputLabel>
@@ -163,6 +191,26 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
                         {
                             paymentInfo.pickupPlace === "home"? <InputLabel> El producto se enviará a {user && user.address} , con un costo fijo de $350 </InputLabel>  : <InputLabel>Costo de envio: $0</InputLabel>
                         }
+                        </Grid>
+                        <Grid item xs={6}>
+                        {paymentInfo.pickupPlace === "store" ?<Typography>Seleccionar Local de Retiro</Typography>:""}
+                        {
+                            paymentInfo.pickupPlace === "store" ?
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="pickup-place-store"></InputLabel>
+                            <Select name='pickupStore'
+                            labelId="pickup-store"
+                            id="pickup-select-store"
+                            onChange={handleChange}
+                            value={stores[0]?.name}
+                            >
+                            {stores.map(store => <MenuItem key={store.id} value={store.name}>{store.name}</MenuItem>)}  
+                            </Select>
+                        </FormControl>
+                            : ""
+                        }
+                        </Grid>
+                        </Grid>
                         <Button className={classes.buttonInput} type="submit" variant="contained" color="primary">Confirmar</Button>   
                     </form> 
                     </Paper>                    
