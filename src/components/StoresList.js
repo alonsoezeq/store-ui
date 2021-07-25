@@ -6,13 +6,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, fade, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Button, fade, Grid, IconButton, makeStyles, Typography, Switch } from '@material-ui/core';
 import { authHeader} from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import config from '../config/config';
 import { AppContext } from '../AppContext';
 import { useHistory } from 'react-router-dom';
+import { Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     select: {
@@ -121,7 +122,7 @@ const StoresList = ({stores, setStores}) => {
         });
     }
 
-    const handleDelete = (id, store) => {
+    const handleStateChange = (id, store) => {
         let index = filteredStores.indexOf(store);
         let auxArray = filteredStores.slice();
 
@@ -134,7 +135,6 @@ const StoresList = ({stores, setStores}) => {
             
             auxArray[index] = store;
         }
-        
         changeState(id, store);
         setFilteredStores(auxArray)
     }
@@ -170,8 +170,8 @@ const StoresList = ({stores, setStores}) => {
                                 <TableCell align="center">Nombre</TableCell>
                                 <TableCell align="center">Dirección</TableCell>
                                 <TableCell align="center">Estado</TableCell>
-                                <TableCell align="center"></TableCell>
-                                <TableCell align="center"></TableCell>
+                                <TableCell align="center">Editar</TableCell>
+                                <TableCell align="center">Dar de baja</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -182,12 +182,18 @@ const StoresList = ({stores, setStores}) => {
                                 <TableCell align="center">{store.name}</TableCell>
                                 <TableCell align="center" >{store.address}</TableCell>
                                 <TableCell align="center" >{store.active? "Activa" : "Dada de baja"}</TableCell>
-                                <TableCell align="center"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/stores/${store.id}/edit`, 'Editar tienda')}>Editar</Button></TableCell>
                                 <TableCell align="center">
-                                    { store.active?
-                                        <Button size="small" variant="contained" color="secondary" onClick={() => handleDelete(store.id, store)}>Dar de baja</Button>:
-                                        <Button size="small" variant="contained" color="primary" onClick={() => handleDelete(store.id, store)}>Dar de alta</Button>
-                                    }
+                                    <IconButton aria-label="edit" onClick={() => navigateTo(`/stores/${store.id}/edit`, 'Editar tienda')}>
+                                        <Edit />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Switch
+                                    checked={store.active}
+                                    onChange={() => handleStateChange(store.id, store)}
+                                    name="active"
+                                    color="primary"
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))

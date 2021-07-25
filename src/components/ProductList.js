@@ -6,7 +6,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, fade, Grid, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { Button, fade, Grid, IconButton, makeStyles, MenuItem, Select, Switch, Typography } from '@material-ui/core';
 import { authHeader} from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -14,6 +14,7 @@ import config from '../config/config';
 import { AppContext } from '../AppContext';
 import { useHistory } from 'react-router-dom';
 import priorities from '../config/priorities.json';
+import { Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     select: {
@@ -140,7 +141,7 @@ const ProductList = ({products, setProducts}) => {
         });
     }
 
-    const handleDelete = (id, product) => {
+    const handleStateChange = (id, product) => {
         let index = filteredProducts.indexOf(product);
         let auxArray = filteredProducts.slice();
 
@@ -249,12 +250,18 @@ const ProductList = ({products, setProducts}) => {
                                     }
                                 </Select>  
                                 </TableCell>
-                                <TableCell align="right"><Button size="small" variant="contained" color="primary" onClick={() => navigateTo(`/products/${product.id}/edit`, 'Editar producto')}>Editar datos</Button></TableCell>
                                 <TableCell align="right">
-                                    { product.active?
-                                        <Button size="small" variant="contained" color="secondary" onClick={() => handleDelete(product.id, product)}>Dar de baja</Button>:
-                                        <Button size="small" variant="contained" color="primary" onClick={() => handleDelete(product.id, product)}>Dar de alta</Button>
-                                    }
+                                    <IconButton aria-label="edit" onClick={() => navigateTo(`/products/${product.id}/edit`, 'Editar producto')}>
+                                        <Edit />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Switch
+                                        checked={product.active}
+                                        onChange={() => handleStateChange(product.id, product)}
+                                        name="active"
+                                        color="primary"
+                                        />
                                 </TableCell>
                             </TableRow>
                         ))
