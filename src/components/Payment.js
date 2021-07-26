@@ -61,6 +61,9 @@ const Payment = ({paymentInfo, setPaymentInfo, setAllowNext}) => {
         if(paymentInfo.pickupPlace === ''){
             paymentInfo.pickupPlace = "store";
         }
+        if(paymentInfo.pickupStore === '' || paymentInfo.pickupStore === undefined){
+            paymentInfo.pickupStore = "Tienda Palermo";
+        }
         const traerPerfil = async () =>
         {
 
