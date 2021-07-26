@@ -90,7 +90,7 @@ const App = () => {
       <Router>
         <NavBar title={title} />
         <Container fixed maxWidth="lg" >
-          <Box my={3} display="flex" justifyContent="center" alignItems="center">
+          <Box my={3} display="flex" justifyContent="center" alignItems="center" flexDirection="column">
             <Switch>
               {
                 routes.map(({path, component, condition}) => 
