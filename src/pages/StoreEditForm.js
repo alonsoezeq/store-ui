@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
-import {DropzoneDialog} from 'material-ui-dropzone'
+import {DropzoneDialog} from 'material-ui-dropzone';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,7 @@ const StoreEditForm = () => {
         setFiles(filesAux);
       })
       
-      setStore(data)    
+      setStore(data);    
       setContext({ ...context, loading: false });
     })
     .catch(err => {
