@@ -9,6 +9,7 @@ import genders from "../config/genders.json";
 import priorities from "../config/priorities.json";
 import sizes from "../config/sizes.json";
 import { FiberManualRecord } from "@material-ui/icons";
+import {DropzoneDialog} from 'material-ui-dropzone';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,7 @@ const ProductAddForm = () => {
   }
 
   const [ product, setProduct ] = useState(initialProduct);
+  const [ open, setOpen ] = useState(false);
 
   const {title, article, size, color, category, gender, description, quantity, price, priority } = product;
 
@@ -107,7 +109,31 @@ const ProductAddForm = () => {
       setContext({ ...context, loading: false, status: 'error', message: "Ocurrió un error!!" });
     });
   }
+  const handleClose = () => {
+    setOpen(false)
+  }
 
+  const handleSave = (files) => {
+    let images = [];
+
+      files.forEach((file)=> {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          images = [ ...images, { "picture": reader.result } ];
+          setProduct({ ...product, pictures: images });
+          setOpen(false)
+        }
+        reader.onerror = (error) => {
+          setContext({ ...context, status: 'error', message: error });
+          setOpen(false)
+        }
+      })
+  }
+
+const handleOpen= () => {
+    setOpen(true);
+}
   return (
     <Grid container justify="center" alignContent="center">
       <Paper className={classes.paper} elevation={3}>
@@ -132,8 +158,27 @@ const ProductAddForm = () => {
             </Grid>        
             <Grid item xs={6}>
               <FormControl required className={classes.root}>
-                <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
-                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+                {/* <InputLabel htmlFor="pictures">Fotos del producto</InputLabel>
+                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} /> */}
+                <Button onClick={handleOpen}>
+                  Agregar imagen
+                </Button>
+                <DropzoneDialog
+                        open={open}
+                        onSave={handleSave}
+                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        showFileNames={false}
+                        dropzoneText="Arraste aquí el archivo o haga click para seleccionar."
+                        showFileNamesInPreview={false}
+                        showPreviews={true}
+                        maxFileSize={5000000}
+                        dialogTitle="Cargar fotos"
+                        cancelButtonText="Cancelar"
+                        submitButtonText="Agregar"
+                        showAlerts={false}
+                        onClose={handleClose}
+                        clearOnUnmount={false}
+                    />
               </FormControl>
               <FormControl required className={classes.root}>
                 <InputLabel htmlFor="priority">Prioridad de venta</InputLabel>

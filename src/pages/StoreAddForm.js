@@ -1,8 +1,10 @@
 import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
+import {DropzoneDialog} from 'material-ui-dropzone';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StoreAddForm = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [ context, setContext ] = useContext(AppContext);
 
   const initialStore = {
@@ -26,6 +29,7 @@ const StoreAddForm = () => {
   const [ store, setStore ] = useState(initialStore);
 
   const { name, address } = store;
+  const [ open, setOpen ] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -48,6 +52,8 @@ const StoreAddForm = () => {
         status: 'success',
         message: 'TIenda correctamente agregada.'
       });
+      setStore(initialStore);
+      //history.push('/stores');
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: 'Error al crear la tienda.' });
@@ -77,6 +83,32 @@ const StoreAddForm = () => {
     });
   }
 
+   const handleClose = () => {
+      setOpen(false)
+  }
+
+  const handleSave = (files) => {
+    let images = [];
+
+      files.forEach((file)=> {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          images = [ ...images, { "picture": reader.result } ];
+          setStore({ ...store, pictures: images });
+          setOpen(false)
+        }
+        reader.onerror = (error) => {
+          setContext({ ...context, status: 'error', message: error });
+          setOpen(false)
+        }
+      })
+  }
+
+  const handleOpen= () => {
+      setOpen(true);
+  }
+
   return (
     <Grid container justify="center" >
       <Paper style={{"padding": "2rem 5rem"}} elevation={3}>
@@ -101,8 +133,25 @@ const StoreAddForm = () => {
             </Grid>
             <Grid item xs={6}>
               <FormControl required className={classes.root}>
-                <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
-                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+              <Button onClick={handleOpen}>
+                  Agregar imagen
+                </Button>
+                <DropzoneDialog
+                        open={open}
+                        onSave={handleSave}
+                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        showFileNames={false}
+                        dropzoneText="Arraste aquí el archivo o haga click para seleccionar."
+                        showFileNamesInPreview={false}
+                        showPreviews={true}
+                        maxFileSize={5000000}
+                        dialogTitle="Cargar fotos"
+                        cancelButtonText="Cancelar"
+                        submitButtonText="Agregar"
+                        showAlerts={false}
+                        onClose={handleClose}
+                        clearOnUnmount={false}
+                    />
               </FormControl>
             </Grid>
             <Grid container justify={"flex-end"}>
