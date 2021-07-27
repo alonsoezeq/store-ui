@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
+import {DropzoneDialog} from 'material-ui-dropzone'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,7 @@ const StoreAddForm = () => {
   const [ store, setStore ] = useState(initialStore);
 
   const { name, address } = store;
+  const [ open, setOpen ] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,6 +79,32 @@ const StoreAddForm = () => {
     });
   }
 
+   const handleClose = () => {
+      setOpen(false)
+  }
+
+  const handleSave = (files) => {
+    let images = [];
+
+      files.forEach((file)=> {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          images = [ ...images, { "picture": reader.result } ];
+          setStore({ ...store, pictures: images });
+          setOpen(false)
+        }
+        reader.onerror = (error) => {
+          setContext({ ...context, status: 'error', message: error });
+          setOpen(false)
+        }
+      })
+  }
+
+  const handleOpen= () => {
+      setOpen(true);
+  }
+
   return (
     <Grid container justify="center" >
       <Paper style={{"padding": "2rem 5rem"}} elevation={3}>
@@ -101,8 +129,18 @@ const StoreAddForm = () => {
             </Grid>
             <Grid item xs={6}>
               <FormControl required className={classes.root}>
-                <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
-                <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+              <Button onClick={handleOpen}>
+                  Agregar imagen
+                </Button>
+                <DropzoneDialog
+                    open={open}
+                    onSave={handleSave}
+                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    showPreviews={true}
+                    maxFileSize={5000000}
+                    onClose={handleClose}
+                    clearOnUnmount={false}
+                />
               </FormControl>
             </Grid>
             <Grid container justify={"flex-end"}>

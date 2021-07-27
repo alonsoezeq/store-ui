@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
+import {DropzoneDialog} from 'material-ui-dropzone'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +22,25 @@ const StoreEditForm = () => {
   const [ context, setContext ] = useContext(AppContext);
 
   const [store, setStore] = useState(null);
+  const [ open, setOpen ] = useState(false);
+  const [ files, setFiles] = useState([]);
 
   useEffect(() => {
     setContext({ ...context, loading: true });
 
+
     fetch(`${config.baseApi}/stores/${id}`)
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data => {
-      setStore(data);
+    .then( data => {
+      let filesAux = []
+      data.pictures.forEach( picture => {
+        console.log(picture);
+        filesAux.push(picture.picture);
+
+        setFiles(filesAux);
+      })
+      
+      setStore(data)    
       setContext({ ...context, loading: false });
     })
     .catch(err => {
@@ -87,6 +99,32 @@ const StoreEditForm = () => {
     });
   }
 
+  const handleClose = () => {
+    setOpen(false)
+}
+
+const handleSave = (files) => {
+  let images = [];
+
+    files.forEach((file)=> {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        images = [ ...images, { "picture": reader.result } ];
+        setStore({ ...store, pictures: images });
+        setOpen(false)
+      }
+      reader.onerror = (error) => {
+        setContext({ ...context, status: 'error', message: error });
+        setOpen(false)
+      }
+    })
+}
+
+const handleOpen= () => {
+    setOpen(true);
+}
+
   return (
     <>
       {
@@ -114,8 +152,19 @@ const StoreEditForm = () => {
               </Grid>
                 <Grid item xs={6}>
                   <FormControl required className={classes.root}>
-                    <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
-                    <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
+                      <Button onClick={handleOpen}>
+                     Agregar imagen
+                    </Button>
+                    <DropzoneDialog
+                        open={open}
+                        initialFiles = {files}
+                        onSave={handleSave}
+                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        showPreviews={true}
+                        maxFileSize={5000000}
+                        onClose={handleClose}
+                        clearOnUnmount={false}
+                    />
                   </FormControl>
                 </Grid>
                 <Grid container justify={"flex-end"}>
