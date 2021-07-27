@@ -52,7 +52,8 @@ const StoreAddForm = () => {
         status: 'success',
         message: 'TIenda correctamente agregada.'
       });
-      history.push('/stores');
+      setStore(initialStore);
+      //history.push('/stores');
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: 'Error al crear la tienda.' });
