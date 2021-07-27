@@ -113,7 +113,7 @@ const StoreEditForm = () => {
                 </Grid>
               </Grid>
                 <Grid item xs={6}>
-                  <FormControl required className={classes.root}>
+                  <FormControl className={classes.root}>
                     <InputLabel htmlFor="pictures">Fotos de la tienda</InputLabel>
                     <Input id="pictures" name="pictures" type="file" inputProps={{multiple: true, accept: "image/png, image/jpeg"}} onChange={handleFileChange} />
                   </FormControl>
