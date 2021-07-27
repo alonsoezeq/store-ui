@@ -244,11 +244,11 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center" >
                                 {
                                   Object.keys(colors).filter(rgb => rgb === product.color).map(rgb => 
-                                    <MenuItem key={rgb} value={rgb}>
+                                    <MenuItem align="center" key={rgb} value={rgb}>
                                       <ListItemIcon style={{color: rgb}}>
-                                        <FiberManualRecord fontSize="small" />
+                                        <FiberManualRecord align="center" fontSize="small" />
                                       </ListItemIcon>
-                                      <Typography variant="inherit">{colors[rgb]}</Typography>
+                                      {colors[rgb]}
                                     </MenuItem>
                                   )
                                 }
