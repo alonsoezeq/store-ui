@@ -6,7 +6,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, fade, Grid, IconButton, makeStyles, MenuItem, Select, Switch, Typography } from '@material-ui/core';
+import { Button, fade, Grid, IconButton, makeStyles, MenuItem, Select, Switch, Typography, ListItemIcon } from '@material-ui/core';
 import { authHeader} from '../helpers/AuthUtils';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -15,6 +15,8 @@ import { AppContext } from '../AppContext';
 import { useHistory } from 'react-router-dom';
 import priorities from '../config/priorities.json';
 import { Edit } from '@material-ui/icons';
+import colors from "../config/colors.json";
+import { FiberManualRecord } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     select: {
@@ -223,6 +225,8 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center">Id Producto</TableCell>
                                 <TableCell align="center">Nombre</TableCell>
                                 <TableCell align="center">Descripción</TableCell>
+                                <TableCell align="center">Articulo</TableCell>
+                                <TableCell align="center">Color</TableCell>
                                 <TableCell align="center">Stock</TableCell>
                                 <TableCell align="center">Prioridad</TableCell>
                                 <TableCell align="center">Editar</TableCell>
@@ -236,6 +240,19 @@ const ProductList = ({products, setProducts}) => {
                                 <TableCell align="center">{product.id}</TableCell>
                                 <TableCell align="center">{product.title}</TableCell>
                                 <TableCell align="center" >{product.description}</TableCell>
+                                <TableCell align="center" >{product.article}</TableCell>
+                                <TableCell align="center" >
+                                {
+                                  Object.keys(colors).filter(rgb => rgb === product.color).map(rgb => 
+                                    <MenuItem key={rgb} value={rgb}>
+                                      <ListItemIcon style={{color: rgb}}>
+                                        <FiberManualRecord fontSize="small" />
+                                      </ListItemIcon>
+                                      <Typography variant="inherit">{colors[rgb]}</Typography>
+                                    </MenuItem>
+                                  )
+                                }
+                                </TableCell>
                                 <TableCell align="center">
                                     <input type="number" min="1" step="1" value={product.quantity} onChange={(e) => handleQuantityChange(product, e.target.value)} />  
                                 </TableCell>
