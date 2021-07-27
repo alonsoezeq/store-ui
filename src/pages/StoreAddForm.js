@@ -1,5 +1,6 @@
 import { Button, FormControl, Grid, Input, InputLabel, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import config from "../config/config";
 import { authHeader } from "../helpers/AuthUtils";
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StoreAddForm = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [ context, setContext ] = useContext(AppContext);
 
   const initialStore = {
@@ -50,6 +52,7 @@ const StoreAddForm = () => {
         status: 'success',
         message: 'TIenda correctamente agregada.'
       });
+      history.push('/stores');
     })
     .catch(err => {
       setContext({ ...context, loading: false, status: 'error', message: 'Error al crear la tienda.' });
@@ -133,14 +136,21 @@ const StoreAddForm = () => {
                   Agregar imagen
                 </Button>
                 <DropzoneDialog
-                    open={open}
-                    onSave={handleSave}
-                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                    showPreviews={true}
-                    maxFileSize={5000000}
-                    onClose={handleClose}
-                    clearOnUnmount={false}
-                />
+                        open={open}
+                        onSave={handleSave}
+                        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        showFileNames={false}
+                        dropzoneText="Arraste aquí el archivo o haga click para seleccionar."
+                        showFileNamesInPreview={false}
+                        showPreviews={true}
+                        maxFileSize={5000000}
+                        dialogTitle="Cargar fotos"
+                        cancelButtonText="Cancelar"
+                        submitButtonText="Agregar"
+                        showAlerts={false}
+                        onClose={handleClose}
+                        clearOnUnmount={false}
+                    />
               </FormControl>
             </Grid>
             <Grid container justify={"flex-end"}>

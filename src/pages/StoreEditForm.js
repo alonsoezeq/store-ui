@@ -52,7 +52,6 @@ const StoreEditForm = () => {
     event.preventDefault();
     
     setContext({ ...context, loading: true });
-
     fetch(`${config.baseApi}/stores/${id}`, {
       method: 'PUT',
       body: JSON.stringify(store),
@@ -105,12 +104,11 @@ const StoreEditForm = () => {
 
 const handleSave = (files) => {
   let images = [];
-
     files.forEach((file)=> {
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        images = [ ...images, { "picture": reader.result } ];
+        images = [ ...images, { "picture": reader.result} ];
         setStore({ ...store, pictures: images });
         setOpen(false)
       }
@@ -160,8 +158,15 @@ const handleOpen= () => {
                         initialFiles = {files}
                         onSave={handleSave}
                         acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                        showFileNames={false}
+                        dropzoneText="Arraste aquí el archivo o haga click para seleccionar."
+                        showFileNamesInPreview={false}
                         showPreviews={true}
                         maxFileSize={5000000}
+                        dialogTitle="Cargar fotos"
+                        cancelButtonText="Cancelar"
+                        submitButtonText="Agregar"
+                        showAlerts={false}
                         onClose={handleClose}
                         clearOnUnmount={false}
                     />
